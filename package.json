@@ -1,0 +1,31 @@
+{
+  "name": "schedules",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.js",
+    "db:sync": "node ./src/scripts/db-sync.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nanichris-dushime/Schedules.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nanichris-dushime/Schedules/issues"
+  },
+  "homepage": "https://github.com/nanichris-dushime/Schedules#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.22.1",
+    "nodemon": "^3.1.14",
+    "sequelize": "^6.37.8"
+  }
+}
