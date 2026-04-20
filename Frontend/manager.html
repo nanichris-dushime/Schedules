@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manager Dashboard — ShiftSmart</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<div class="app">
+
+  <!-- ════════ SIDEBAR ════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="index.html" class="logo">
+        <div class="logo-icon" style="background:var(--green);color:#fff;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.85rem">
+          <i class="fa-solid fa-calendar-check"></i>
+        </div>
+        ShiftSmart
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Main</div>
+      <a href="manager.html" class="nav-item active">
+        <i class="fa-solid fa-gauge-high"></i> Dashboard
+      </a>
+      <a href="schedule.html" class="nav-item">
+        <i class="fa-solid fa-calendar-days"></i> Schedule
+      </a>
+      <a href="notifications.html" class="nav-item">
+        <i class="fa-solid fa-bell"></i> Notifications
+        <span class="badge-pill">2</span>
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Tasks</div>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-list-check"></i> All Tasks
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-users"></i> My Team
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-chart-line"></i> Reports
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar avatar-purple">JO</div>
+        <div class="user-info">
+          <div class="user-name">James Owens</div>
+          <div class="user-role">Manager</div>
+        </div>
+        <a href="login.html" data-tip="Logout" style="color:#475569;font-size:.85rem;margin-left:auto">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- ════════ TOPBAR ════════ -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+      <div>
+        <h1>Manager Dashboard</h1>
+        <div class="breadcrumb">Home / <span>Dashboard</span></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-icon-btn" data-tip="Notifications">
+        <i class="fa-solid fa-bell"></i>
+        <span class="notif-dot"></span>
+      </div>
+      <div class="topbar-icon-btn"><i class="fa-solid fa-gear"></i></div>
+      <div class="topbar-profile">
+        <div class="avatar avatar-purple">JO</div>
+        <div>
+          <div class="profile-name">James Owens</div>
+          <div class="profile-role">Manager</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════ MAIN ════════ -->
+  <main class="main">
+    <div class="page-content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="page-header-left">
+          <h2>Task Management</h2>
+          <p>Operations Department — Week of July 14, 2025</p>
+        </div>
+        <div class="page-header-right">
+          <a href="schedule.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-calendar-days"></i> View Schedule</a>
+          <button class="btn btn-primary btn-sm" onclick="openModal('createTaskModal')">
+            <i class="fa-solid fa-plus"></i> Create Task
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card green fade-in">
+          <div class="kpi-top"><div class="kpi-icon green"><i class="fa-solid fa-list-check"></i></div><span class="kpi-trend up">+4</span></div>
+          <div class="kpi-value">24</div>
+          <div class="kpi-label">Total Tasks</div>
+        </div>
+        <div class="kpi-card blue fade-in fade-in-d1">
+          <div class="kpi-top"><div class="kpi-icon blue"><i class="fa-solid fa-circle-check"></i></div><span class="kpi-trend up">↑</span></div>
+          <div class="kpi-value">14</div>
+          <div class="kpi-label">Confirmed</div>
+        </div>
+        <div class="kpi-card orange fade-in fade-in-d2">
+          <div class="kpi-top"><div class="kpi-icon orange"><i class="fa-solid fa-clock"></i></div><span class="kpi-trend neutral">—</span></div>
+          <div class="kpi-value">7</div>
+          <div class="kpi-label">Pending</div>
+        </div>
+        <div class="kpi-card purple fade-in fade-in-d3">
+          <div class="kpi-top"><div class="kpi-icon purple"><i class="fa-solid fa-users"></i></div><span class="kpi-trend up">+2</span></div>
+          <div class="kpi-value">12</div>
+          <div class="kpi-label">Team Members</div>
+        </div>
+      </div>
+
+      <!-- Create Task + Team row -->
+      <div class="grid-2" style="margin-bottom:24px">
+
+        <!-- Quick Create Form -->
+        <div class="card fade-in">
+          <div class="card-header">
+            <div><h3>Quick Create Task</h3><p>Assign a new shift or task</p></div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label>Task Title</label>
+              <div class="input-icon-wrap">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <input type="text" class="form-control" placeholder="e.g. Morning Inventory Check"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Assign To</label>
+              <select class="form-control">
+                <option value="">Select employee…</option>
+                <option>Maria Lopez</option>
+                <option>Sarah Kim</option>
+                <option>Tom Brown</option>
+                <option>Nina Patel</option>
+                <option>Carlos Rivera</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Date</label>
+                <div class="input-icon-wrap">
+                  <i class="fa-regular fa-calendar"></i>
+                  <input type="date" class="form-control" value="2025-07-14"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Priority</label>
+                <select class="form-control">
+                  <option>Normal</option>
+                  <option>High</option>
+                  <option>Urgent</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Start Time</label>
+                <div class="input-icon-wrap">
+                  <i class="fa-regular fa-clock"></i>
+                  <input type="time" class="form-control" value="08:00"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>End Time</label>
+                <div class="input-icon-wrap">
+                  <i class="fa-regular fa-clock"></i>
+                  <input type="time" class="form-control" value="12:00"/>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary w-full" style="justify-content:center">
+              <i class="fa-solid fa-paper-plane"></i> Create & Assign Task
+            </button>
+          </div>
+        </div>
+
+        <!-- Team Status -->
+        <div class="card fade-in fade-in-d1">
+          <div class="card-header">
+            <div><h3>Team Status</h3><p>Today's availability</p></div>
+            <a href="employee.html" class="text-sm" style="color:var(--green);font-weight:600">View all</a>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:12px">
+
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="avatar avatar-sm avatar-green">ML</div>
+                <div><div style="font-size:.88rem;font-weight:600">Maria Lopez</div><div class="text-sm text-muted">Customer Support</div></div>
+              </div>
+              <span class="badge badge-confirmed">On Shift</span>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="avatar avatar-sm avatar-orange">SK</div>
+                <div><div style="font-size:.88rem;font-weight:600">Sarah Kim</div><div class="text-sm text-muted">Logistics</div></div>
+              </div>
+              <span class="badge badge-pending">Pending</span>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="avatar avatar-sm avatar-blue">NP</div>
+                <div><div style="font-size:.88rem;font-weight:600">Nina Patel</div><div class="text-sm text-muted">Operations</div></div>
+              </div>
+              <span class="badge badge-confirmed">On Shift</span>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="avatar avatar-sm avatar-pink">CR</div>
+                <div><div style="font-size:.88rem;font-weight:600">Carlos Rivera</div><div class="text-sm text-muted">Operations</div></div>
+              </div>
+              <span class="badge badge-confirmed">On Shift</span>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="avatar avatar-sm avatar-purple">TB</div>
+                <div><div style="font-size:.88rem;font-weight:600">Tom Brown</div><div class="text-sm text-muted">Maintenance</div></div>
+              </div>
+              <span class="badge badge-rejected">Off Today</span>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="avatar avatar-sm avatar-green">AN</div>
+                <div><div style="font-size:.88rem;font-weight:600">Amy Nguyen</div><div class="text-sm text-muted">Customer Support</div></div>
+              </div>
+              <span class="badge badge-confirmed">On Shift</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Task List Table -->
+      <div class="card fade-in">
+        <div class="card-header">
+          <div><h3>Task List</h3><p>All assigned tasks this week</p></div>
+          <div style="display:flex;gap:8px">
+            <div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search tasks…"/></div>
+            <select class="select-control" style="font-size:.82rem">
+              <option>All Status</option>
+              <option>Confirmed</option>
+              <option>Pending</option>
+              <option>Rejected</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Assigned To</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div style="font-weight:600;font-size:.9rem">Morning Inventory Check</div><div class="text-sm text-muted">Operations</div></td>
+                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-green">ML</div>Maria Lopez</div></td>
+                <td>Jul 14, 2025</td>
+                <td>08:00 – 10:00</td>
+                <td>Operations</td>
+                <td><span class="badge badge-confirmed">Confirmed</span></td>
+                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;font-size:.9rem">Customer Intake Processing</div><div class="text-sm text-muted">Support</div></td>
+                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-blue">NP</div>Nina Patel</div></td>
+                <td>Jul 14, 2025</td>
+                <td>09:00 – 13:00</td>
+                <td>Customer Support</td>
+                <td><span class="badge badge-confirmed">Confirmed</span></td>
+                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;font-size:.9rem">Warehouse Dispatch</div><div class="text-sm text-muted">Logistics</div></td>
+                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-orange">SK</div>Sarah Kim</div></td>
+                <td>Jul 14, 2025</td>
+                <td>10:00 – 14:00</td>
+                <td>Logistics</td>
+                <td><span class="badge badge-pending">Pending</span></td>
+                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;font-size:.9rem">Equipment Maintenance Round</div><div class="text-sm text-muted">Maintenance</div></td>
+                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-purple">TB</div>Tom Brown</div></td>
+                <td>Jul 15, 2025</td>
+                <td>07:00 – 11:00</td>
+                <td>Maintenance</td>
+                <td><span class="badge badge-rejected">Rejected</span></td>
+                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;font-size:.9rem">Afternoon Floor Supervision</div><div class="text-sm text-muted">Operations</div></td>
+                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-pink">CR</div>Carlos Rivera</div></td>
+                <td>Jul 15, 2025</td>
+                <td>13:00 – 17:00</td>
+                <td>Operations</td>
+                <td><span class="badge badge-confirmed">Confirmed</span></td>
+                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:600;font-size:.9rem">End-of-Day Report Compilation</div><div class="text-sm text-muted">Operations</div></td>
+                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-green">AN</div>Amy Nguyen</div></td>
+                <td>Jul 15, 2025</td>
+                <td>16:00 – 18:00</td>
+                <td>Operations</td>
+                <td><span class="badge badge-pending">Pending</span></td>
+                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ── Create Task Modal ───────────────────────────────── -->
+<div class="modal-backdrop" id="createTaskModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-plus-circle" style="color:var(--green);margin-right:8px"></i>Create New Task</h3>
+      <button class="modal-close" onclick="closeModal('createTaskModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="form-group">
+      <label>Task Title</label>
+      <input type="text" class="form-control" placeholder="e.g. Morning Inventory Check"/>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea class="form-control" rows="2" placeholder="Optional task notes…" style="resize:vertical"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label>Priority</label>
+        <select class="form-control"><option>Normal</option><option>High</option><option>Urgent</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Start Time</label>
+        <input type="time" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label>End Time</label>
+        <input type="time" class="form-control"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Assign Employee</label>
+      <select class="form-control">
+        <option value="">— Select —</option>
+        <option>Maria Lopez</option>
+        <option>Nina Patel</option>
+        <option>Carlos Rivera</option>
+        <option>Amy Nguyen</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-outline" onclick="closeModal('createTaskModal')">Cancel</button>
+      <button class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Create Task</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Assign Employee Modal ───────────────────────────── -->
+<div class="modal-backdrop" id="assignModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-user-plus" style="color:var(--green);margin-right:8px"></i>Assign Employee</h3>
+      <button class="modal-close" onclick="closeModal('assignModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <p class="text-muted text-sm" style="margin-bottom:16px">Select an available employee for this task</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+      <label style="display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer">
+        <input type="radio" name="emp" style="accent-color:var(--green)"/>
+        <div class="avatar avatar-sm avatar-green">ML</div>
+        <div><div style="font-weight:600;font-size:.88rem">Maria Lopez</div><div class="text-sm text-muted">Customer Support</div></div>
+        <span class="badge badge-confirmed" style="margin-left:auto">Available</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer">
+        <input type="radio" name="emp" style="accent-color:var(--green)"/>
+        <div class="avatar avatar-sm avatar-blue">NP</div>
+        <div><div style="font-weight:600;font-size:.88rem">Nina Patel</div><div class="text-sm text-muted">Operations</div></div>
+        <span class="badge badge-confirmed" style="margin-left:auto">Available</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;opacity:.6">
+        <input type="radio" name="emp" disabled style="accent-color:var(--green)"/>
+        <div class="avatar avatar-sm avatar-orange">SK</div>
+        <div><div style="font-weight:600;font-size:.88rem">Sarah Kim</div><div class="text-sm text-muted">Logistics</div></div>
+        <span class="badge badge-pending" style="margin-left:auto">On Leave</span>
+      </label>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-outline" onclick="closeModal('assignModal')">Cancel</button>
+      <button class="btn btn-primary"><i class="fa-solid fa-check"></i> Confirm Assignment</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
+  function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
+  function openModal(id)   { document.getElementById(id).classList.add('open'); }
+  function closeModal(id)  { document.getElementById(id).classList.remove('open'); }
+</script>
+</body>
+</html>

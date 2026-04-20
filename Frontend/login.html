@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — ShiftSmart</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <div class="auth-page">
+
+    <!-- ── Left Panel ───────────────────────────────────── -->
+    <div class="auth-left">
+      <div class="auth-left-content">
+        <a href="index.html" class="logo">
+          <div class="logo-icon" style="background:var(--green);color:#fff;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center">
+            <i class="fa-solid fa-calendar-check"></i>
+          </div>
+          ShiftSmart
+        </a>
+        <h2>Manage shifts with confidence</h2>
+        <p>A unified platform for admins, managers, and employees to coordinate schedules seamlessly.</p>
+        <div class="auth-features">
+          <div class="auth-feature">
+            <i class="fa-solid fa-shield-check"></i>
+            <span>Role-based secure access control</span>
+          </div>
+          <div class="auth-feature">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Real-time conflict detection</span>
+          </div>
+          <div class="auth-feature">
+            <i class="fa-solid fa-bell"></i>
+            <span>Instant shift notifications</span>
+          </div>
+          <div class="auth-feature">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Analytics & workforce insights</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Right Panel (Login Form) ─────────────────────── -->
+    <div class="auth-right">
+      <div class="auth-card fade-in">
+        <h2>Welcome back</h2>
+        <p>Sign in to your ShiftSmart account</p>
+
+        <!-- Role Selector -->
+        <div style="margin-bottom:8px;font-size:.82rem;font-weight:600;color:var(--subtext)">Select your role</div>
+        <div class="role-select">
+          <div class="role-btn active" onclick="selectRole(this)">
+            <i class="fa-solid fa-crown"></i>
+            <span>Admin</span>
+          </div>
+          <div class="role-btn" onclick="selectRole(this)">
+            <i class="fa-solid fa-briefcase"></i>
+            <span>Manager</span>
+          </div>
+          <div class="role-btn" onclick="selectRole(this)">
+            <i class="fa-solid fa-user"></i>
+            <span>Employee</span>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="input-icon-wrap">
+            <i class="fa-regular fa-envelope"></i>
+            <input type="email" id="email" class="form-control" placeholder="you@company.com"/>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-icon-wrap">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="password" class="form-control" placeholder="Enter your password"/>
+          </div>
+        </div>
+
+        <!-- Remember + Forgot -->
+        <div class="form-footer">
+          <label class="form-check">
+            <input type="checkbox" checked/>
+            Remember me
+          </label>
+          <a href="#" class="form-link">Forgot password?</a>
+        </div>
+
+        <!-- Login Button -->
+        <button class="btn btn-primary w-full" style="justify-content:center;padding:13px" onclick="handleLogin()">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign In
+        </button>
+
+        <div class="divider">or continue with</div>
+
+        <!-- Social -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <button class="btn btn-outline" style="justify-content:center">
+            <i class="fa-brands fa-google"></i> Google
+          </button>
+          <button class="btn btn-outline" style="justify-content:center">
+            <i class="fa-brands fa-microsoft"></i> Microsoft
+          </button>
+        </div>
+
+        <div class="auth-footer-text">
+          Don't have an account? <a href="#">Sign up for free</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function selectRole(el) {
+      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function handleLogin() {
+      const roles = document.querySelectorAll('.role-btn');
+      let selected = 'admin';
+      roles.forEach(r => {
+        if (r.classList.contains('active')) {
+          const txt = r.querySelector('span').textContent.toLowerCase();
+          selected = txt;
+        }
+      });
+      const map = { admin: 'admin.html', manager: 'manager.html', employee: 'employee.html' };
+      window.location.href = map[selected] || 'admin.html';
+    }
+  </script>
+
+</body>
+</html>

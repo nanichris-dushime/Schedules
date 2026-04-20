@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShiftSmart — Smart Employee Scheduling</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <!-- ── Navigation ──────────────────────────────────────── -->
+  <nav class="land-nav">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fa-solid fa-calendar-check"></i></div>
+      ShiftSmart
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="schedule.html">Schedule</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-outline">Log In</a>
+      <a href="login.html" class="btn btn-primary">Get Started <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── Hero ────────────────────────────────────────────── -->
+  <section class="hero" id="home">
+    <div class="hero-inner">
+
+      <!-- Left: copy -->
+      <div class="hero-copy fade-in">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Now with AI-powered conflict detection
+        </div>
+        <h1>Schedule Smarter,<br/><span>Work Better</span></h1>
+        <p>
+          ShiftSmart automates employee scheduling, eliminates shift conflicts,
+          and keeps your whole team in sync — all from one intelligent dashboard.
+        </p>
+        <div class="hero-actions">
+          <a href="login.html" class="btn btn-primary btn-lg">
+            <i class="fa-solid fa-rocket"></i> Get Started Free
+          </a>
+          <a href="#features" class="btn btn-outline btn-lg">
+            <i class="fa-solid fa-play-circle"></i> See How It Works
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong>10k+</strong>
+            <span>Companies</span>
+          </div>
+          <div class="hero-stat">
+            <strong>98%</strong>
+            <span>Uptime SLA</span>
+          </div>
+          <div class="hero-stat">
+            <strong>4.9★</strong>
+            <span>Avg Rating</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: visual card -->
+      <div class="hero-visual fade-in fade-in-d2">
+        <!-- Schedule preview card -->
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <h4><i class="fa-regular fa-calendar" style="color:var(--green);margin-right:6px"></i>Today's Shifts</h4>
+            <span class="badge badge-confirmed">Live</span>
+          </div>
+          <div class="hero-mini-schedule">
+            <div class="mini-slot">
+              <span class="slot-time">08:00 – 12:00</span>
+              <div class="slot-bar" style="--w:80%"></div>
+              <span class="slot-name">Alice M.</span>
+            </div>
+            <div class="mini-slot">
+              <span class="slot-time">09:00 – 13:00</span>
+              <div class="slot-bar" style="--w:90%"></div>
+              <span class="slot-name">Bob K.</span>
+            </div>
+            <div class="mini-slot">
+              <span class="slot-time">12:00 – 16:00</span>
+              <div class="slot-bar" style="--w:60%"></div>
+              <span class="slot-name">Carol S.</span>
+            </div>
+            <div class="mini-slot">
+              <span class="slot-time">14:00 – 18:00</span>
+              <div class="slot-bar" style="--w:75%"></div>
+              <span class="slot-name">David L.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conflict alert card -->
+        <div class="hero-card">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:36px;height:36px;border-radius:10px;background:var(--green-light);display:flex;align-items:center;justify-content:center;color:var(--green)">
+              <i class="fa-solid fa-shield-check"></i>
+            </div>
+            <div>
+              <div style="font-size:.88rem;font-weight:700">No conflicts detected</div>
+              <div style="font-size:.78rem;color:var(--subtext)">All 12 shifts are covered this week</div>
+            </div>
+            <div style="margin-left:auto">
+              <span class="badge badge-confirmed">✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mini stat row -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+          <div class="hero-card" style="padding:16px;text-align:center">
+            <div style="font-size:1.4rem;font-weight:800;color:var(--accent)">24</div>
+            <div style="font-size:.75rem;color:var(--subtext)">On Shift</div>
+          </div>
+          <div class="hero-card" style="padding:16px;text-align:center">
+            <div style="font-size:1.4rem;font-weight:800;color:var(--green)">3</div>
+            <div style="font-size:.75rem;color:var(--subtext)">Pending</div>
+          </div>
+          <div class="hero-card" style="padding:16px;text-align:center">
+            <div style="font-size:1.4rem;font-weight:800;color:#3b82f6">7</div>
+            <div style="font-size:.75rem;color:var(--subtext)">Off Today</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Features ────────────────────────────────────────── -->
+  <section class="section" id="features" style="background:var(--white)">
+    <div style="max-width:1200px;margin:0 auto">
+      <div class="section-head center">
+        <div class="section-label">Features</div>
+        <h2 class="section-title">Everything you need to<br/>run a smooth operation</h2>
+        <p class="section-sub">From intelligent assignment to real-time notifications — ShiftSmart handles the complexity so you can focus on your people.</p>
+      </div>
+      <div class="features-grid">
+
+        <div class="feature-card fade-in">
+          <div class="feature-icon"><i class="fa-solid fa-brain"></i></div>
+          <h3>Smart Assignment</h3>
+          <p>Automatically match employees to shifts based on availability, skills, and role requirements — cutting scheduling time by up to 80%.</p>
+        </div>
+
+        <div class="feature-card fade-in fade-in-d1">
+          <div class="feature-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <h3>Conflict Detection</h3>
+          <p>Instantly flag double bookings, overtime violations, and unavailability conflicts before they become problems on the floor.</p>
+        </div>
+
+        <div class="feature-card fade-in fade-in-d2">
+          <div class="feature-icon"><i class="fa-solid fa-bell"></i></div>
+          <h3>Real-time Notifications</h3>
+          <p>Employees receive instant push and email alerts for new assignments, shift changes, and approvals — no more missed messages.</p>
+        </div>
+
+        <div class="feature-card fade-in">
+          <div class="feature-icon"><i class="fa-solid fa-chart-bar"></i></div>
+          <h3>Advanced Analytics</h3>
+          <p>Track labor costs, shift coverage rates, and employee performance metrics through clear, actionable dashboard reports.</p>
+        </div>
+
+        <div class="feature-card fade-in fade-in-d1">
+          <div class="feature-icon"><i class="fa-solid fa-users-gear"></i></div>
+          <h3>Role-based Access</h3>
+          <p>Granular permissions for Admins, Managers, and Employees — everyone sees exactly what they need, nothing more.</p>
+        </div>
+
+        <div class="feature-card fade-in fade-in-d2">
+          <div class="feature-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+          <h3>Mobile-first Design</h3>
+          <p>Fully responsive across all devices. Managers can update schedules and employees can check shifts from anywhere, any time.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── About ────────────────────────────────────────────── -->
+  <section class="about" id="about">
+    <div class="about-inner">
+
+      <div>
+        <div class="section-label">About ShiftSmart</div>
+        <h2 class="section-title">Built for modern workforce management</h2>
+        <p>ShiftSmart was born from the frustration of managing complex employee schedules across multiple shifts, departments, and locations. We built the tool we always wished we had.</p>
+        <p>Today, thousands of teams across healthcare, retail, hospitality, and logistics trust ShiftSmart to keep their operations running smoothly.</p>
+        <div class="about-list">
+          <div class="about-item">
+            <div class="check"><i class="fa-solid fa-check"></i></div>
+            <p>Zero-conflict scheduling powered by smart availability tracking</p>
+          </div>
+          <div class="about-item">
+            <div class="check"><i class="fa-solid fa-check"></i></div>
+            <p>Multi-location and multi-department support out of the box</p>
+          </div>
+          <div class="about-item">
+            <div class="check"><i class="fa-solid fa-check"></i></div>
+            <p>Integrates with your existing HR and payroll systems</p>
+          </div>
+          <div class="about-item">
+            <div class="check"><i class="fa-solid fa-check"></i></div>
+            <p>GDPR compliant with enterprise-grade security</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-visual">
+        <div class="about-stat-grid">
+          <div class="about-stat">
+            <strong>10K+</strong>
+            <span>Companies</span>
+          </div>
+          <div class="about-stat">
+            <strong>500K+</strong>
+            <span>Employees</span>
+          </div>
+          <div class="about-stat">
+            <strong>80%</strong>
+            <span>Time Saved</span>
+          </div>
+          <div class="about-stat">
+            <strong>99.9%</strong>
+            <span>Uptime</span>
+          </div>
+        </div>
+        <div style="margin-top:20px;background:rgba(255,255,255,.06);border-radius:10px;padding:20px;border:1px solid rgba(255,255,255,.06)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div class="avatar avatar-green"><i class="fa-solid fa-quote-left" style="font-size:.8rem"></i></div>
+            <div>
+              <div style="font-size:.88rem;font-weight:700;color:#fff">Sarah Chen</div>
+              <div style="font-size:.75rem;color:#64748b">Operations Manager, NovaMed</div>
+            </div>
+          </div>
+          <p style="font-size:.88rem;color:#94a3b8;line-height:1.7;margin:0">
+            "ShiftSmart cut our scheduling time from 6 hours to 30 minutes. Conflict errors dropped to zero. It's genuinely changed how we run our department."
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CTA Banner ───────────────────────────────────────── -->
+  <section class="section" style="background:var(--green-light)" id="contact">
+    <div style="max-width:700px;margin:0 auto;text-align:center">
+      <div class="section-label" style="color:var(--green-dark)">Get Started Today</div>
+      <h2 class="section-title" style="color:var(--accent)">Ready to transform your scheduling?</h2>
+      <p style="color:var(--subtext);margin:0 auto 32px">Join over 10,000 companies using ShiftSmart. Free 14-day trial, no credit card required.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a href="login.html" class="btn btn-primary btn-lg">
+          <i class="fa-solid fa-rocket"></i> Start Free Trial
+        </a>
+        <a href="login.html" class="btn btn-outline btn-lg">
+          <i class="fa-solid fa-calendar-days"></i> Book a Demo
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ──────────────────────────────────────────── -->
+  <footer class="land-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-icon" style="background:var(--green);color:#fff;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem">
+            <i class="fa-solid fa-calendar-check"></i>
+          </div>
+          ShiftSmart
+        </div>
+        <p>The intelligent scheduling platform for modern teams. Save time, eliminate conflicts, keep everyone informed.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#">Features</a>
+        <a href="#">Pricing</a>
+        <a href="#">Changelog</a>
+        <a href="#">Roadmap</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Blog</a>
+        <a href="#">Careers</a>
+        <a href="#">Press</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="#">Documentation</a>
+        <a href="#">Help Center</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 ShiftSmart Inc. All rights reserved.</span>
+      <div style="display:flex;gap:16px">
+        <a href="#" style="color:#475569;font-size:.9rem"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#" style="color:#475569;font-size:.9rem"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="#" style="color:#475569;font-size:.9rem"><i class="fa-brands fa-github"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── Minimal JS for mobile menu ──────────────────────── -->
+  <script>
+    document.getElementById('hamburger').addEventListener('click', function() {
+      const links = document.querySelector('.nav-links');
+      if (links) {
+        links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+        links.style.flexDirection = 'column';
+        links.style.position = 'absolute';
+        links.style.top = '72px';
+        links.style.left = '0'; links.style.right = '0';
+        links.style.background = '#fff';
+        links.style.padding = '16px 6%';
+        links.style.borderBottom = '1px solid var(--border)';
+        links.style.boxShadow = '0 4px 16px rgba(0,0,0,.08)';
+      }
+    });
+  </script>
+</body>
+</html>

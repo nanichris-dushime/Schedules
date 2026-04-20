@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard — ShiftSmart</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<div class="app">
+
+  <!-- ════════ SIDEBAR ════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="index.html" class="logo">
+        <div class="logo-icon" style="background:var(--green);color:#fff;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.85rem">
+          <i class="fa-solid fa-calendar-check"></i>
+        </div>
+        ShiftSmart
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Main</div>
+      <a href="admin.html" class="nav-item active">
+        <i class="fa-solid fa-gauge-high"></i> Dashboard
+      </a>
+      <a href="schedule.html" class="nav-item">
+        <i class="fa-solid fa-calendar-days"></i> Schedule
+      </a>
+      <a href="notifications.html" class="nav-item">
+        <i class="fa-solid fa-bell"></i> Notifications
+        <span class="badge-pill">4</span>
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Management</div>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-users"></i> All Users
+      </a>
+      <a href="manager.html" class="nav-item">
+        <i class="fa-solid fa-briefcase"></i> Managers
+      </a>
+      <a href="employee.html" class="nav-item">
+        <i class="fa-solid fa-id-badge"></i> Employees
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-gear"></i> Settings
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar avatar-green">AK</div>
+        <div class="user-info">
+          <div class="user-name">Alex Kim</div>
+          <div class="user-role">Administrator</div>
+        </div>
+        <a href="login.html" data-tip="Logout" style="color:#475569;font-size:.85rem;margin-left:auto">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- ════════ TOPBAR ════════ -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div>
+        <h1>Admin Dashboard</h1>
+        <div class="breadcrumb">Home / <span>Dashboard</span></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search users…"/>
+      </div>
+      <div class="topbar-icon-btn" data-tip="Notifications">
+        <i class="fa-solid fa-bell"></i>
+        <span class="notif-dot"></span>
+      </div>
+      <div class="topbar-icon-btn" data-tip="Settings">
+        <i class="fa-solid fa-gear"></i>
+      </div>
+      <div class="topbar-profile">
+        <div class="avatar avatar-green">AK</div>
+        <div>
+          <div class="profile-name">Alex Kim</div>
+          <div class="profile-role">Administrator</div>
+        </div>
+        <i class="fa-solid fa-chevron-down" style="font-size:.7rem;color:var(--subtext);margin-left:4px"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════ MAIN ════════ -->
+  <main class="main">
+    <div class="page-content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="page-header-left">
+          <h2>Overview</h2>
+          <p>Monday, July 14, 2025 — Weekly summary</p>
+        </div>
+        <div class="page-header-right">
+          <button class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i> Export</button>
+          <button class="btn btn-primary btn-sm" onclick="openModal('addUserModal')">
+            <i class="fa-solid fa-plus"></i> Add User
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card green fade-in">
+          <div class="kpi-top">
+            <div class="kpi-icon green"><i class="fa-solid fa-users"></i></div>
+            <span class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i> 12%</span>
+          </div>
+          <div class="kpi-value">148</div>
+          <div class="kpi-label">Total Employees</div>
+        </div>
+        <div class="kpi-card blue fade-in fade-in-d1">
+          <div class="kpi-top">
+            <div class="kpi-icon blue"><i class="fa-solid fa-briefcase"></i></div>
+            <span class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i> 3%</span>
+          </div>
+          <div class="kpi-value">18</div>
+          <div class="kpi-label">Managers</div>
+        </div>
+        <div class="kpi-card purple fade-in fade-in-d2">
+          <div class="kpi-top">
+            <div class="kpi-icon purple"><i class="fa-solid fa-calendar-check"></i></div>
+            <span class="kpi-trend neutral">— 0%</span>
+          </div>
+          <div class="kpi-value">72</div>
+          <div class="kpi-label">Active Shifts Today</div>
+        </div>
+        <div class="kpi-card orange fade-in fade-in-d3">
+          <div class="kpi-top">
+            <div class="kpi-icon orange"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <span class="kpi-trend down"><i class="fa-solid fa-arrow-down"></i> 5%</span>
+          </div>
+          <div class="kpi-value">5</div>
+          <div class="kpi-label">Pending Requests</div>
+        </div>
+      </div>
+
+      <!-- Two-column row -->
+      <div class="grid-2" style="margin-bottom:24px">
+
+        <!-- Shift Coverage Chart (visual) -->
+        <div class="card fade-in">
+          <div class="card-header">
+            <div>
+              <h3>Shift Coverage</h3>
+              <p>This week's fill rate by department</p>
+            </div>
+            <select class="select-control" style="font-size:.82rem">
+              <option>This Week</option>
+              <option>Last Week</option>
+            </select>
+          </div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">
+                  <span class="font-bold">Operations</span><span class="text-muted">94%</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:94%"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">
+                  <span class="font-bold">Customer Support</span><span class="text-muted">87%</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:87%;background:#3b82f6"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">
+                  <span class="font-bold">Logistics</span><span class="text-muted">76%</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:76%;background:#8b5cf6"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">
+                  <span class="font-bold">Maintenance</span><span class="text-muted">61%</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:61%;background:#f59e0b"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">
+                  <span class="font-bold">HR &amp; Admin</span><span class="text-muted">100%</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card fade-in fade-in-d1">
+          <div class="card-header">
+            <div><h3>Recent Activity</h3><p>Latest system events</p></div>
+            <a href="#" class="text-sm" style="color:var(--green);font-weight:600">View all</a>
+          </div>
+          <div class="card-body" style="padding-top:8px">
+            <div class="activity-item">
+              <div class="activity-dot green"></div>
+              <div>
+                <div class="activity-text"><strong>Maria Lopez</strong> was assigned to Morning Shift – Operations</div>
+                <div class="activity-time">2 min ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot blue"></div>
+              <div>
+                <div class="activity-text"><strong>James O.</strong> (Manager) created 3 new shifts for Friday</div>
+                <div class="activity-time">18 min ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot yellow"></div>
+              <div>
+                <div class="activity-text"><strong>Sarah K.</strong> submitted a shift swap request</div>
+                <div class="activity-time">1 hr ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot red"></div>
+              <div>
+                <div class="activity-text"><strong>Tom B.</strong> shift conflict detected — overlapping tasks</div>
+                <div class="activity-time">2 hrs ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot green"></div>
+              <div>
+                <div class="activity-text"><strong>New user</strong> David Park added by Admin</div>
+                <div class="activity-time">3 hrs ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Table -->
+      <div class="card fade-in">
+        <div class="card-header">
+          <div>
+            <h3>User Management</h3>
+            <p>All registered system users</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <div class="search-bar">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" placeholder="Search…"/>
+            </div>
+            <select class="select-control" style="font-size:.82rem">
+              <option>All Roles</option>
+              <option>Admin</option>
+              <option>Manager</option>
+              <option>Employee</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="openModal('addUserModal')">
+              <i class="fa-solid fa-plus"></i> Add User
+            </button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th><input type="checkbox" style="accent-color:var(--green)"/></th>
+                <th>User</th>
+                <th>Role</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Joined</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" style="accent-color:var(--green)"/></td>
+                <td><div class="user-cell"><div class="avatar avatar-sm avatar-blue">AM</div><div><div class="name">Alex Martinez</div><div class="email">alex.m@company.com</div></div></div></td>
+                <td><span class="badge badge-admin">Admin</span></td>
+                <td>Management</td>
+                <td><span class="badge badge-confirmed">Active</span></td>
+                <td>Jan 12, 2024</td>
+                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" style="accent-color:var(--green)"/></td>
+                <td><div class="user-cell"><div class="avatar avatar-sm avatar-purple">JO</div><div><div class="name">James Owens</div><div class="email">j.owens@company.com</div></div></div></td>
+                <td><span class="badge badge-manager">Manager</span></td>
+                <td>Operations</td>
+                <td><span class="badge badge-confirmed">Active</span></td>
+                <td>Mar 3, 2024</td>
+                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" style="accent-color:var(--green)"/></td>
+                <td><div class="user-cell"><div class="avatar avatar-sm avatar-green">ML</div><div><div class="name">Maria Lopez</div><div class="email">m.lopez@company.com</div></div></div></td>
+                <td><span class="badge badge-employee">Employee</span></td>
+                <td>Customer Support</td>
+                <td><span class="badge badge-confirmed">Active</span></td>
+                <td>Feb 19, 2024</td>
+                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" style="accent-color:var(--green)"/></td>
+                <td><div class="user-cell"><div class="avatar avatar-sm avatar-orange">SK</div><div><div class="name">Sarah Kim</div><div class="email">s.kim@company.com</div></div></div></td>
+                <td><span class="badge badge-employee">Employee</span></td>
+                <td>Logistics</td>
+                <td><span class="badge badge-pending">On Leave</span></td>
+                <td>Apr 5, 2024</td>
+                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" style="accent-color:var(--green)"/></td>
+                <td><div class="user-cell"><div class="avatar avatar-sm avatar-pink">TB</div><div><div class="name">Tom Brown</div><div class="email">t.brown@company.com</div></div></div></td>
+                <td><span class="badge badge-employee">Employee</span></td>
+                <td>Maintenance</td>
+                <td><span class="badge badge-rejected">Inactive</span></td>
+                <td>Jun 1, 2024</td>
+                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" style="accent-color:var(--green)"/></td>
+                <td><div class="user-cell"><div class="avatar avatar-sm avatar-blue">DP</div><div><div class="name">David Park</div><div class="email">d.park@company.com</div></div></div></td>
+                <td><span class="badge badge-manager">Manager</span></td>
+                <td>HR &amp; Admin</td>
+                <td><span class="badge badge-confirmed">Active</span></td>
+                <td>Jul 8, 2025</td>
+                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination -->
+        <div style="padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border)">
+          <span class="text-sm text-muted">Showing 6 of 148 users</span>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-outline btn-sm"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="btn btn-primary btn-sm">1</button>
+            <button class="btn btn-outline btn-sm">2</button>
+            <button class="btn btn-outline btn-sm">3</button>
+            <button class="btn btn-outline btn-sm"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ── Add User Modal ──────────────────────────────────── -->
+<div class="modal-backdrop" id="addUserModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-user-plus" style="color:var(--green);margin-right:8px"></i>Add New User</h3>
+      <button class="modal-close" onclick="closeModal('addUserModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" class="form-control" placeholder="John"/>
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" class="form-control" placeholder="Doe"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <div class="input-icon-wrap">
+        <i class="fa-regular fa-envelope"></i>
+        <input type="email" class="form-control" placeholder="john@company.com"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Role</label>
+        <select class="form-control">
+          <option>Employee</option>
+          <option>Manager</option>
+          <option>Admin</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Department</label>
+        <select class="form-control">
+          <option>Operations</option>
+          <option>Customer Support</option>
+          <option>Logistics</option>
+          <option>HR &amp; Admin</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-outline" onclick="closeModal('addUserModal')">Cancel</button>
+      <button class="btn btn-primary">
+        <i class="fa-solid fa-plus"></i> Create User
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('open');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('open');
+  }
+  function openModal(id) { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+</script>
+</body>
+</html>

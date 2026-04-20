@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notifications — ShiftSmart</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<div class="app">
+
+  <!-- ════════ SIDEBAR ════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="index.html" class="logo">
+        <div class="logo-icon" style="background:var(--green);color:#fff;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.85rem">
+          <i class="fa-solid fa-calendar-check"></i>
+        </div>
+        ShiftSmart
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Main</div>
+      <a href="admin.html" class="nav-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      <a href="schedule.html" class="nav-item"><i class="fa-solid fa-calendar-days"></i> Schedule</a>
+      <a href="notifications.html" class="nav-item active">
+        <i class="fa-solid fa-bell"></i> Notifications
+        <span class="badge-pill">4</span>
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Management</div>
+      <a href="admin.html" class="nav-item"><i class="fa-solid fa-users"></i> All Users</a>
+      <a href="manager.html" class="nav-item"><i class="fa-solid fa-briefcase"></i> Tasks</a>
+      <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar avatar-green">AK</div>
+        <div class="user-info"><div class="user-name">Alex Kim</div><div class="user-role">Administrator</div></div>
+        <a href="login.html" style="color:#475569;font-size:.85rem;margin-left:auto"><i class="fa-solid fa-right-from-bracket"></i></a>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- ════════ TOPBAR ════════ -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+      <div>
+        <h1>Notifications</h1>
+        <div class="breadcrumb">Home / <span>Notifications</span></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-icon-btn">
+        <i class="fa-solid fa-bell"></i>
+        <span class="notif-dot"></span>
+      </div>
+      <div class="topbar-profile">
+        <div class="avatar avatar-green">AK</div>
+        <div><div class="profile-name">Alex Kim</div><div class="profile-role">Admin</div></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════ MAIN ════════ -->
+  <main class="main">
+    <div class="page-content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="page-header-left">
+          <h2>Notifications</h2>
+          <p>You have <strong style="color:var(--green)">4 unread</strong> notifications</p>
+        </div>
+        <div class="page-header-right">
+          <button class="btn btn-outline btn-sm" onclick="markAllRead()">
+            <i class="fa-solid fa-check-double"></i> Mark All Read
+          </button>
+          <button class="btn btn-outline btn-sm">
+            <i class="fa-solid fa-sliders"></i> Preferences
+          </button>
+        </div>
+      </div>
+
+      <!-- Two-col layout -->
+      <div class="grid-2" style="gap:24px">
+
+        <!-- Main Notification List -->
+        <div style="grid-column:1 / -1" class="card fade-in">
+          <div class="card-header">
+            <div><h3>All Notifications</h3></div>
+            <div class="notif-filters">
+              <button class="filter-pill active" onclick="filterNotif(this,'all')">All</button>
+              <button class="filter-pill" onclick="filterNotif(this,'unread')">Unread (4)</button>
+              <button class="filter-pill" onclick="filterNotif(this,'shifts')">Shifts</button>
+              <button class="filter-pill" onclick="filterNotif(this,'system')">System</button>
+              <button class="filter-pill" onclick="filterNotif(this,'alerts')">Alerts</button>
+            </div>
+          </div>
+
+          <!-- Today -->
+          <div style="padding:12px 20px 4px">
+            <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--subtext)">Today</div>
+          </div>
+          <div class="notif-list" id="notifList">
+
+            <div class="notif-item unread" data-cat="shifts" onclick="readNotif(this)">
+              <div class="notif-icon green"><i class="fa-solid fa-calendar-check"></i></div>
+              <div class="notif-body">
+                <p><strong>Shift Confirmed</strong> — Maria Lopez confirmed her shift for Monday Jul 14, 08:00–10:00.</p>
+                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Just now</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
+                <span class="badge badge-confirmed">Shift</span>
+                <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:.75rem"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+            </div>
+
+            <div class="notif-item unread" data-cat="alerts" onclick="readNotif(this)">
+              <div class="notif-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+              <div class="notif-body">
+                <p><strong>Conflict Detected</strong> — Tom Brown has overlapping shifts on Thursday Jul 17. Immediate review required.</p>
+                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>12 min ago</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
+                <span class="badge badge-rejected">Alert</span>
+                <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:.75rem"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+            </div>
+
+            <div class="notif-item unread" data-cat="shifts" onclick="readNotif(this)">
+              <div class="notif-icon yellow"><i class="fa-solid fa-arrows-rotate"></i></div>
+              <div class="notif-body">
+                <p><strong>Swap Request</strong> — Sarah Kim requested a shift swap for Wednesday Jul 16. Awaiting your approval.</p>
+                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>38 min ago</div>
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <button class="btn btn-primary btn-sm"><i class="fa-solid fa-check"></i> Approve</button>
+                  <button class="btn btn-danger btn-sm"><i class="fa-solid fa-xmark"></i> Deny</button>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
+                <span class="badge badge-pending">Request</span>
+                <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:.75rem"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+            </div>
+
+            <div class="notif-item unread" data-cat="system" onclick="readNotif(this)">
+              <div class="notif-icon blue"><i class="fa-solid fa-user-plus"></i></div>
+              <div class="notif-body">
+                <p><strong>New User Registered</strong> — David Park joined the system and is pending role assignment.</p>
+                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>1 hr ago</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
+                <span class="badge badge-manager">System</span>
+                <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:.75rem"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+            </div>
+
+            <!-- Yesterday -->
+            <div style="padding:12px 20px 4px;background:var(--muted);border-top:1px solid var(--border)">
+              <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--subtext)">Yesterday</div>
+            </div>
+
+            <div class="notif-item" data-cat="shifts" onclick="readNotif(this)">
+              <div class="notif-icon green"><i class="fa-solid fa-calendar-plus"></i></div>
+              <div class="notif-body">
+                <p><strong>New Shift Created</strong> — James Owens created 3 new shifts for the Operations team this Friday.</p>
+                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Jul 13 · 4:22 PM</div>
+              </div>
+              <div style="flex-shrink:0">
+                <span class="badge badge-confirmed">Shift</span>
+              </div>
+            </div>
+
+            <div class="notif-item" data-cat="system" onclick="readNotif(this)">
+              <div class="notif-icon blue"><i class="fa-solid fa-shield-check"></i></div>
+              <div class="notif-body">
+                <p><strong>Security Alert</strong> — Login from a new device detected for account j.owens@company.com.</p>
+                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Jul 13 · 1:08 PM</div>
+              </div>
+              <div style="flex-shrink:0">
+                <span class="badge badge-manager">System</span>
+              </div>
+            </div>
+
+            <div class="notif-item" data-cat="shifts" onclick="readNotif(this)">
+              <div class="notif-icon green"><i class="fa-solid fa-circle-check"></i></div>
+              <div class="notif-body">
+                <p><strong>Shift Completed</strong> — Carlos Rivera completed his afternoon floor supervision shift successfully.</p>
+                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Jul 13 · 11:00 AM</div>
+              </div>
+              <div style="flex-shrink:0">
+                <span class="badge badge-confirmed">Shift</span>
+              </div>
+            </div>
+
+            <div class="notif-item" data-cat="alerts" onclick="readNotif(this)">
+              <div class="notif-icon yellow"><i class="fa-solid fa-clock"></i></div>
+              <div class="notif-body">
+                <p><strong>Overtime Warning</strong> — Sarah Kim is approaching 40 hours this week. Review her schedule to avoid violations.</p>
+                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Jul 13 · 9:45 AM</div>
+              </div>
+              <div style="flex-shrink:0">
+                <span class="badge badge-pending">Alert</span>
+              </div>
+            </div>
+
+            <!-- Older -->
+            <div style="padding:12px 20px 4px;background:var(--muted);border-top:1px solid var(--border)">
+              <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--subtext)">Older</div>
+            </div>
+
+            <div class="notif-item" data-cat="system" onclick="readNotif(this)">
+              <div class="notif-icon blue"><i class="fa-solid fa-wrench"></i></div>
+              <div class="notif-body">
+                <p><strong>Scheduled Maintenance</strong> — ShiftSmart will undergo routine maintenance on Jul 20, 02:00–04:00 AM UTC.</p>
+                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Jul 12 · 8:00 AM</div>
+              </div>
+              <div style="flex-shrink:0">
+                <span class="badge badge-manager">System</span>
+              </div>
+            </div>
+
+            <div class="notif-item" data-cat="shifts" onclick="readNotif(this)">
+              <div class="notif-icon red"><i class="fa-solid fa-xmark-circle"></i></div>
+              <div class="notif-body">
+                <p><strong>Shift Rejected</strong> — Tom Brown declined the Evening Coverage shift for Jul 17. Reassignment needed.</p>
+                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Jul 11 · 3:00 PM</div>
+              </div>
+              <div style="flex-shrink:0">
+                <span class="badge badge-rejected">Shift</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Load More -->
+          <div style="padding:16px 20px;text-align:center;border-top:1px solid var(--border)">
+            <button class="btn btn-outline btn-sm">
+              <i class="fa-solid fa-chevron-down"></i> Load More Notifications
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Notification Settings Card -->
+      <div class="card fade-in" style="margin-top:24px">
+        <div class="card-header">
+          <div><h3>Notification Preferences</h3><p>Choose what you want to be notified about</p></div>
+          <button class="btn btn-primary btn-sm">Save Changes</button>
+        </div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border:1px solid var(--border);border-radius:10px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="notif-icon green" style="width:36px;height:36px;border-radius:10px;font-size:.85rem"><i class="fa-solid fa-calendar-check"></i></div>
+                <div>
+                  <div style="font-size:.88rem;font-weight:700">Shift Updates</div>
+                  <div class="text-sm text-muted">Assignments & confirmations</div>
+                </div>
+              </div>
+              <label style="cursor:pointer">
+                <input type="checkbox" checked style="accent-color:var(--green);width:16px;height:16px"/>
+              </label>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border:1px solid var(--border);border-radius:10px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="notif-icon red" style="width:36px;height:36px;border-radius:10px;font-size:.85rem"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div>
+                  <div style="font-size:.88rem;font-weight:700">Conflict Alerts</div>
+                  <div class="text-sm text-muted">Scheduling conflicts</div>
+                </div>
+              </div>
+              <label style="cursor:pointer">
+                <input type="checkbox" checked style="accent-color:var(--green);width:16px;height:16px"/>
+              </label>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border:1px solid var(--border);border-radius:10px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="notif-icon yellow" style="width:36px;height:36px;border-radius:10px;font-size:.85rem"><i class="fa-solid fa-arrows-rotate"></i></div>
+                <div>
+                  <div style="font-size:.88rem;font-weight:700">Swap Requests</div>
+                  <div class="text-sm text-muted">Shift swap approvals</div>
+                </div>
+              </div>
+              <label style="cursor:pointer">
+                <input type="checkbox" checked style="accent-color:var(--green);width:16px;height:16px"/>
+              </label>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border:1px solid var(--border);border-radius:10px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="notif-icon blue" style="width:36px;height:36px;border-radius:10px;font-size:.85rem"><i class="fa-solid fa-gear"></i></div>
+                <div>
+                  <div style="font-size:.88rem;font-weight:700">System Updates</div>
+                  <div class="text-sm text-muted">Maintenance & changes</div>
+                </div>
+              </div>
+              <label style="cursor:pointer">
+                <input type="checkbox" style="accent-color:var(--green);width:16px;height:16px"/>
+              </label>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
+  function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
+
+  function readNotif(el) {
+    el.classList.remove('unread');
+    updateUnreadCount();
+  }
+  function markAllRead() {
+    document.querySelectorAll('.notif-item.unread').forEach(n => n.classList.remove('unread'));
+    updateUnreadCount();
+  }
+  function updateUnreadCount() {
+    const count = document.querySelectorAll('.notif-item.unread').length;
+    document.querySelectorAll('.badge-pill').forEach(b => b.textContent = count);
+    const desc = document.querySelector('.page-header-left p');
+    if (desc) desc.innerHTML = `You have <strong style="color:var(--green)">${count} unread</strong> notifications`;
+  }
+  function filterNotif(btn, cat) {
+    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.notif-item').forEach(item => {
+      if (cat === 'all') { item.style.display = ''; return; }
+      if (cat === 'unread') { item.style.display = item.classList.contains('unread') ? '' : 'none'; return; }
+      item.style.display = (item.dataset.cat === cat) ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>

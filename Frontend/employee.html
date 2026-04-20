@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Employee Dashboard — ShiftSmart</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<div class="app">
+
+  <!-- ════════ SIDEBAR ════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="index.html" class="logo">
+        <div class="logo-icon" style="background:var(--green);color:#fff;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.85rem">
+          <i class="fa-solid fa-calendar-check"></i>
+        </div>
+        ShiftSmart
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Space</div>
+      <a href="employee.html" class="nav-item active">
+        <i class="fa-solid fa-gauge-high"></i> Dashboard
+      </a>
+      <a href="schedule.html" class="nav-item">
+        <i class="fa-solid fa-calendar-days"></i> Schedule
+      </a>
+      <a href="notifications.html" class="nav-item">
+        <i class="fa-solid fa-bell"></i> Notifications
+        <span class="badge-pill">3</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-clock-rotate-left"></i> History
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar avatar-orange">ML</div>
+        <div class="user-info">
+          <div class="user-name">Maria Lopez</div>
+          <div class="user-role">Employee</div>
+        </div>
+        <a href="login.html" style="color:#475569;font-size:.85rem;margin-left:auto">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- ════════ TOPBAR ════════ -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+      <div>
+        <h1>My Dashboard</h1>
+        <div class="breadcrumb">Home / <span>Dashboard</span></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-icon-btn">
+        <i class="fa-solid fa-bell"></i>
+        <span class="notif-dot"></span>
+      </div>
+      <div class="topbar-profile">
+        <div class="avatar avatar-orange">ML</div>
+        <div>
+          <div class="profile-name">Maria Lopez</div>
+          <div class="profile-role">Employee</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════ MAIN ════════ -->
+  <main class="main">
+    <div class="page-content">
+
+      <!-- Welcome Banner -->
+      <div style="background:linear-gradient(135deg,var(--accent) 0%,#1e3a5f 100%);border-radius:var(--radius-lg);padding:28px 32px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px">
+        <div>
+          <div style="font-size:.8rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Good Morning 👋</div>
+          <h2 style="font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:6px">Welcome back, Maria!</h2>
+          <p style="color:#94a3b8;font-size:.9rem">You have <strong style="color:#4ade80">2 confirmed shifts</strong> and <strong style="color:#fbbf24">1 pending</strong> this week.</p>
+        </div>
+        <div style="display:flex;gap:12px">
+          <a href="schedule.html" class="btn btn-outline" style="border-color:rgba(255,255,255,.2);color:#fff">
+            <i class="fa-solid fa-calendar-days"></i> My Schedule
+          </a>
+          <button class="btn btn-primary" onclick="openModal('swapModal')">
+            <i class="fa-solid fa-arrows-rotate"></i> Request Swap
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI mini row -->
+      <div class="kpi-grid" style="margin-bottom:28px">
+        <div class="kpi-card green fade-in">
+          <div class="kpi-top"><div class="kpi-icon green"><i class="fa-solid fa-calendar-check"></i></div></div>
+          <div class="kpi-value">8</div>
+          <div class="kpi-label">Shifts This Month</div>
+        </div>
+        <div class="kpi-card blue fade-in fade-in-d1">
+          <div class="kpi-top"><div class="kpi-icon blue"><i class="fa-solid fa-circle-check"></i></div></div>
+          <div class="kpi-value">6</div>
+          <div class="kpi-label">Completed</div>
+        </div>
+        <div class="kpi-card orange fade-in fade-in-d2">
+          <div class="kpi-top"><div class="kpi-icon orange"><i class="fa-solid fa-clock"></i></div></div>
+          <div class="kpi-value">1</div>
+          <div class="kpi-label">Pending</div>
+        </div>
+        <div class="kpi-card purple fade-in fade-in-d3">
+          <div class="kpi-top"><div class="kpi-icon purple"><i class="fa-solid fa-hourglass-half"></i></div></div>
+          <div class="kpi-value">38h</div>
+          <div class="kpi-label">Hours This Week</div>
+        </div>
+      </div>
+
+      <!-- Two col: tasks + upcoming -->
+      <div class="grid-2" style="margin-bottom:24px">
+
+        <!-- Assigned Tasks -->
+        <div class="card fade-in">
+          <div class="card-header">
+            <div><h3>My Assigned Tasks</h3><p>Current week</p></div>
+            <select class="select-control" style="font-size:.82rem">
+              <option>All</option><option>Confirmed</option><option>Pending</option>
+            </select>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:12px">
+
+            <div class="task-card confirmed">
+              <div class="task-card-head">
+                <div>
+                  <div style="font-size:.75rem;color:var(--subtext);margin-bottom:3px">Monday, Jul 14</div>
+                  <h4>Morning Inventory Check</h4>
+                </div>
+                <span class="badge badge-confirmed">Confirmed</span>
+              </div>
+              <div class="task-meta">
+                <div class="task-meta-item"><i class="fa-regular fa-clock"></i>08:00 – 10:00</div>
+                <div class="task-meta-item"><i class="fa-solid fa-location-dot"></i>Warehouse A</div>
+                <div class="task-meta-item"><i class="fa-solid fa-user-tie"></i>James Owens</div>
+              </div>
+            </div>
+
+            <div class="task-card confirmed">
+              <div class="task-card-head">
+                <div>
+                  <div style="font-size:.75rem;color:var(--subtext);margin-bottom:3px">Tuesday, Jul 15</div>
+                  <h4>Customer Intake Processing</h4>
+                </div>
+                <span class="badge badge-confirmed">Confirmed</span>
+              </div>
+              <div class="task-meta">
+                <div class="task-meta-item"><i class="fa-regular fa-clock"></i>09:00 – 13:00</div>
+                <div class="task-meta-item"><i class="fa-solid fa-location-dot"></i>Front Desk</div>
+                <div class="task-meta-item"><i class="fa-solid fa-user-tie"></i>James Owens</div>
+              </div>
+            </div>
+
+            <div class="task-card pending">
+              <div class="task-card-head">
+                <div>
+                  <div style="font-size:.75rem;color:var(--subtext);margin-bottom:3px">Wednesday, Jul 16</div>
+                  <h4>Stock Reconciliation Report</h4>
+                </div>
+                <span class="badge badge-pending">Pending</span>
+              </div>
+              <div class="task-meta">
+                <div class="task-meta-item"><i class="fa-regular fa-clock"></i>10:00 – 12:00</div>
+                <div class="task-meta-item"><i class="fa-solid fa-location-dot"></i>Office B2</div>
+                <div class="task-meta-item"><i class="fa-solid fa-user-tie"></i>James Owens</div>
+              </div>
+              <div style="margin-top:12px;display:flex;gap:8px">
+                <button class="btn btn-primary btn-sm"><i class="fa-solid fa-check"></i> Accept</button>
+                <button class="btn btn-danger btn-sm"><i class="fa-solid fa-xmark"></i> Decline</button>
+              </div>
+            </div>
+
+            <div class="task-card rejected">
+              <div class="task-card-head">
+                <div>
+                  <div style="font-size:.75rem;color:var(--subtext);margin-bottom:3px">Thursday, Jul 17</div>
+                  <h4>Late Evening Coverage</h4>
+                </div>
+                <span class="badge badge-rejected">Rejected</span>
+              </div>
+              <div class="task-meta">
+                <div class="task-meta-item"><i class="fa-regular fa-clock"></i>20:00 – 00:00</div>
+                <div class="task-meta-item"><i class="fa-solid fa-location-dot"></i>Floor 2</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right col: upcoming + profile -->
+        <div style="display:flex;flex-direction:column;gap:20px">
+
+          <!-- Next Shift Countdown -->
+          <div class="card fade-in fade-in-d1" style="background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);border:none">
+            <div class="card-body" style="text-align:center">
+              <div style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.7);font-weight:700;margin-bottom:8px">
+                Next Shift In
+              </div>
+              <div style="font-size:3rem;font-weight:800;color:#fff;line-height:1;margin-bottom:6px" id="countdown">14h 32m</div>
+              <div style="color:rgba(255,255,255,.8);font-size:.9rem">Customer Intake Processing</div>
+              <div style="color:rgba(255,255,255,.6);font-size:.82rem;margin-top:4px">Tuesday 09:00 – 13:00</div>
+              <button class="btn" style="margin-top:16px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">
+                <i class="fa-solid fa-location-arrow"></i> Get Directions
+              </button>
+            </div>
+          </div>
+
+          <!-- Availability -->
+          <div class="card fade-in fade-in-d2">
+            <div class="card-header">
+              <h3>My Availability</h3>
+              <button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i> Edit</button>
+            </div>
+            <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div style="padding:10px;border-radius:8px;background:var(--green-light);display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:.82rem;font-weight:600">Mon</span>
+                <span class="badge badge-confirmed" style="font-size:.72rem">Available</span>
+              </div>
+              <div style="padding:10px;border-radius:8px;background:var(--green-light);display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:.82rem;font-weight:600">Tue</span>
+                <span class="badge badge-confirmed" style="font-size:.72rem">Available</span>
+              </div>
+              <div style="padding:10px;border-radius:8px;background:#f1f5f9;display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:.82rem;font-weight:600">Wed</span>
+                <span class="badge badge-pending" style="font-size:.72rem">AM Only</span>
+              </div>
+              <div style="padding:10px;border-radius:8px;background:var(--red-light);display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:.82rem;font-weight:600">Thu</span>
+                <span class="badge badge-rejected" style="font-size:.72rem">Off</span>
+              </div>
+              <div style="padding:10px;border-radius:8px;background:var(--green-light);display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:.82rem;font-weight:600">Fri</span>
+                <span class="badge badge-confirmed" style="font-size:.72rem">Available</span>
+              </div>
+              <div style="padding:10px;border-radius:8px;background:#f1f5f9;display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:.82rem;font-weight:600">Sat</span>
+                <span class="badge badge-pending" style="font-size:.72rem">PM Only</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- History Table -->
+      <div class="card fade-in">
+        <div class="card-header">
+          <div><h3>Shift History</h3><p>Past 30 days</p></div>
+          <button class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i> Export</button>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Hours</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:600">Floor Supervision</td>
+                <td>Jul 10, 2025</td>
+                <td>08:00 – 14:00</td>
+                <td>Building A</td>
+                <td>6h</td>
+                <td><span class="badge badge-confirmed">Completed</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Inventory Audit</td>
+                <td>Jul 8, 2025</td>
+                <td>09:00 – 12:00</td>
+                <td>Warehouse B</td>
+                <td>3h</td>
+                <td><span class="badge badge-confirmed">Completed</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Customer Support Shift</td>
+                <td>Jul 5, 2025</td>
+                <td>13:00 – 17:00</td>
+                <td>Front Desk</td>
+                <td>4h</td>
+                <td><span class="badge badge-confirmed">Completed</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ── Swap Request Modal ──────────────────────────────── -->
+<div class="modal-backdrop" id="swapModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-arrows-rotate" style="color:var(--green);margin-right:8px"></i>Request Shift Swap</h3>
+      <button class="modal-close" onclick="closeModal('swapModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="form-group">
+      <label>Select Your Shift to Swap</label>
+      <select class="form-control">
+        <option>Morning Inventory Check — Jul 14, 08:00–10:00</option>
+        <option>Customer Intake — Jul 15, 09:00–13:00</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Reason</label>
+      <textarea class="form-control" rows="2" placeholder="Brief reason for the swap request…" style="resize:vertical"></textarea>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-outline" onclick="closeModal('swapModal')">Cancel</button>
+      <button class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit Request</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
+  function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
+  function openModal(id)   { document.getElementById(id).classList.add('open'); }
+  function closeModal(id)  { document.getElementById(id).classList.remove('open'); }
+</script>
+</body>
+</html>
