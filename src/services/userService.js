@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import { User } from '../database/models/index.js';
-import sequelize from '../database/index.js';
 import { generateToken } from '../utils/auth.js';
 
 export const login = async (email, password) => {
@@ -24,9 +23,19 @@ export const createUser = async (userData) => {
 };
 
 export const getAllUsers = async () => {
-  return await User.findAll({ attributes: ['id', 'fullName', 'email', 'role'] });
+  return await User.findAll({ attributes: ['id', 'fullName', 'email', 'role', 'createdAt'] });
+};
+
+export const getUsersByRole = async (role) => {
+  return await User.findAll({ where: { role }, attributes: ['id', 'fullName', 'email', 'role', 'createdAt'] });
 };
 
 export const getUserById = async (id) => {
-  return await User.findByPk(id, { attributes: ['id', 'fullName', 'email', 'role'] });
+  return await User.findByPk(id, { attributes: ['id', 'fullName', 'email', 'role', 'createdAt'] });
+};
+
+export const deleteUser = async (id) => {
+  const user = await User.findByPk(id);
+  if (!user) throw new Error('User not found');
+  await user.destroy();
 };

@@ -4,6 +4,9 @@ import { User } from '../models/index.js';
 export const seedUsers = async () => {
   const hashedPassword = bcrypt.hashSync('password123', 10);
 
+  const existing = await User.count();
+  if (existing > 0) { console.log('⏭️  Users already seeded, skipping.'); return; }
+
   await User.bulkCreate([
     {
       fullName: 'Admin User',
@@ -11,24 +14,7 @@ export const seedUsers = async () => {
       password: hashedPassword,
       role: 'admin'
     },
-    {
-      fullName: 'John Manager',
-      email: 'manager@example.com',
-      password: hashedPassword,
-      role: 'manager'
-    },
-    {
-      fullName: 'Jane Employee',
-      email: 'jane@example.com',
-      password: hashedPassword,
-      role: 'employee'
-    },
-    {
-      fullName: 'Bob Employee',
-      email: 'bob@example.com',
-      password: hashedPassword,
-      role: 'employee'
-    }
+    
   ]);
   console.log('✅ Users seeded successfully!');
 };

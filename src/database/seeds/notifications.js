@@ -1,7 +1,11 @@
 import { Notification, User } from '../models/index.js';
 
 export const seedNotifications = async () => {
+  const existing = await Notification.count();
+  if (existing > 0) { console.log('⏭️  Notifications already seeded, skipping.'); return; }
+
   const users = await User.findAll();
+  if (users.length < 4) { console.log('⚠️  Not enough users, skipping notification seed.'); return; }
 
   await Notification.bulkCreate([
     {

@@ -6,6 +6,7 @@
   <title>Manager Dashboard — ShiftSmart</title>
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="js/api.js"></script>
 </head>
 <body>
 <div class="app">
@@ -52,7 +53,7 @@
           <div class="user-name" id="managerSidebarName">No user loaded</div>
           <div class="user-role" id="managerSidebarRole">Manager</div>
         </div>
-        <a href="login.html" data-tip="Logout" style="color:#475569;font-size:.85rem;margin-left:auto">
+        <a href="#" onclick="logout(); return false;" data-tip="Logout" style="color:#475569;font-size:.85rem;margin-left:auto">
           <i class="fa-solid fa-right-from-bracket"></i>
         </a>
       </div>
@@ -140,7 +141,7 @@
               <label>Task Title</label>
               <div class="input-icon-wrap">
                 <i class="fa-solid fa-pen-to-square"></i>
-                <input type="text" class="form-control" placeholder="e.g. Morning Inventory Check"/>
+                <input type="text" id="quickTaskTitle" class="form-control" placeholder="e.g. Morning Inventory Check"/>
               </div>
             </div>
             <div class="form-group">
@@ -154,7 +155,7 @@
                 <label>Date</label>
                 <div class="input-icon-wrap">
                   <i class="fa-regular fa-calendar"></i>
-                  <input type="date" class="form-control"/>
+                  <input type="date" id="quickTaskDate" class="form-control"/>
                 </div>
               </div>
               <div class="form-group">
@@ -171,19 +172,20 @@
                 <label>Start Time</label>
                 <div class="input-icon-wrap">
                   <i class="fa-regular fa-clock"></i>
-                  <input type="time" class="form-control" value="08:00"/>
+                  <input type="time" id="quickTaskStartTime" class="form-control" value="08:00"/>
                 </div>
               </div>
               <div class="form-group">
                 <label>End Time</label>
                 <div class="input-icon-wrap">
                   <i class="fa-regular fa-clock"></i>
-                  <input type="time" class="form-control" value="12:00"/>
+                  <input type="time" id="quickTaskEndTime" class="form-control" value="12:00"/>
                 </div>
               </div>
             </div>
-            <button class="btn btn-primary w-full" style="justify-content:center">
-              <i class="fa-solid fa-paper-plane"></i> Create & Assign Task
+            <div id="quickTaskError" style="display:none;background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-bottom:8px"></div>
+            <button class="btn btn-primary w-full" style="justify-content:center" onclick="createAndAssignTask()">
+              <i class="fa-solid fa-paper-plane"></i> Create &amp; Assign Task
             </button>
           </div>
         </div>
@@ -299,26 +301,33 @@
 </div>
 
 <script src="data.js"></script>
+<script src="js/app.js"></script>
 <script>
   function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
   function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
   function openModal(id)   { document.getElementById(id).classList.add('open'); }
   function closeModal(id)  { document.getElementById(id).classList.remove('open'); }
 
-  (function renderManagerPage() {
+  function renderManagerPage() {
     const data = window.getData();
     const helpers = window.helpers;
     const currentUser = data.session.currentUser || {};
-    const users = data.users || [];
-    const tasks = data.tasks || [];
-    const unreadCount = (data.notifications || []).filter((item) => item.unread).length;
-    const employees = users.filter((user) => String(user.role || '').toLowerCase() === 'employee');
-    const confirmedTasks = tasks.filter((task) => String(task.status || '').toLowerCase() === 'confirmed');
-    const pendingTasks = tasks.filter((task) => String(task.status || '').toLowerCase() === 'pending');
+    const notifications = data.notifications || [];
+    const unreadCount = notifications.filter((n) => n.status === 'unread').length;
+    const employees = helpers.getUsersByRole('employee');
 
-    const name = currentUser.name || 'No user loaded';
+    // Only show tasks owned by this manager; fall back to all tasks if no id yet
+    const myTasks = currentUser.id
+      ? helpers.getTasksForManager(currentUser.id)
+      : (data.tasks || []);
+
+    const myTaskIds = new Set(myTasks.map((t) => t.id));
+    const myAssignments = (data.assignments || []).filter((a) => myTaskIds.has(a.taskId));
+    const confirmedCount = myAssignments.filter((a) => a.status === 'confirmed').length;
+
+    const name = currentUser.fullName || 'No user loaded';
     const role = currentUser.role || 'Manager';
-    const initials = currentUser.initials || helpers.initialsFromName(name);
+    const initials = helpers.initialsFromName(name);
 
     document.getElementById('managerSidebarInitials').textContent = initials;
     document.getElementById('managerTopbarInitials').textContent = initials;
@@ -327,55 +336,124 @@
     document.getElementById('managerSidebarRole').textContent = role;
     document.getElementById('managerTopbarRole').textContent = role;
     document.getElementById('managerSidebarNotifCount').textContent = unreadCount;
-    document.getElementById('managerSummaryLabel').textContent = data.schedule.label
-      ? `${data.schedule.department || 'All departments'} — ${data.schedule.label}`
+    document.getElementById('managerSummaryLabel').textContent = myTasks.length
+      ? `${myTasks.length} tasks · ${myAssignments.length} assignments across your team.`
       : 'Task and team data will appear here when connected.';
 
-    document.getElementById('managerTotalTasks').textContent = tasks.length;
-    document.getElementById('managerConfirmedTasks').textContent = confirmedTasks.length;
-    document.getElementById('managerPendingTasks').textContent = pendingTasks.length;
+    document.getElementById('managerTotalTasks').textContent = myTasks.length;
+    document.getElementById('managerConfirmedTasks').textContent = confirmedCount;
+    document.getElementById('managerPendingTasks').textContent = myTasks.length - confirmedCount;
     document.getElementById('managerTeamMembers').textContent = employees.length;
 
-    document.getElementById('managerAssignToSelect').innerHTML = employees.length
-      ? `<option value="">Select employee…</option>${employees.map((user) => `<option>${helpers.escapeHtml(user.name || 'Unnamed user')}</option>`).join('')}`
-      : '<option value="">Connect data source to load employees…</option>';
+    // Employee dropdowns (quick-create form + assign modal)
+    const empOptions = employees.length
+      ? `<option value="">Select employee…</option>${employees.map((u) => `<option value="${helpers.escapeHtml(u.id)}">${helpers.escapeHtml(u.fullName || 'Unnamed')}</option>`).join('')}`
+      : '<option value="">No employees found…</option>';
+    document.getElementById('managerAssignToSelect').innerHTML = empOptions;
 
+    // Team status panel
     document.getElementById('managerTeamStatus').innerHTML = employees.length
       ? employees.map((user, index) => `
           <div style="display:flex;align-items:center;justify-content:space-between">
             <div style="display:flex;align-items:center;gap:10px">
-              <div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(user.initials || helpers.initialsFromName(user.name))}</div>
-              <div><div style="font-size:.88rem;font-weight:600">${helpers.escapeHtml(user.name || 'Unnamed user')}</div><div class="text-sm text-muted">${helpers.escapeHtml(user.dept || 'No department')}</div></div>
+              <div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(helpers.initialsFromName(user.fullName))}</div>
+              <div>
+                <div style="font-size:.88rem;font-weight:600">${helpers.escapeHtml(user.fullName || 'Unnamed')}</div>
+                <div class="text-sm text-muted">${helpers.escapeHtml(user.email || '')}</div>
+              </div>
             </div>
-            <span class="badge ${helpers.statusBadgeClass(user.status)}">${helpers.escapeHtml(user.status || 'Unknown')}</span>
+            <span class="badge badge-confirmed">Active</span>
           </div>
         `).join('')
-      : helpers.emptyState('No team members loaded', 'Employee availability will appear here after your frontend is connected to real user data.', 'users');
+      : helpers.emptyState('No team members loaded', 'Employee availability will appear here after data loads.', 'users');
 
-    document.getElementById('managerTaskTableBody').innerHTML = tasks.length
-      ? tasks.map((task, index) => `
-          <tr>
-            <td><div style="font-weight:600;font-size:.9rem">${helpers.escapeHtml(task.title || 'Untitled task')}</div><div class="text-sm text-muted">${helpers.escapeHtml(task.location || 'No location')}</div></td>
-            <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(helpers.initialsFromName(task.assignee || 'Unassigned'))}</div>${helpers.escapeHtml(task.assignee || 'Unassigned')}</div></td>
-            <td>${helpers.escapeHtml(task.date || '--')}</td>
-            <td>${helpers.escapeHtml(task.time || '--')}</td>
-            <td>${helpers.escapeHtml(task.dept || 'Not set')}</td>
-            <td><span class="badge ${helpers.statusBadgeClass(task.status)}">${helpers.escapeHtml(task.status || 'Unknown')}</span></td>
-            <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-          </tr>
-        `).join('')
-      : `<tr><td colspan="7">${helpers.emptyState('No tasks loaded', 'Task rows will render here once the backend returns assignments.', 'list-check')}</td></tr>`;
+    // Task table using enriched records
+    const taskRecords = myTasks.map(helpers.buildTaskRecord);
+    document.getElementById('managerTaskTableBody').innerHTML = taskRecords.length
+      ? taskRecords.map((task, index) => {
+          const firstAssignee = task.assignedUsers[0];
+          const assigneeName = firstAssignee ? (firstAssignee.fullName || 'Unnamed') : 'Unassigned';
+          const badgeStatus = task.confirmedCount > 0 ? 'confirmed' : 'rejected';
+          const badgeLabel = task.confirmedCount > 0 ? 'Assigned' : 'Unassigned';
+          return `
+            <tr>
+              <td><div style="font-weight:600;font-size:.9rem">${helpers.escapeHtml(task.title || 'Untitled')}</div></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(helpers.initialsFromName(assigneeName))}</div>
+                  ${helpers.escapeHtml(assigneeName)}
+                </div>
+              </td>
+              <td>${helpers.escapeHtml(task.dateLabel)}</td>
+              <td>${helpers.escapeHtml(task.timeLabel)}</td>
+              <td>—</td>
+              <td><span class="badge ${helpers.assignmentBadgeClass(badgeStatus)}">${helpers.escapeHtml(badgeLabel)}</span></td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button>
+                  <button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>`;
+        }).join('')
+      : `<tr><td colspan="7">${helpers.emptyState('No tasks yet', 'Use the form above to create your first task.', 'list-check')}</td></tr>`;
 
+    // Assign modal employee list
     document.getElementById('assignModalOptions').innerHTML = employees.length
       ? employees.map((user, index) => `
           <label style="display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer">
-            <input type="radio" name="emp" style="accent-color:var(--green)"/>
-            <div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(user.initials || helpers.initialsFromName(user.name))}</div>
-            <div><div style="font-weight:600;font-size:.88rem">${helpers.escapeHtml(user.name || 'Unnamed user')}</div><div class="text-sm text-muted">${helpers.escapeHtml(user.dept || 'No department')}</div></div>
-            <span class="badge ${helpers.statusBadgeClass(user.status)}" style="margin-left:auto">${helpers.escapeHtml(user.status || 'Unknown')}</span>
+            <input type="radio" name="emp" value="${helpers.escapeHtml(user.id)}" style="accent-color:var(--green)"/>
+            <div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(helpers.initialsFromName(user.fullName))}</div>
+            <div>
+              <div style="font-weight:600;font-size:.88rem">${helpers.escapeHtml(user.fullName || 'Unnamed')}</div>
+              <div class="text-sm text-muted">${helpers.escapeHtml(user.email || '')}</div>
+            </div>
+            <span class="badge badge-confirmed" style="margin-left:auto">Active</span>
           </label>
         `).join('')
-      : helpers.emptyState('No employees available', 'Assignable team members will appear here after live user data is loaded.', 'user-plus');
+      : helpers.emptyState('No employees available', 'Assignable team members will appear here after data loads.', 'user-plus');
+  }
+
+  // Create a task (and optionally assign it) from the Quick Create form
+  async function createAndAssignTask() {
+    const title      = document.getElementById('quickTaskTitle').value.trim();
+    const employeeId = document.getElementById('managerAssignToSelect').value;
+    const date       = document.getElementById('quickTaskDate').value;
+    const startTime  = document.getElementById('quickTaskStartTime').value;
+    const endTime    = document.getElementById('quickTaskEndTime').value;
+    const errEl      = document.getElementById('quickTaskError');
+
+    errEl.style.display = 'none';
+    if (!title || !date || !startTime || !endTime) {
+      errEl.textContent = 'Task Title, Date, Start Time, and End Time are required.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    try {
+      const { task } = await window.api.post('/api/tasks', { title, date, startTime, endTime });
+      if (employeeId) {
+        await window.api.post('/api/assignments', { employeeId, taskId: task.id });
+      }
+      // Reset form
+      document.getElementById('quickTaskTitle').value = '';
+      document.getElementById('quickTaskDate').value  = '';
+      document.getElementById('managerAssignToSelect').value = '';
+      document.getElementById('quickTaskStartTime').value = '08:00';
+      document.getElementById('quickTaskEndTime').value   = '12:00';
+      await window.loadAllData();
+      renderManagerPage();
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.style.display = 'block';
+    }
+  }
+
+  (async function init() {
+    if (!requireAuth('manager')) return;
+    await loadAllData();
+    renderManagerPage();
   })();
 </script>
 </body>

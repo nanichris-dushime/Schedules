@@ -6,8 +6,8 @@
   <title>Schedule — ShiftSmart</title>
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="js/api.js"></script>
   <style>
-    /* Additional schedule-specific styles */
     .sched-legend { display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
     .legend-item  { display:flex; align-items:center; gap:6px; font-size:.8rem; font-weight:600; color:var(--subtext); }
     .legend-dot   { width:12px; height:12px; border-radius:3px; }
@@ -18,10 +18,6 @@
       cursor:pointer; transition:var(--transition);
     }
     .view-toggle button.active { background:var(--white); color:var(--green); box-shadow:var(--shadow-sm); }
-    .sched-today-indicator {
-      background: var(--green-light); border-radius: 100px;
-      padding: 2px 8px; font-size:.72rem; font-weight:700; color:var(--green-dark);
-    }
   </style>
 </head>
 <body>
@@ -53,7 +49,7 @@
       <div class="sidebar-user">
         <div class="avatar avatar-green" id="scheduleSidebarInitials">--</div>
         <div class="user-info"><div class="user-name" id="scheduleSidebarName">No user loaded</div><div class="user-role" id="scheduleSidebarRole">Admin</div></div>
-        <a href="login.html" style="color:#475569;font-size:.85rem;margin-left:auto"><i class="fa-solid fa-right-from-bracket"></i></a>
+        <a href="#" onclick="logout(); return false;" style="color:#475569;font-size:.85rem;margin-left:auto"><i class="fa-solid fa-right-from-bracket"></i></a>
       </div>
     </div>
   </aside>
@@ -81,14 +77,12 @@
   <main class="main">
     <div class="page-content">
 
-      <!-- Page Header -->
       <div class="page-header">
         <div class="page-header-left">
           <h2>Weekly Schedule</h2>
-          <p id="scheduleHeaderLabel">Schedule range and department will appear here when connected.</p>
+          <p id="scheduleHeaderLabel">Schedule will appear here when connected.</p>
         </div>
         <div class="page-header-right">
-          <!-- Week nav -->
           <button class="btn btn-outline btn-sm"><i class="fa-solid fa-chevron-left"></i></button>
           <button class="btn btn-outline btn-sm" style="padding:7px 14px;font-size:.82rem">Today</button>
           <button class="btn btn-outline btn-sm"><i class="fa-solid fa-chevron-right"></i></button>
@@ -103,27 +97,21 @@
         </div>
       </div>
 
-      <!-- Filter row -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
         <div class="sched-legend" id="scheduleLegend"></div>
         <div style="display:flex;gap:10px;align-items:center">
-          <select class="select-control" style="font-size:.82rem" id="scheduleDepartmentSelect">
-            <option>All Departments</option>
-          </select>
           <select class="select-control" style="font-size:.82rem" id="scheduleEmployeeSelect">
             <option>All Employees</option>
           </select>
         </div>
       </div>
 
-      <!-- Schedule Grid Card -->
       <div class="card fade-in" style="margin-bottom:24px">
         <div class="schedule-container">
           <div class="schedule-grid" id="scheduleGrid"></div>
         </div>
       </div>
 
-      <!-- Bottom summary row -->
       <div class="grid-3">
         <div class="card fade-in">
           <div class="card-header"><h3>Shift Summary</h3></div>
@@ -131,14 +119,10 @@
             <div style="display:flex;flex-direction:column;gap:10px" id="scheduleSummaryPanel"></div>
           </div>
         </div>
-
         <div class="card fade-in fade-in-d1">
           <div class="card-header"><h3>Conflicts</h3></div>
-          <div class="card-body">
-            <div id="scheduleConflictsPanel"></div>
-          </div>
+          <div class="card-body"><div id="scheduleConflictsPanel"></div></div>
         </div>
-
         <div class="card fade-in fade-in-d2">
           <div class="card-header"><h3>Staff on Shift</h3></div>
           <div class="card-body" style="display:flex;flex-direction:column;gap:8px" id="scheduleStaffPanel"></div>
@@ -149,7 +133,7 @@
   </main>
 </div>
 
-<!-- ── Add Shift Modal ────────────────────────────────── -->
+<!-- Add Shift Modal -->
 <div class="modal-backdrop" id="addShiftModal">
   <div class="modal">
     <div class="modal-header">
@@ -158,46 +142,39 @@
     </div>
     <div class="form-group">
       <label>Employee</label>
-      <select class="form-control" id="scheduleModalEmployeeSelect">
-        <option>Connect live data to load employees…</option>
-      </select>
+      <select class="form-control" id="scheduleModalEmployeeSelect"><option value="">Select employee…</option></select>
     </div>
     <div class="form-group">
-      <label>Shift Type</label>
-      <select class="form-control" id="scheduleModalShiftTypeSelect">
-        <option>Connect live data to load departments…</option>
-      </select>
+      <label>Task Title</label>
+      <input type="text" class="form-control" id="scheduleModalTitle" placeholder="e.g. Morning Shift"/>
     </div>
     <div class="form-row">
       <div class="form-group">
         <label>Date</label>
-        <input type="date" class="form-control"/>
-      </div>
-      <div class="form-group">
-        <label>Location</label>
-        <input type="text" class="form-control" placeholder="e.g. Floor A"/>
+        <input type="date" class="form-control" id="scheduleModalDate"/>
       </div>
     </div>
     <div class="form-row">
       <div class="form-group">
         <label>Start Time</label>
-        <input type="time" class="form-control"/>
+        <input type="time" class="form-control" id="scheduleModalStart"/>
       </div>
       <div class="form-group">
         <label>End Time</label>
-        <input type="time" class="form-control"/>
+        <input type="time" class="form-control" id="scheduleModalEnd"/>
       </div>
     </div>
-    <div style="display:flex;gap:10px;justify-content:flex-end">
+    <div id="scheduleModalError" style="display:none;background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-top:8px"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
       <button class="btn btn-outline" onclick="closeModal('addShiftModal')">Cancel</button>
-      <button class="btn btn-primary"><i class="fa-solid fa-check"></i> Add Shift</button>
+      <button class="btn btn-primary" onclick="addShift()"><i class="fa-solid fa-check"></i> Add Shift</button>
     </div>
   </div>
 </div>
 
 <script src="data.js"></script>
+<script src="js/app.js"></script>
 <script>
-  // View toggle
   document.querySelectorAll('.view-toggle button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.view-toggle button').forEach(b => b.classList.remove('active'));
@@ -209,23 +186,20 @@
   function openModal(id)   { document.getElementById(id).classList.add('open'); }
   function closeModal(id)  { document.getElementById(id).classList.remove('open'); }
 
-  (function renderSchedulePage() {
+  function renderSchedulePage() {
     const data = window.getData();
     const helpers = window.helpers;
     const currentUser = data.session.currentUser || {};
     const users = data.users || [];
-    const schedule = data.schedule || {};
-    const unreadCount = (data.notifications || []).filter((item) => item.unread).length;
-    const coverageEntries = Object.keys(data.stats.coverage || {});
-    const departmentOptions = coverageEntries.length ? coverageEntries : ['All Departments'];
-    const employeeOptions = users.filter((user) => String(user.role || '').toLowerCase() === 'employee');
-    const dayHeaders = schedule.days.length ? schedule.days : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const timeSlots = schedule.timeSlots.length ? schedule.timeSlots : ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
-    const events = schedule.events || [];
+    const tasks = data.tasks || [];
+    const assignments = data.assignments || [];
+    const notifications = data.notifications || [];
+    const unreadCount = notifications.filter(n => n.status === 'unread').length;
+    const employees = users.filter(u => u.role === 'employee');
 
-    const name = currentUser.name || 'No user loaded';
+    const name = currentUser.fullName || 'No user loaded';
     const role = currentUser.role || 'Admin';
-    const initials = currentUser.initials || helpers.initialsFromName(name);
+    const initials = helpers.initialsFromName(name);
 
     document.getElementById('scheduleNotifCount').textContent = unreadCount;
     document.getElementById('scheduleSidebarInitials').textContent = initials;
@@ -234,94 +208,113 @@
     document.getElementById('scheduleTopbarName').textContent = name;
     document.getElementById('scheduleSidebarRole').textContent = role;
     document.getElementById('scheduleTopbarRole').textContent = role;
-    document.getElementById('scheduleHeaderLabel').textContent = schedule.label
-      ? `${schedule.label}${schedule.department ? ` · ${schedule.department}` : ''}`
-      : 'Schedule range and department will appear here when connected.';
+    document.getElementById('scheduleHeaderLabel').textContent = tasks.length
+      ? `${tasks.length} tasks · ${assignments.length} assignments`
+      : 'Schedule will appear here when connected.';
 
-    document.getElementById('scheduleLegend').innerHTML = coverageEntries.length
-      ? coverageEntries.map((dept, index) => `
-          <div class="legend-item"><div class="legend-dot" style="background:${['var(--green)', '#3b82f6', '#8b5cf6', '#f59e0b'][index % 4]}"></div>${helpers.escapeHtml(dept)}</div>
-        `).join('')
-      : helpers.emptyState('No departments loaded', 'Department legend items will appear here after schedule data is connected.', 'layer-group').replace('empty-state"', 'empty-state compact"');
+    // Employee filter dropdown
+    document.getElementById('scheduleEmployeeSelect').innerHTML =
+      '<option value="">All Employees</option>' +
+      employees.map(u => `<option value="${helpers.escapeHtml(u.id)}">${helpers.escapeHtml(u.fullName)}</option>`).join('');
 
-    document.getElementById('scheduleDepartmentSelect').innerHTML = departmentOptions.map((dept, index) => `
-      <option ${index === 0 ? 'selected' : ''}>${helpers.escapeHtml(dept)}</option>
-    `).join('');
+    // Modal employee select
+    document.getElementById('scheduleModalEmployeeSelect').innerHTML =
+      '<option value="">Select employee…</option>' +
+      employees.map(u => `<option value="${helpers.escapeHtml(u.id)}">${helpers.escapeHtml(u.fullName)}</option>`).join('');
 
-    document.getElementById('scheduleEmployeeSelect').innerHTML = [
-      '<option>All Employees</option>',
-      ...employeeOptions.map((user) => `<option>${helpers.escapeHtml(user.name || 'Unnamed user')}</option>`)
-    ].join('');
+    // Build schedule grid from tasks
+    const schedView = helpers.getScheduleView(tasks);
+    const dayHeaders = schedView.days.length ? schedView.days : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const timeSlots  = schedView.timeSlots;
 
-    if (!events.length) {
+    if (!tasks.length) {
       document.getElementById('scheduleGrid').innerHTML = helpers.emptyState(
         'No schedule events loaded',
-        'The week grid is now free of sample shifts. Connect your backend and render live events into this grid.',
+        'Tasks and assignments will populate this grid once data is connected.',
         'calendar-days'
       );
     } else {
-      const eventMap = new Map(events.map((event) => [`${event.day}|${event.time}`, event]));
+      // Map: date -> list of task records
+      const dateMap = {};
+      schedView.records.forEach(t => {
+        if (!dateMap[t.date]) dateMap[t.date] = [];
+        dateMap[t.date].push(t);
+      });
+      const uniqueDates = Object.keys(dateMap).sort().slice(0, 7);
       const headerHtml = [
         '<div class="sched-header" style="background:var(--muted)">Time</div>',
-        ...dayHeaders.map((day) => `<div class="sched-header">${helpers.escapeHtml(day)}</div>`)
+        ...uniqueDates.map(d => `<div class="sched-header">${helpers.escapeHtml(helpers.formatShortDate(d))}</div>`)
       ].join('');
-      const bodyHtml = timeSlots.map((time) => {
-        const cells = dayHeaders.map((day, index) => {
-          const event = eventMap.get(`${day}|${time}`);
-          if (!event) return '<div class="sched-cell"></div>';
-          const tone = ['green', 'blue', 'purple', 'orange'][index % 4];
-          return `
-            <div class="sched-cell">
-              <div class="sched-event ${tone === 'green' ? '' : tone}">
-                <div>${helpers.escapeHtml(event.employee || 'Unassigned')}</div>
-                <div style="font-weight:400;font-size:.7rem">${helpers.escapeHtml(event.label || event.dept || '')}</div>
-              </div>
-            </div>
-          `;
+      const bodyHtml = timeSlots.map(time => {
+        const cells = uniqueDates.map((date, idx) => {
+          const match = (dateMap[date] || []).find(t => t.startTime && t.startTime.startsWith(time.slice(0,5)));
+          if (!match) return '<div class="sched-cell"></div>';
+          const tone = ['','blue','purple','orange'][idx % 4];
+          const assignee = match.assignedUsers[0]?.fullName || 'Unassigned';
+          return `<div class="sched-cell"><div class="sched-event ${tone}"><div>${helpers.escapeHtml(match.title)}</div><div style="font-weight:400;font-size:.7rem">${helpers.escapeHtml(assignee)}</div></div></div>`;
         }).join('');
         return `<div class="sched-time">${helpers.escapeHtml(time)}</div>${cells}`;
       }).join('');
       document.getElementById('scheduleGrid').innerHTML = headerHtml + bodyHtml;
     }
 
-    const summary = schedule.summary || {};
+    // Summary panel
+    const confirmed = assignments.filter(a => a.status === 'confirmed').length;
     document.getElementById('scheduleSummaryPanel').innerHTML = `
-      <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Total Shifts</span><strong>${helpers.escapeHtml(summary.totalShifts || 0)}</strong></div>
-      <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Covered</span><strong style="color:var(--green)">${helpers.escapeHtml(summary.covered || 0)}</strong></div>
-      <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Uncovered</span><strong style="color:var(--red)">${helpers.escapeHtml(summary.uncovered || 0)}</strong></div>
-      <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Total Hours</span><strong>${helpers.escapeHtml(summary.totalHours || 0)}h</strong></div>
-      <div class="progress-bar mt-4"><div class="progress-fill" style="width:${helpers.escapeHtml(summary.coveragePercent || 0)}%"></div></div>
-      <div class="text-sm text-muted" style="text-align:right">${helpers.escapeHtml(summary.coveragePercent || 0)}% coverage</div>
+      <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Total Tasks</span><strong>${tasks.length}</strong></div>
+      <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Assignments</span><strong>${assignments.length}</strong></div>
+      <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Confirmed</span><strong style="color:var(--green)">${confirmed}</strong></div>
+      <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Rejected</span><strong style="color:var(--red)">${assignments.length - confirmed}</strong></div>
     `;
 
-    document.getElementById('scheduleConflictsPanel').innerHTML = schedule.conflicts.length
-      ? schedule.conflicts.map((conflict) => `
-          <div style="display:flex;align-items:center;gap:12px;padding:12px;background:${conflict.level === 'warning' ? 'var(--yellow-light)' : 'var(--red-light)'};border-radius:10px;margin-bottom:10px">
-            <i class="fa-solid fa-${conflict.level === 'warning' ? 'clock' : 'triangle-exclamation'}" style="color:${conflict.level === 'warning' ? 'var(--yellow)' : 'var(--red)'}"></i>
-            <div><div style="font-size:.85rem;font-weight:700">${helpers.escapeHtml(conflict.title || 'Conflict')}</div><div class="text-sm text-muted">${helpers.escapeHtml(conflict.body || '')}</div></div>
-          </div>
-        `).join('')
-      : helpers.emptyState('No conflicts reported', 'Any overlap or overtime warnings will appear here after live validation runs.', 'shield');
+    document.getElementById('scheduleConflictsPanel').innerHTML =
+      helpers.emptyState('No conflicts reported', 'Overlap warnings will appear here after live validation runs.', 'shield');
 
-    document.getElementById('scheduleStaffPanel').innerHTML = schedule.staffOnShift.length
-      ? schedule.staffOnShift.map((person, index) => `
+    // Staff on shift
+    const assignedEmployeeIds = [...new Set(assignments.map(a => a.employeeId))];
+    const staffOnShift = assignedEmployeeIds.map(id => users.find(u => u.id === id)).filter(Boolean);
+    document.getElementById('scheduleStaffPanel').innerHTML = staffOnShift.length
+      ? staffOnShift.map((person, idx) => `
           <div style="display:flex;align-items:center;justify-content:space-between">
             <div style="display:flex;align-items:center;gap:8px">
-              <div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(person.initials || helpers.initialsFromName(person.name))}</div>
-              <span style="font-size:.88rem;font-weight:600">${helpers.escapeHtml(person.name || 'Unnamed user')}</span>
+              <div class="avatar avatar-sm avatar-${helpers.avatarTone(idx)}">${helpers.escapeHtml(helpers.initialsFromName(person.fullName))}</div>
+              <span style="font-size:.88rem;font-weight:600">${helpers.escapeHtml(person.fullName)}</span>
             </div>
-            <span class="badge ${helpers.statusBadgeClass(person.status || 'confirmed')}">${helpers.escapeHtml(person.label || person.status || 'Scheduled')}</span>
+            <span class="badge badge-confirmed">Scheduled</span>
           </div>
         `).join('')
-      : helpers.emptyState('No staff assigned yet', 'Assigned employees will appear here after the schedule is populated from live data.', 'users');
+      : helpers.emptyState('No staff assigned yet', 'Assigned employees will appear here after the schedule is populated.', 'users');
+  }
 
-    document.getElementById('scheduleModalEmployeeSelect').innerHTML = employeeOptions.length
-      ? employeeOptions.map((user) => `<option>${helpers.escapeHtml(user.name || 'Unnamed user')}</option>`).join('')
-      : '<option>Connect live data to load employees…</option>';
+  async function addShift() {
+    const employeeId = document.getElementById('scheduleModalEmployeeSelect').value;
+    const title      = document.getElementById('scheduleModalTitle').value.trim();
+    const date       = document.getElementById('scheduleModalDate').value;
+    const startTime  = document.getElementById('scheduleModalStart').value;
+    const endTime    = document.getElementById('scheduleModalEnd').value;
+    const errEl      = document.getElementById('scheduleModalError');
+    errEl.style.display = 'none';
+    if (!title || !date || !startTime || !endTime) {
+      errEl.textContent = 'Title, date, start time, and end time are required.';
+      errEl.style.display = 'block';
+      return;
+    }
+    try {
+      const { task } = await window.api.post('/api/tasks', { title, date, startTime, endTime });
+      if (employeeId) await window.api.post('/api/assignments', { employeeId, taskId: task.id });
+      closeModal('addShiftModal');
+      await window.loadAllData();
+      renderSchedulePage();
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.style.display = 'block';
+    }
+  }
 
-    document.getElementById('scheduleModalShiftTypeSelect').innerHTML = coverageEntries.length
-      ? coverageEntries.map((dept) => `<option>${helpers.escapeHtml(dept)}</option>`).join('')
-      : '<option>Connect live data to load departments…</option>';
+  (async function init() {
+    if (!requireAuth()) return;
+    await loadAllData();
+    renderSchedulePage();
   })();
 </script>
 </body>

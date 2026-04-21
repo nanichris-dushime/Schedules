@@ -6,6 +6,7 @@
   <title>Notifications — ShiftSmart</title>
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="js/api.js"></script>
 </head>
 <body>
 <div class="app">
@@ -39,7 +40,7 @@
       <div class="sidebar-user">
         <div class="avatar avatar-green" id="notificationsSidebarInitials">--</div>
         <div class="user-info"><div class="user-name" id="notificationsSidebarName">No user loaded</div><div class="user-role" id="notificationsSidebarRole">Admin</div></div>
-        <a href="login.html" style="color:#475569;font-size:.85rem;margin-left:auto"><i class="fa-solid fa-right-from-bracket"></i></a>
+        <a href="#" onclick="logout(); return false;" style="color:#475569;font-size:.85rem;margin-left:auto"><i class="fa-solid fa-right-from-bracket"></i></a>
       </div>
     </div>
   </aside>
@@ -184,45 +185,57 @@
 </div>
 
 <script src="data.js"></script>
+<script src="js/app.js"></script>
 <script>
   function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
   function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
 
-  function readNotif(el) {
+  async function readNotif(el) {
     el.classList.remove('unread');
+    const notifId = el.dataset.id;
+    if (notifId) {
+      window.api.patch('/api/notifications/' + notifId + '/read').catch(() => {});
+    }
     updateUnreadCount();
   }
+
   function markAllRead() {
-    document.querySelectorAll('.notif-item.unread').forEach(n => n.classList.remove('unread'));
+    document.querySelectorAll('.notif-item.unread').forEach((n) => {
+      n.classList.remove('unread');
+      const notifId = n.dataset.id;
+      if (notifId) window.api.patch('/api/notifications/' + notifId + '/read').catch(() => {});
+    });
     updateUnreadCount();
   }
+
   function updateUnreadCount() {
     const count = document.querySelectorAll('.notif-item.unread').length;
-    document.querySelectorAll('.badge-pill').forEach(b => b.textContent = count);
+    document.querySelectorAll('.badge-pill').forEach((b) => (b.textContent = count));
     const desc = document.getElementById('notificationsSummary');
     if (desc) desc.innerHTML = `You have <strong style="color:var(--green)">${count} unread</strong> notifications`;
     const unreadBtn = document.getElementById('unreadFilterBtn');
     if (unreadBtn) unreadBtn.textContent = `Unread (${count})`;
   }
+
   function filterNotif(btn, cat) {
-    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.filter-pill').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
-    document.querySelectorAll('.notif-item').forEach(item => {
-      if (cat === 'all') { item.style.display = ''; return; }
+    document.querySelectorAll('.notif-item').forEach((item) => {
+      if (cat === 'all')    { item.style.display = ''; return; }
       if (cat === 'unread') { item.style.display = item.classList.contains('unread') ? '' : 'none'; return; }
       item.style.display = (item.dataset.cat === cat) ? '' : 'none';
     });
   }
 
-  (function renderNotificationsPage() {
+  function renderNotificationsPage() {
     const data = window.getData();
     const helpers = window.helpers;
     const currentUser = data.session.currentUser || {};
     const notifications = data.notifications || [];
 
-    const name = currentUser.name || 'No user loaded';
-    const role = currentUser.role || 'Admin';
-    const initials = currentUser.initials || helpers.initialsFromName(name);
+    const name = currentUser.fullName || 'No user loaded';
+    const role = currentUser.role || 'User';
+    const initials = helpers.initialsFromName(name);
 
     document.getElementById('notificationsSidebarInitials').textContent = initials;
     document.getElementById('notificationsTopbarInitials').textContent = initials;
@@ -233,21 +246,38 @@
 
     document.getElementById('notifList').innerHTML = notifications.length
       ? notifications.map((item) => `
-          <div class="notif-item ${item.unread ? 'unread' : ''}" data-cat="${helpers.escapeHtml(item.cat || 'system')}" onclick="readNotif(this)">
-            <div class="notif-icon ${helpers.escapeHtml(item.tone || 'blue')}"><i class="fa-solid fa-${helpers.escapeHtml(item.icon || 'bell')}"></i></div>
+          <div class="notif-item ${item.status === 'unread' ? 'unread' : ''}"
+               data-id="${helpers.escapeHtml(item.id || '')}"
+               data-cat="system"
+               onclick="readNotif(this)">
+            <div class="notif-icon blue"><i class="fa-solid fa-bell"></i></div>
             <div class="notif-body">
-              <p><strong>${helpers.escapeHtml(item.title || 'Notification')}</strong> — ${helpers.escapeHtml(item.body || '')}</p>
-              <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>${helpers.escapeHtml(item.time || '')}</div>
+              <p>${helpers.escapeHtml(item.message || 'Notification')}</p>
+              <div class="notif-time">
+                <i class="fa-regular fa-clock" style="margin-right:4px"></i>
+                ${helpers.escapeHtml(helpers.formatDate(item.createdAt))}
+              </div>
             </div>
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
-              <span class="badge ${helpers.statusBadgeClass(item.badge || item.cat)}">${helpers.escapeHtml(item.badgeLabel || item.cat || 'Notice')}</span>
-              <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:.75rem"><i class="fa-solid fa-xmark"></i></button>
+              <span class="badge ${item.status === 'unread' ? 'badge-confirmed' : 'badge-manager'}">
+                ${item.status === 'unread' ? 'Unread' : 'Read'}
+              </span>
+              <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:.75rem"
+                      onclick="event.stopPropagation(); readNotif(this.closest('.notif-item'))">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
             </div>
           </div>
         `).join('')
-      : helpers.emptyState('No notifications yet', 'Messages, alerts, and approvals will appear here after your backend starts sending notification data.', 'bell');
+      : helpers.emptyState('No notifications yet', 'Messages and alerts will appear here once the backend sends notification data.', 'bell');
 
     updateUnreadCount();
+  }
+
+  (async function init() {
+    if (!requireAuth()) return;
+    await loadAllData();
+    renderNotificationsPage();
   })();
 </script>
 </body>

@@ -6,6 +6,7 @@
   <title>Employee Dashboard — ShiftSmart</title>
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="js/api.js"></script>
 </head>
 <body>
 <div class="app">
@@ -35,7 +36,7 @@
       <a href="#" class="nav-item">
         <i class="fa-solid fa-clock-rotate-left"></i> History
       </a>
-      <a href="#" class="nav-item">
+      <a href="#" class="nav-item" onclick="logout(); return false;">
         <i class="fa-solid fa-right-from-bracket"></i> Logout
       </a>
     </div>
@@ -46,7 +47,7 @@
           <div class="user-name" id="employeeSidebarName">No user loaded</div>
           <div class="user-role" id="employeeSidebarRole">Employee</div>
         </div>
-        <a href="login.html" style="color:#475569;font-size:.85rem;margin-left:auto">
+        <a href="#" onclick="logout(); return false;" style="color:#475569;font-size:.85rem;margin-left:auto">
           <i class="fa-solid fa-right-from-bracket"></i>
         </a>
       </div>
@@ -219,98 +220,111 @@
 </div>
 
 <script src="data.js"></script>
+<script src="js/app.js"></script>
 <script>
   function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
   function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
   function openModal(id)   { document.getElementById(id).classList.add('open'); }
   function closeModal(id)  { document.getElementById(id).classList.remove('open'); }
 
-  (function renderEmployeePage() {
+  function renderEmployeePage() {
     const data = window.getData();
     const helpers = window.helpers;
     const currentUser = data.session.currentUser || {};
-    const tasks = data.tasks || [];
-    const employeeName = currentUser.name || 'Employee';
-    const employeeTasks = currentUser.name ? tasks.filter((task) => task.assignee === currentUser.name) : tasks;
-    const completedTasks = employeeTasks.filter((task) => String(task.status || '').toLowerCase() === 'completed');
-    const pendingTasks = employeeTasks.filter((task) => String(task.status || '').toLowerCase() === 'pending');
-    const unreadCount = (data.notifications || []).filter((item) => item.unread).length;
-    const historyRows = completedTasks;
-    const totalHours = completedTasks.reduce((sum, task) => sum + Number(task.hours || 0), 0);
-    const availability = data.availability || [];
-    const nextTask = employeeTasks.find((task) => ['confirmed', 'pending'].includes(String(task.status || '').toLowerCase()));
+    const notifications = data.notifications || [];
+    const unreadCount = notifications.filter((n) => n.status === 'unread').length;
 
-    const initials = currentUser.initials || helpers.initialsFromName(employeeName);
+    // Assignments for this employee (API already filtered server-side for employees)
+    const myAssignments = currentUser.id
+      ? helpers.getAssignmentsForEmployee(currentUser.id)
+      : [];
+    const enriched = myAssignments.map(helpers.buildAssignmentRecord);
+
+    const confirmedRows = enriched.filter((a) => a.status === 'confirmed');
+    const rejectedRows  = enriched.filter((a) => a.status === 'rejected');
+
+    // Next upcoming confirmed assignment by date
+    const today = new Date().toISOString().slice(0, 10);
+    const next = enriched
+      .filter((a) => a.status === 'confirmed' && a.task && a.task.date >= today)
+      .sort((a, b) => (a.task.date > b.task.date ? 1 : -1))[0] || null;
+
+    const name = currentUser.fullName || 'No user loaded';
     const role = currentUser.role || 'Employee';
+    const initials = helpers.initialsFromName(name);
 
     document.getElementById('employeeNotifCount').textContent = unreadCount;
     document.getElementById('employeeSidebarInitials').textContent = initials;
     document.getElementById('employeeTopbarInitials').textContent = initials;
-    document.getElementById('employeeSidebarName').textContent = currentUser.name || 'No user loaded';
-    document.getElementById('employeeTopbarName').textContent = currentUser.name || 'No user loaded';
+    document.getElementById('employeeSidebarName').textContent = name;
+    document.getElementById('employeeTopbarName').textContent = name;
     document.getElementById('employeeSidebarRole').textContent = role;
     document.getElementById('employeeTopbarRole').textContent = role;
-    document.getElementById('employeeGreeting').textContent = currentUser.name ? 'Welcome back' : 'Welcome';
-    document.getElementById('employeeWelcomeName').textContent = currentUser.name ? `Hello, ${employeeName}` : 'Employee dashboard';
-    document.getElementById('employeeWelcomeSummary').textContent = employeeTasks.length
-      ? `You have ${employeeTasks.filter((task) => String(task.status || '').toLowerCase() === 'confirmed').length} confirmed shifts and ${pendingTasks.length} pending requests.`
+    document.getElementById('employeeGreeting').textContent = currentUser.fullName ? 'Welcome back' : 'Welcome';
+    document.getElementById('employeeWelcomeName').textContent = currentUser.fullName ? `Hello, ${name}` : 'Employee dashboard';
+    document.getElementById('employeeWelcomeSummary').textContent = enriched.length
+      ? `You have ${confirmedRows.length} confirmed shifts and ${rejectedRows.length} rejected.`
       : 'Your shifts and requests will appear here after live data is connected.';
 
-    document.getElementById('employeeShiftsMonth').textContent = employeeTasks.length;
-    document.getElementById('employeeCompletedCount').textContent = completedTasks.length;
-    document.getElementById('employeePendingCount').textContent = pendingTasks.length;
-    document.getElementById('employeeHoursWeek').textContent = `${totalHours}h`;
+    document.getElementById('employeeShiftsMonth').textContent = enriched.length;
+    document.getElementById('employeeCompletedCount').textContent = confirmedRows.length;
+    document.getElementById('employeePendingCount').textContent = rejectedRows.length;
+    document.getElementById('employeeHoursWeek').textContent = '—';
 
-    document.getElementById('employeeTaskCards').innerHTML = employeeTasks.length
-      ? employeeTasks.map((task) => `
-          <div class="task-card ${helpers.escapeHtml(String(task.status || 'pending').toLowerCase())}">
+    // Task cards
+    document.getElementById('employeeTaskCards').innerHTML = enriched.length
+      ? enriched.map((a) => `
+          <div class="task-card ${helpers.escapeHtml(a.status)}">
             <div class="task-card-head">
               <div>
-                <div style="font-size:.75rem;color:var(--subtext);margin-bottom:3px">${helpers.escapeHtml(task.date || '--')}</div>
-                <h4>${helpers.escapeHtml(task.title || 'Untitled task')}</h4>
+                <div style="font-size:.75rem;color:var(--subtext);margin-bottom:3px">${helpers.escapeHtml(a.dateLabel)}</div>
+                <h4>${helpers.escapeHtml(a.taskTitle)}</h4>
               </div>
-              <span class="badge ${helpers.statusBadgeClass(task.status)}">${helpers.escapeHtml(task.status || 'Unknown')}</span>
+              <span class="badge ${helpers.assignmentBadgeClass(a.status)}">${helpers.escapeHtml(a.status)}</span>
             </div>
             <div class="task-meta">
-              <div class="task-meta-item"><i class="fa-regular fa-clock"></i>${helpers.escapeHtml(task.time || '--')}</div>
-              <div class="task-meta-item"><i class="fa-solid fa-location-dot"></i>${helpers.escapeHtml(task.location || 'No location')}</div>
-              <div class="task-meta-item"><i class="fa-solid fa-user-tie"></i>${helpers.escapeHtml(task.manager || 'Manager not assigned')}</div>
+              <div class="task-meta-item"><i class="fa-regular fa-clock"></i>${helpers.escapeHtml(a.timeLabel)}</div>
+              <div class="task-meta-item"><i class="fa-solid fa-user-tie"></i>${helpers.escapeHtml(a.managerName)}</div>
             </div>
           </div>
         `).join('')
-      : helpers.emptyState('No assigned tasks yet', 'Your upcoming shifts will appear here once the frontend receives live task data.', 'calendar-check');
+      : helpers.emptyState('No assigned tasks yet', 'Your upcoming shifts will appear here once a manager assigns you to a task.', 'calendar-check');
 
-    document.getElementById('countdown').textContent = nextTask ? (nextTask.time || '--') : '--';
-    document.getElementById('employeeNextShiftTitle').textContent = nextTask ? (nextTask.title || 'Upcoming shift') : 'No upcoming shift loaded';
-    document.getElementById('employeeNextShiftTime').textContent = nextTask
-      ? `${nextTask.date || ''} ${nextTask.time || ''}`.trim()
+    // Next shift countdown
+    document.getElementById('countdown').textContent = next ? helpers.formatTime(next.task.startTime) : '--';
+    document.getElementById('employeeNextShiftTitle').textContent = next ? next.taskTitle : 'No upcoming shift';
+    document.getElementById('employeeNextShiftTime').textContent = next
+      ? `${next.dateLabel} · ${next.timeLabel}`
       : 'Connect schedule data to show the next assignment.';
 
-    document.getElementById('employeeAvailabilityGrid').innerHTML = availability.length
-      ? availability.map((slot) => `
-          <div style="padding:10px;border-radius:8px;background:${slot.status === 'Off' ? 'var(--red-light)' : (slot.status || '').includes('Only') ? '#f1f5f9' : 'var(--green-light)'};display:flex;align-items:center;justify-content:space-between">
-            <span style="font-size:.82rem;font-weight:600">${helpers.escapeHtml(slot.day || '--')}</span>
-            <span class="badge ${helpers.statusBadgeClass(slot.status)}" style="font-size:.72rem">${helpers.escapeHtml(slot.status || 'Unknown')}</span>
-          </div>
-        `).join('')
-      : helpers.emptyState('No availability set', 'Weekly availability will appear here after your frontend receives user preferences.', 'clock');
+    // Availability — backend doesn't have this model yet
+    document.getElementById('employeeAvailabilityGrid').innerHTML =
+      helpers.emptyState('No availability set', 'Weekly availability will appear here once the feature is added.', 'clock');
 
-    document.getElementById('employeeHistoryTable').innerHTML = historyRows.length
-      ? historyRows.map((task) => `
+    // Shift history table
+    document.getElementById('employeeHistoryTable').innerHTML = enriched.length
+      ? enriched.map((a) => `
           <tr>
-            <td style="font-weight:600">${helpers.escapeHtml(task.title || 'Untitled task')}</td>
-            <td>${helpers.escapeHtml(task.date || '--')}</td>
-            <td>${helpers.escapeHtml(task.time || '--')}</td>
-            <td>${helpers.escapeHtml(task.location || 'No location')}</td>
-            <td>${helpers.escapeHtml(task.hours || 0)}h</td>
-            <td><span class="badge ${helpers.statusBadgeClass(task.status)}">${helpers.escapeHtml(task.status || 'Unknown')}</span></td>
+            <td style="font-weight:600">${helpers.escapeHtml(a.taskTitle)}</td>
+            <td>${helpers.escapeHtml(a.dateLabel)}</td>
+            <td>${helpers.escapeHtml(a.timeLabel)}</td>
+            <td>—</td>
+            <td>—</td>
+            <td><span class="badge ${helpers.assignmentBadgeClass(a.status)}">${helpers.escapeHtml(a.status)}</span></td>
           </tr>
         `).join('')
-      : `<tr><td colspan="6">${helpers.emptyState('No shift history yet', 'Completed assignments will appear here once real employee history is available.', 'clock-rotate-left')}</td></tr>`;
+      : `<tr><td colspan="6">${helpers.emptyState('No shift history yet', 'Completed assignments will appear here once you have been assigned.', 'clock-rotate-left')}</td></tr>`;
 
-    document.getElementById('employeeSwapSelect').innerHTML = employeeTasks.length
-      ? employeeTasks.map((task) => `<option>${helpers.escapeHtml(`${task.title || 'Untitled task'} — ${task.date || ''} ${task.time || ''}`.trim())}</option>`).join('')
-      : '<option>Connect live shift data to request a swap…</option>';
+    // Swap modal options
+    document.getElementById('employeeSwapSelect').innerHTML = enriched.length
+      ? enriched.map((a) => `<option value="${helpers.escapeHtml(a.id)}">${helpers.escapeHtml(`${a.taskTitle} — ${a.dateLabel}`)}</option>`).join('')
+      : '<option>No shifts available to swap…</option>';
+  }
+
+  (async function init() {
+    if (!requireAuth('employee')) return;
+    await loadAllData();
+    renderEmployeePage();
   })();
 </script>
 </body>

@@ -21,7 +21,8 @@
     users: [],
     tasks: [],
     assignments: [],
-    notifications: []
+    notifications: [],
+    schedule: {}
   };
 
   function clone(value) {
@@ -111,6 +112,14 @@
 
   function notificationBadgeClass(status) {
     return String(status || '').toLowerCase() === 'read' ? 'badge-manager' : 'badge-confirmed';
+  }
+
+  function statusBadgeClass(status) {
+    const s = String(status || '').toLowerCase();
+    if (s === 'confirmed' || s === 'completed' || s === 'available') return 'badge-confirmed';
+    if (s === 'rejected'  || s === 'off')                             return 'badge-admin';
+    if (s === 'pending')                                               return 'badge-employee';
+    return 'badge-employee';
   }
 
   function emptyState(title, body, icon = 'database') {
@@ -271,6 +280,7 @@
     roleBadgeClass,
     assignmentBadgeClass,
     notificationBadgeClass,
+    statusBadgeClass,
     emptyState,
     formatDate,
     formatShortDate,
