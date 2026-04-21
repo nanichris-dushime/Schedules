@@ -17,3 +17,12 @@ export const markAsRead = async (req, res) => {
     res.status(400).json({ success: false, error: err.message });
   }
 };
+
+export const markAllAsRead = async (req, res) => {
+  try {
+    await notificationService.markAllRead(req.user.id);
+    res.json({ success: true, message: 'All notifications marked as read' });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};

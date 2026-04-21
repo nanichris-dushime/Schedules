@@ -1,5 +1,9 @@
 import { Notification } from '../database/models/index.js';
 
+export const create = async (userId, message, type = 'system') => {
+  return await Notification.create({ userId, message, type });
+};
+
 export const getForUser = async (userId) => {
   return await Notification.findAll({
     where: { userId },
@@ -13,4 +17,8 @@ export const markRead = async (id, userId) => {
   notif.status = 'read';
   await notif.save();
   return notif;
+};
+
+export const markAllRead = async (userId) => {
+  await Notification.update({ status: 'read' }, { where: { userId, status: 'unread' } });
 };

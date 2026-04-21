@@ -1,4 +1,5 @@
 import * as taskService from '../services/taskService.js';
+import * as notificationService from '../services/notificationService.js';
 
 export const getAllTasks = async (req, res) => {
   try {
@@ -21,6 +22,12 @@ export const createTask = async (req, res) => {
     const task = await taskService.createTask({
       title, date, startTime, endTime, managerId: req.user.id,
     });
+    // Notify the manager who created the task
+    await notificationService.create(
+      req.user.id,
+      `You created task "${title}" scheduled on ${date} from ${startTime.slice(0,5)} to ${endTime.slice(0,5)}.`,
+      'task'
+    );
     res.status(201).json({ success: true, message: 'Task created', task });
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });

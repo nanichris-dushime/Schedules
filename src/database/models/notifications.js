@@ -8,7 +8,11 @@ const Notification = sequelize.define("Notification", {
     primaryKey: true,
   },
   message: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(500),
+  },
+  type: {
+    type: DataTypes.ENUM('shift', 'task', 'system'),
+    defaultValue: 'system',
   },
   status: {
     type: DataTypes.ENUM("read", "unread"),

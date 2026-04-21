@@ -23,24 +23,23 @@
     </div>
     <div class="sidebar-section">
       <div class="sidebar-section-label">Main</div>
-      <a href="admin.html" class="nav-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      <a href="#" id="sidebarDashboardLink" class="nav-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
       <a href="schedule.html" class="nav-item"><i class="fa-solid fa-calendar-days"></i> Schedule</a>
       <a href="notifications.html" class="nav-item active">
         <i class="fa-solid fa-bell"></i> Notifications
         <span class="badge-pill" id="notificationsSidebarCount">0</span>
       </a>
     </div>
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Management</div>
-      <a href="admin.html" class="nav-item"><i class="fa-solid fa-users"></i> All Users</a>
-      <a href="manager.html" class="nav-item"><i class="fa-solid fa-briefcase"></i> Tasks</a>
-      <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a>
-    </div>
     <div class="sidebar-footer">
       <div class="sidebar-user">
         <div class="avatar avatar-green" id="notificationsSidebarInitials">--</div>
-        <div class="user-info"><div class="user-name" id="notificationsSidebarName">No user loaded</div><div class="user-role" id="notificationsSidebarRole">Admin</div></div>
-        <a href="#" onclick="logout(); return false;" style="color:#475569;font-size:.85rem;margin-left:auto"><i class="fa-solid fa-right-from-bracket"></i></a>
+        <div class="user-info">
+          <div class="user-name" id="notificationsSidebarName">No user loaded</div>
+          <div class="user-role" id="notificationsSidebarRole">--</div>
+        </div>
+        <a href="#" onclick="logout(); return false;" style="color:#475569;font-size:.85rem;margin-left:auto">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
       </div>
     </div>
   </aside>
@@ -58,11 +57,14 @@
     <div class="topbar-right">
       <div class="topbar-icon-btn">
         <i class="fa-solid fa-bell"></i>
-        <span class="notif-dot"></span>
+        <span class="notif-dot" id="topbarNotifDot" style="display:none"></span>
       </div>
       <div class="topbar-profile">
         <div class="avatar avatar-green" id="notificationsTopbarInitials">--</div>
-        <div><div class="profile-name" id="notificationsTopbarName">No user loaded</div><div class="profile-role" id="notificationsTopbarRole">Admin</div></div>
+        <div>
+          <div class="profile-name" id="notificationsTopbarName">No user loaded</div>
+          <div class="profile-role" id="notificationsTopbarRole">--</div>
+        </div>
       </div>
     </div>
   </header>
@@ -71,7 +73,6 @@
   <main class="main">
     <div class="page-content">
 
-      <!-- Page Header -->
       <div class="page-header">
         <div class="page-header-left">
           <h2>Notifications</h2>
@@ -81,103 +82,21 @@
           <button class="btn btn-outline btn-sm" onclick="markAllRead()">
             <i class="fa-solid fa-check-double"></i> Mark All Read
           </button>
-          <button class="btn btn-outline btn-sm">
-            <i class="fa-solid fa-sliders"></i> Preferences
-          </button>
         </div>
       </div>
 
-      <!-- Two-col layout -->
-      <div class="grid-2" style="gap:24px">
-
-        <!-- Main Notification List -->
-        <div style="grid-column:1 / -1" class="card fade-in">
-          <div class="card-header">
-            <div><h3>All Notifications</h3></div>
-            <div class="notif-filters">
-              <button class="filter-pill active" onclick="filterNotif(this,'all')">All</button>
-              <button class="filter-pill" id="unreadFilterBtn" onclick="filterNotif(this,'unread')">Unread (0)</button>
-              <button class="filter-pill" onclick="filterNotif(this,'shifts')">Shifts</button>
-              <button class="filter-pill" onclick="filterNotif(this,'system')">System</button>
-              <button class="filter-pill" onclick="filterNotif(this,'alerts')">Alerts</button>
-            </div>
-          </div>
-
-          <div class="notif-list" id="notifList"></div>
-
-          <!-- Load More -->
-          <div style="padding:16px 20px;text-align:center;border-top:1px solid var(--border)">
-            <button class="btn btn-outline btn-sm">
-              <i class="fa-solid fa-chevron-down"></i> Load More Notifications
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Notification Settings Card -->
-      <div class="card fade-in" style="margin-top:24px">
+      <div class="card fade-in">
         <div class="card-header">
-          <div><h3>Notification Preferences</h3><p>Choose what you want to be notified about</p></div>
-          <button class="btn btn-primary btn-sm">Save Changes</button>
-        </div>
-        <div class="card-body">
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">
-
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border:1px solid var(--border);border-radius:10px">
-              <div style="display:flex;align-items:center;gap:10px">
-                <div class="notif-icon green" style="width:36px;height:36px;border-radius:10px;font-size:.85rem"><i class="fa-solid fa-calendar-check"></i></div>
-                <div>
-                  <div style="font-size:.88rem;font-weight:700">Shift Updates</div>
-                  <div class="text-sm text-muted">Assignments & confirmations</div>
-                </div>
-              </div>
-              <label style="cursor:pointer">
-                <input type="checkbox" checked style="accent-color:var(--green);width:16px;height:16px"/>
-              </label>
-            </div>
-
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border:1px solid var(--border);border-radius:10px">
-              <div style="display:flex;align-items:center;gap:10px">
-                <div class="notif-icon red" style="width:36px;height:36px;border-radius:10px;font-size:.85rem"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                <div>
-                  <div style="font-size:.88rem;font-weight:700">Conflict Alerts</div>
-                  <div class="text-sm text-muted">Scheduling conflicts</div>
-                </div>
-              </div>
-              <label style="cursor:pointer">
-                <input type="checkbox" checked style="accent-color:var(--green);width:16px;height:16px"/>
-              </label>
-            </div>
-
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border:1px solid var(--border);border-radius:10px">
-              <div style="display:flex;align-items:center;gap:10px">
-                <div class="notif-icon yellow" style="width:36px;height:36px;border-radius:10px;font-size:.85rem"><i class="fa-solid fa-arrows-rotate"></i></div>
-                <div>
-                  <div style="font-size:.88rem;font-weight:700">Swap Requests</div>
-                  <div class="text-sm text-muted">Shift swap approvals</div>
-                </div>
-              </div>
-              <label style="cursor:pointer">
-                <input type="checkbox" checked style="accent-color:var(--green);width:16px;height:16px"/>
-              </label>
-            </div>
-
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border:1px solid var(--border);border-radius:10px">
-              <div style="display:flex;align-items:center;gap:10px">
-                <div class="notif-icon blue" style="width:36px;height:36px;border-radius:10px;font-size:.85rem"><i class="fa-solid fa-gear"></i></div>
-                <div>
-                  <div style="font-size:.88rem;font-weight:700">System Updates</div>
-                  <div class="text-sm text-muted">Maintenance & changes</div>
-                </div>
-              </div>
-              <label style="cursor:pointer">
-                <input type="checkbox" style="accent-color:var(--green);width:16px;height:16px"/>
-              </label>
-            </div>
-
+          <div><h3>All Notifications</h3></div>
+          <div class="notif-filters">
+            <button class="filter-pill active" onclick="filterNotif(this,'all')">All</button>
+            <button class="filter-pill" id="unreadFilterBtn" onclick="filterNotif(this,'unread')">Unread (0)</button>
+            <button class="filter-pill" onclick="filterNotif(this,'shift')">Shifts</button>
+            <button class="filter-pill" onclick="filterNotif(this,'task')">Tasks</button>
+            <button class="filter-pill" onclick="filterNotif(this,'system')">System</button>
           </div>
         </div>
+        <div class="notif-list" id="notifList"></div>
       </div>
 
     </div>
@@ -190,86 +109,93 @@
   function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
   function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
 
+  // Icon and colour per notification type
+  function notifMeta(type) {
+    if (type === 'shift') return { icon: 'fa-calendar-check', color: 'green' };
+    if (type === 'task')  return { icon: 'fa-list-check',     color: 'blue'  };
+    return                       { icon: 'fa-bell',           color: 'yellow' };
+  }
+
   async function readNotif(el) {
+    if (!el.classList.contains('unread')) return;
     el.classList.remove('unread');
     const notifId = el.dataset.id;
-    if (notifId) {
-      window.api.patch('/api/notifications/' + notifId + '/read').catch(() => {});
-    }
+    if (notifId) await window.api.patch('/api/notifications/' + notifId + '/read').catch(() => {});
     updateUnreadCount();
   }
 
-  function markAllRead() {
-    document.querySelectorAll('.notif-item.unread').forEach((n) => {
-      n.classList.remove('unread');
-      const notifId = n.dataset.id;
-      if (notifId) window.api.patch('/api/notifications/' + notifId + '/read').catch(() => {});
-    });
+  async function markAllRead() {
+    document.querySelectorAll('.notif-item.unread').forEach(n => n.classList.remove('unread'));
+    await window.api.patch('/api/notifications/read-all').catch(() => {});
     updateUnreadCount();
   }
 
   function updateUnreadCount() {
     const count = document.querySelectorAll('.notif-item.unread').length;
-    document.querySelectorAll('.badge-pill').forEach((b) => (b.textContent = count));
-    const desc = document.getElementById('notificationsSummary');
-    if (desc) desc.innerHTML = `You have <strong style="color:var(--green)">${count} unread</strong> notifications`;
-    const unreadBtn = document.getElementById('unreadFilterBtn');
-    if (unreadBtn) unreadBtn.textContent = `Unread (${count})`;
+    document.getElementById('notificationsSidebarCount').textContent = count;
+    document.getElementById('notificationsSummary').innerHTML =
+      `You have <strong style="color:var(--green)">${count} unread</strong> notifications`;
+    document.getElementById('unreadFilterBtn').textContent = `Unread (${count})`;
+    document.getElementById('topbarNotifDot').style.display = count > 0 ? '' : 'none';
   }
 
   function filterNotif(btn, cat) {
-    document.querySelectorAll('.filter-pill').forEach((b) => b.classList.remove('active'));
+    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    document.querySelectorAll('.notif-item').forEach((item) => {
+    document.querySelectorAll('.notif-item').forEach(item => {
       if (cat === 'all')    { item.style.display = ''; return; }
       if (cat === 'unread') { item.style.display = item.classList.contains('unread') ? '' : 'none'; return; }
-      item.style.display = (item.dataset.cat === cat) ? '' : 'none';
+      item.style.display = item.dataset.type === cat ? '' : 'none';
     });
   }
 
   function renderNotificationsPage() {
-    const data = window.getData();
-    const helpers = window.helpers;
+    const data        = window.getData();
+    const helpers     = window.helpers;
     const currentUser = data.session.currentUser || {};
     const notifications = data.notifications || [];
 
-    const name = currentUser.fullName || 'No user loaded';
-    const role = currentUser.role || 'User';
+    const name     = currentUser.fullName || 'No user loaded';
+    const role     = currentUser.role     || '--';
     const initials = helpers.initialsFromName(name);
 
+    // Role-aware dashboard link
+    const dashMap = { admin: 'admin.html', manager: 'manager.html', employee: 'employee.html' };
+    document.getElementById('sidebarDashboardLink').href = dashMap[role] || 'admin.html';
+
     document.getElementById('notificationsSidebarInitials').textContent = initials;
-    document.getElementById('notificationsTopbarInitials').textContent = initials;
-    document.getElementById('notificationsSidebarName').textContent = name;
-    document.getElementById('notificationsTopbarName').textContent = name;
-    document.getElementById('notificationsSidebarRole').textContent = role;
-    document.getElementById('notificationsTopbarRole').textContent = role;
+    document.getElementById('notificationsTopbarInitials').textContent  = initials;
+    document.getElementById('notificationsSidebarName').textContent     = name;
+    document.getElementById('notificationsTopbarName').textContent      = name;
+    document.getElementById('notificationsSidebarRole').textContent     = role;
+    document.getElementById('notificationsTopbarRole').textContent      = role;
 
     document.getElementById('notifList').innerHTML = notifications.length
-      ? notifications.map((item) => `
-          <div class="notif-item ${item.status === 'unread' ? 'unread' : ''}"
-               data-id="${helpers.escapeHtml(item.id || '')}"
-               data-cat="system"
-               onclick="readNotif(this)">
-            <div class="notif-icon blue"><i class="fa-solid fa-bell"></i></div>
-            <div class="notif-body">
-              <p>${helpers.escapeHtml(item.message || 'Notification')}</p>
-              <div class="notif-time">
-                <i class="fa-regular fa-clock" style="margin-right:4px"></i>
-                ${helpers.escapeHtml(helpers.formatDate(item.createdAt))}
+      ? notifications.map(item => {
+          const meta = notifMeta(item.type || 'system');
+          return `
+            <div class="notif-item ${item.status === 'unread' ? 'unread' : ''}"
+                 data-id="${helpers.escapeHtml(item.id || '')}"
+                 data-type="${helpers.escapeHtml(item.type || 'system')}"
+                 onclick="readNotif(this)">
+              <div class="notif-icon ${meta.color}">
+                <i class="fa-solid ${meta.icon}"></i>
               </div>
-            </div>
-            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
-              <span class="badge ${item.status === 'unread' ? 'badge-confirmed' : 'badge-manager'}">
-                ${item.status === 'unread' ? 'Unread' : 'Read'}
-              </span>
-              <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:.75rem"
-                      onclick="event.stopPropagation(); readNotif(this.closest('.notif-item'))">
-                <i class="fa-solid fa-xmark"></i>
-              </button>
-            </div>
-          </div>
-        `).join('')
-      : helpers.emptyState('No notifications yet', 'Messages and alerts will appear here once the backend sends notification data.', 'bell');
+              <div class="notif-body">
+                <p>${helpers.escapeHtml(item.message || 'Notification')}</p>
+                <div class="notif-time">
+                  <i class="fa-regular fa-clock" style="margin-right:4px"></i>
+                  ${helpers.escapeHtml(helpers.formatDate(item.createdAt))}
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
+                <span class="badge ${item.status === 'unread' ? 'badge-confirmed' : 'badge-manager'}">
+                  ${item.status === 'unread' ? 'Unread' : 'Read'}
+                </span>
+              </div>
+            </div>`;
+        }).join('')
+      : helpers.emptyState('No notifications yet', 'Notifications will appear here when tasks are created or assignments are made.', 'bell');
 
     updateUnreadCount();
   }

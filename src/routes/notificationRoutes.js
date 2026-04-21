@@ -5,6 +5,7 @@ import { authenticate } from '../middleware/auth.js';
 const router = express.Router();
 
 router.get('/', authenticate, notificationController.getNotifications);
+router.patch('/read-all', authenticate, notificationController.markAllAsRead);
 router.patch('/:id/read', authenticate, notificationController.markAsRead);
 
 export default router;
