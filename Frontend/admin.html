@@ -31,7 +31,7 @@
       </a>
       <a href="notifications.html" class="nav-item">
         <i class="fa-solid fa-bell"></i> Notifications
-        <span class="badge-pill">4</span>
+        <span class="badge-pill" id="adminSidebarNotifCount">0</span>
       </a>
     </div>
 
@@ -52,11 +52,11 @@
     </div>
 
     <div class="sidebar-footer">
-      <div class="sidebar-user">
-        <div class="avatar avatar-green">AK</div>
+        <div class="sidebar-user">
+        <div class="avatar avatar-green" id="adminSidebarInitials">--</div>
         <div class="user-info">
-          <div class="user-name">Alex Kim</div>
-          <div class="user-role">Administrator</div>
+          <div class="user-name" id="adminSidebarName">No user loaded</div>
+          <div class="user-role" id="adminSidebarRole">Admin</div>
         </div>
         <a href="login.html" data-tip="Logout" style="color:#475569;font-size:.85rem;margin-left:auto">
           <i class="fa-solid fa-right-from-bracket"></i>
@@ -90,10 +90,10 @@
         <i class="fa-solid fa-gear"></i>
       </div>
       <div class="topbar-profile">
-        <div class="avatar avatar-green">AK</div>
+        <div class="avatar avatar-green" id="adminTopbarInitials">--</div>
         <div>
-          <div class="profile-name">Alex Kim</div>
-          <div class="profile-role">Administrator</div>
+          <div class="profile-name" id="adminTopbarName">No user loaded</div>
+          <div class="profile-role" id="adminTopbarRole">Admin</div>
         </div>
         <i class="fa-solid fa-chevron-down" style="font-size:.7rem;color:var(--subtext);margin-left:4px"></i>
       </div>
@@ -108,7 +108,7 @@
       <div class="page-header">
         <div class="page-header-left">
           <h2>Overview</h2>
-          <p>Monday, July 14, 2025 — Weekly summary</p>
+          <p id="adminSummaryLabel">Live summary will appear here when dashboard data is connected.</p>
         </div>
         <div class="page-header-right">
           <button class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i> Export</button>
@@ -125,7 +125,7 @@
             <div class="kpi-icon green"><i class="fa-solid fa-users"></i></div>
             <span class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i> 12%</span>
           </div>
-          <div class="kpi-value">148</div>
+          <div class="kpi-value" id="adminEmployeesValue">0</div>
           <div class="kpi-label">Total Employees</div>
         </div>
         <div class="kpi-card blue fade-in fade-in-d1">
@@ -133,7 +133,7 @@
             <div class="kpi-icon blue"><i class="fa-solid fa-briefcase"></i></div>
             <span class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i> 3%</span>
           </div>
-          <div class="kpi-value">18</div>
+          <div class="kpi-value" id="adminManagersValue">0</div>
           <div class="kpi-label">Managers</div>
         </div>
         <div class="kpi-card purple fade-in fade-in-d2">
@@ -141,7 +141,7 @@
             <div class="kpi-icon purple"><i class="fa-solid fa-calendar-check"></i></div>
             <span class="kpi-trend neutral">— 0%</span>
           </div>
-          <div class="kpi-value">72</div>
+          <div class="kpi-value" id="adminShiftsValue">0</div>
           <div class="kpi-label">Active Shifts Today</div>
         </div>
         <div class="kpi-card orange fade-in fade-in-d3">
@@ -149,7 +149,7 @@
             <div class="kpi-icon orange"><i class="fa-solid fa-clock-rotate-left"></i></div>
             <span class="kpi-trend down"><i class="fa-solid fa-arrow-down"></i> 5%</span>
           </div>
-          <div class="kpi-value">5</div>
+          <div class="kpi-value" id="adminPendingValue">0</div>
           <div class="kpi-label">Pending Requests</div>
         </div>
       </div>
@@ -161,8 +161,8 @@
         <div class="card fade-in">
           <div class="card-header">
             <div>
-              <h3>Shift Coverage</h3>
-              <p>This week's fill rate by department</p>
+              <h3>User Roles</h3>
+              <p>Distribution of current accounts by role</p>
             </div>
             <select class="select-control" style="font-size:.82rem">
               <option>This Week</option>
@@ -170,84 +170,17 @@
             </select>
           </div>
           <div class="card-body">
-            <div style="display:flex;flex-direction:column;gap:16px">
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">
-                  <span class="font-bold">Operations</span><span class="text-muted">94%</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width:94%"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">
-                  <span class="font-bold">Customer Support</span><span class="text-muted">87%</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width:87%;background:#3b82f6"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">
-                  <span class="font-bold">Logistics</span><span class="text-muted">76%</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width:76%;background:#8b5cf6"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">
-                  <span class="font-bold">Maintenance</span><span class="text-muted">61%</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width:61%;background:#f59e0b"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">
-                  <span class="font-bold">HR &amp; Admin</span><span class="text-muted">100%</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-              </div>
-            </div>
+            <div id="adminCoveragePanel"></div>
           </div>
         </div>
 
-        <!-- Recent Activity -->
+        <!-- Recent Records -->
         <div class="card fade-in fade-in-d1">
           <div class="card-header">
-            <div><h3>Recent Activity</h3><p>Latest system events</p></div>
+            <div><h3>Recent Records</h3><p>Latest users, tasks, and notifications</p></div>
             <a href="#" class="text-sm" style="color:var(--green);font-weight:600">View all</a>
           </div>
-          <div class="card-body" style="padding-top:8px">
-            <div class="activity-item">
-              <div class="activity-dot green"></div>
-              <div>
-                <div class="activity-text"><strong>Maria Lopez</strong> was assigned to Morning Shift – Operations</div>
-                <div class="activity-time">2 min ago</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot blue"></div>
-              <div>
-                <div class="activity-text"><strong>James O.</strong> (Manager) created 3 new shifts for Friday</div>
-                <div class="activity-time">18 min ago</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot yellow"></div>
-              <div>
-                <div class="activity-text"><strong>Sarah K.</strong> submitted a shift swap request</div>
-                <div class="activity-time">1 hr ago</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot red"></div>
-              <div>
-                <div class="activity-text"><strong>Tom B.</strong> shift conflict detected — overlapping tasks</div>
-                <div class="activity-time">2 hrs ago</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot green"></div>
-              <div>
-                <div class="activity-text"><strong>New user</strong> David Park added by Admin</div>
-                <div class="activity-time">3 hrs ago</div>
-              </div>
-            </div>
-          </div>
+          <div class="card-body" style="padding-top:8px" id="adminRecentActivity"></div>
         </div>
       </div>
 
@@ -281,73 +214,17 @@
                 <th><input type="checkbox" style="accent-color:var(--green)"/></th>
                 <th>User</th>
                 <th>Role</th>
-                <th>Department</th>
-                <th>Status</th>
-                <th>Joined</th>
+                <th>Email</th>
+                <th>Created</th>
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><input type="checkbox" style="accent-color:var(--green)"/></td>
-                <td><div class="user-cell"><div class="avatar avatar-sm avatar-blue">AM</div><div><div class="name">Alex Martinez</div><div class="email">alex.m@company.com</div></div></div></td>
-                <td><span class="badge badge-admin">Admin</span></td>
-                <td>Management</td>
-                <td><span class="badge badge-confirmed">Active</span></td>
-                <td>Jan 12, 2024</td>
-                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" style="accent-color:var(--green)"/></td>
-                <td><div class="user-cell"><div class="avatar avatar-sm avatar-purple">JO</div><div><div class="name">James Owens</div><div class="email">j.owens@company.com</div></div></div></td>
-                <td><span class="badge badge-manager">Manager</span></td>
-                <td>Operations</td>
-                <td><span class="badge badge-confirmed">Active</span></td>
-                <td>Mar 3, 2024</td>
-                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" style="accent-color:var(--green)"/></td>
-                <td><div class="user-cell"><div class="avatar avatar-sm avatar-green">ML</div><div><div class="name">Maria Lopez</div><div class="email">m.lopez@company.com</div></div></div></td>
-                <td><span class="badge badge-employee">Employee</span></td>
-                <td>Customer Support</td>
-                <td><span class="badge badge-confirmed">Active</span></td>
-                <td>Feb 19, 2024</td>
-                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" style="accent-color:var(--green)"/></td>
-                <td><div class="user-cell"><div class="avatar avatar-sm avatar-orange">SK</div><div><div class="name">Sarah Kim</div><div class="email">s.kim@company.com</div></div></div></td>
-                <td><span class="badge badge-employee">Employee</span></td>
-                <td>Logistics</td>
-                <td><span class="badge badge-pending">On Leave</span></td>
-                <td>Apr 5, 2024</td>
-                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" style="accent-color:var(--green)"/></td>
-                <td><div class="user-cell"><div class="avatar avatar-sm avatar-pink">TB</div><div><div class="name">Tom Brown</div><div class="email">t.brown@company.com</div></div></div></td>
-                <td><span class="badge badge-employee">Employee</span></td>
-                <td>Maintenance</td>
-                <td><span class="badge badge-rejected">Inactive</span></td>
-                <td>Jun 1, 2024</td>
-                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" style="accent-color:var(--green)"/></td>
-                <td><div class="user-cell"><div class="avatar avatar-sm avatar-blue">DP</div><div><div class="name">David Park</div><div class="email">d.park@company.com</div></div></div></td>
-                <td><span class="badge badge-manager">Manager</span></td>
-                <td>HR &amp; Admin</td>
-                <td><span class="badge badge-confirmed">Active</span></td>
-                <td>Jul 8, 2025</td>
-                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-              </tr>
-            </tbody>
+            <tbody id="adminUsersTableBody"></tbody>
           </table>
         </div>
         <!-- Pagination -->
         <div style="padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border)">
-          <span class="text-sm text-muted">Showing 6 of 148 users</span>
+          <span class="text-sm text-muted" id="adminUsersSummary">Showing 0 of 0 users</span>
           <div style="display:flex;gap:6px">
             <button class="btn btn-outline btn-sm"><i class="fa-solid fa-chevron-left"></i></button>
             <button class="btn btn-primary btn-sm">1</button>
@@ -371,12 +248,8 @@
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label>First Name</label>
-        <input type="text" class="form-control" placeholder="John"/>
-      </div>
-      <div class="form-group">
-        <label>Last Name</label>
-        <input type="text" class="form-control" placeholder="Doe"/>
+        <label>Full Name</label>
+        <input type="text" class="form-control" placeholder="John Doe"/>
       </div>
     </div>
     <div class="form-group">
@@ -386,6 +259,13 @@
         <input type="email" class="form-control" placeholder="john@company.com"/>
       </div>
     </div>
+    <div class="form-group">
+      <label>Password</label>
+      <div class="input-icon-wrap">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" class="form-control" placeholder="Choose a password"/>
+      </div>
+    </div>
     <div class="form-row">
       <div class="form-group">
         <label>Role</label>
@@ -393,15 +273,6 @@
           <option>Employee</option>
           <option>Manager</option>
           <option>Admin</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Department</label>
-        <select class="form-control">
-          <option>Operations</option>
-          <option>Customer Support</option>
-          <option>Logistics</option>
-          <option>HR &amp; Admin</option>
         </select>
       </div>
     </div>
@@ -414,6 +285,7 @@
   </div>
 </div>
 
+<script src="data.js"></script>
 <script>
   function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');
@@ -425,6 +297,102 @@
   }
   function openModal(id) { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  (function renderAdminPage() {
+    const data = window.getData();
+    const helpers = window.helpers;
+    const currentUser = data.session.currentUser || {};
+    const users = data.users || [];
+    const tasks = data.tasks || [];
+    const assignments = data.assignments || [];
+    const notifications = data.notifications || [];
+    const unreadCount = helpers.getUnreadNotifications(currentUser.id).length;
+    const admins = helpers.getUsersByRole('admin');
+    const managers = helpers.getUsersByRole('manager');
+    const employees = helpers.getUsersByRole('employee');
+
+    const name = currentUser.fullName || 'No user loaded';
+    const role = currentUser.role || 'Admin';
+    const initials = helpers.initialsFromName(name);
+
+    document.getElementById('adminSidebarInitials').textContent = initials;
+    document.getElementById('adminTopbarInitials').textContent = initials;
+    document.getElementById('adminSidebarName').textContent = name;
+    document.getElementById('adminTopbarName').textContent = name;
+    document.getElementById('adminSidebarRole').textContent = role;
+    document.getElementById('adminTopbarRole').textContent = role;
+    document.getElementById('adminSidebarNotifCount').textContent = unreadCount;
+    document.getElementById('adminSummaryLabel').textContent = users.length
+      ? `${users.length} users, ${tasks.length} tasks, ${assignments.length} assignments in the current backend dataset.`
+      : 'User, task, assignment, and notification summaries will appear here when data is connected.';
+
+    document.getElementById('adminEmployeesValue').textContent = employees.length;
+    document.getElementById('adminManagersValue').textContent = managers.length;
+    document.getElementById('adminShiftsValue').textContent = tasks.length;
+    document.getElementById('adminPendingValue').textContent = notifications.filter((item) => item.status === 'unread').length;
+
+    const roleEntries = [
+      ['Admins', admins.length],
+      ['Managers', managers.length],
+      ['Employees', employees.length]
+    ];
+    const maxRoleCount = Math.max(...roleEntries.map(([, value]) => value), 1);
+
+    document.getElementById('adminCoveragePanel').innerHTML = users.length
+      ? roleEntries.map(([label, value], index) => `
+          <div style="margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">
+              <span class="font-bold">${helpers.escapeHtml(label)}</span><span class="text-muted">${helpers.escapeHtml(value)}</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:${(value / maxRoleCount) * 100}%;background:${['var(--green)', '#3b82f6', '#8b5cf6'][index % 3]}"></div></div>
+          </div>
+        `).join('')
+      : helpers.emptyState('No users loaded', 'Role distribution will render here after the frontend receives user records from the backend.', 'users');
+
+    const recentRecords = [
+      ...users.map((user) => ({ type: 'User', title: user.fullName || 'Unnamed user', meta: user.email || 'No email', createdAt: user.createdAt })),
+      ...tasks.map((task) => ({ type: 'Task', title: task.title || 'Untitled task', meta: helpers.formatDate(task.date), createdAt: task.createdAt })),
+      ...notifications.map((notification) => ({ type: 'Notification', title: notification.message || 'Notification', meta: notification.status || 'unknown', createdAt: notification.createdAt }))
+    ]
+      .filter((item) => item.createdAt)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 5);
+
+    document.getElementById('adminRecentActivity').innerHTML = recentRecords.length
+      ? recentRecords.map((item, index) => `
+          <div class="activity-item">
+            <div class="activity-dot ${['green', 'blue', 'yellow', 'red', 'green'][index % 5]}"></div>
+            <div>
+              <div class="activity-text"><strong>${helpers.escapeHtml(item.type)}</strong> — ${helpers.escapeHtml(item.title)}</div>
+              <div class="activity-time">${helpers.escapeHtml(item.meta)} · ${helpers.escapeHtml(helpers.formatDate(item.createdAt))}</div>
+            </div>
+          </div>
+        `).join('')
+      : helpers.emptyState('No records yet', 'Latest users, tasks, and notifications will appear here when the backend returns stored records.', 'clock-rotate-left');
+
+    document.getElementById('adminUsersTableBody').innerHTML = users.length
+      ? users.map((user, index) => `
+          <tr>
+            <td><input type="checkbox" style="accent-color:var(--green)"/></td>
+            <td>
+              <div class="user-cell">
+                <div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(user.initials || helpers.initialsFromName(user.name))}</div>
+                <div>
+                  <div class="name">${helpers.escapeHtml(user.fullName || 'Unnamed user')}</div>
+                  <div class="email">${helpers.escapeHtml(user.id || 'No id')}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="badge ${helpers.roleBadgeClass(user.role)}">${helpers.escapeHtml(user.role || 'Unassigned')}</span></td>
+            <td>${helpers.escapeHtml(user.email || 'No email')}</td>
+            <td>${helpers.escapeHtml(helpers.formatDate(user.createdAt))}</td>
+            <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+          </tr>
+        `).join('')
+      : `<tr><td colspan="6">${helpers.emptyState('No users loaded', 'User accounts will appear here after you connect the frontend to the backend user endpoints.', 'users')}</td></tr>`;
+
+    document.getElementById('adminUsersSummary').textContent = `Showing ${users.length} of ${users.length} users`;
+  })();
 </script>
 </body>
 </html>

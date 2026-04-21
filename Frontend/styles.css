@@ -31,6 +31,43 @@ ul { list-style: none; }
 img { display: block; max-width: 100%; }
 input, textarea, select, button { font-family: inherit; }
 
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 180px;
+  padding: 28px 20px;
+  text-align: center;
+  color: var(--subtext);
+}
+.empty-state.compact {
+  min-height: 120px;
+  padding: 18px 16px;
+}
+.empty-state-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--green-light);
+  color: var(--green);
+  font-size: 1.1rem;
+}
+.empty-state h4 {
+  font-size: .98rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.empty-state p {
+  max-width: 420px;
+  font-size: .88rem;
+  line-height: 1.7;
+}
+
 /* ── CSS Variables ───────────────────────────────────────── */
 :root {
   --green:       #16a34a;

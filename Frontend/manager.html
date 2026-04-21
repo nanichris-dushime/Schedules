@@ -30,7 +30,7 @@
       </a>
       <a href="notifications.html" class="nav-item">
         <i class="fa-solid fa-bell"></i> Notifications
-        <span class="badge-pill">2</span>
+        <span class="badge-pill" id="managerSidebarNotifCount">0</span>
       </a>
     </div>
     <div class="sidebar-section">
@@ -47,10 +47,10 @@
     </div>
     <div class="sidebar-footer">
       <div class="sidebar-user">
-        <div class="avatar avatar-purple">JO</div>
+        <div class="avatar avatar-purple" id="managerSidebarInitials">--</div>
         <div class="user-info">
-          <div class="user-name">James Owens</div>
-          <div class="user-role">Manager</div>
+          <div class="user-name" id="managerSidebarName">No user loaded</div>
+          <div class="user-role" id="managerSidebarRole">Manager</div>
         </div>
         <a href="login.html" data-tip="Logout" style="color:#475569;font-size:.85rem;margin-left:auto">
           <i class="fa-solid fa-right-from-bracket"></i>
@@ -76,10 +76,10 @@
       </div>
       <div class="topbar-icon-btn"><i class="fa-solid fa-gear"></i></div>
       <div class="topbar-profile">
-        <div class="avatar avatar-purple">JO</div>
+        <div class="avatar avatar-purple" id="managerTopbarInitials">--</div>
         <div>
-          <div class="profile-name">James Owens</div>
-          <div class="profile-role">Manager</div>
+          <div class="profile-name" id="managerTopbarName">No user loaded</div>
+          <div class="profile-role" id="managerTopbarRole">Manager</div>
         </div>
       </div>
     </div>
@@ -93,7 +93,7 @@
       <div class="page-header">
         <div class="page-header-left">
           <h2>Task Management</h2>
-          <p>Operations Department — Week of July 14, 2025</p>
+          <p id="managerSummaryLabel">Task and team data will appear here when connected.</p>
         </div>
         <div class="page-header-right">
           <a href="schedule.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-calendar-days"></i> View Schedule</a>
@@ -107,22 +107,22 @@
       <div class="kpi-grid">
         <div class="kpi-card green fade-in">
           <div class="kpi-top"><div class="kpi-icon green"><i class="fa-solid fa-list-check"></i></div><span class="kpi-trend up">+4</span></div>
-          <div class="kpi-value">24</div>
+          <div class="kpi-value" id="managerTotalTasks">0</div>
           <div class="kpi-label">Total Tasks</div>
         </div>
         <div class="kpi-card blue fade-in fade-in-d1">
           <div class="kpi-top"><div class="kpi-icon blue"><i class="fa-solid fa-circle-check"></i></div><span class="kpi-trend up">↑</span></div>
-          <div class="kpi-value">14</div>
+          <div class="kpi-value" id="managerConfirmedTasks">0</div>
           <div class="kpi-label">Confirmed</div>
         </div>
         <div class="kpi-card orange fade-in fade-in-d2">
           <div class="kpi-top"><div class="kpi-icon orange"><i class="fa-solid fa-clock"></i></div><span class="kpi-trend neutral">—</span></div>
-          <div class="kpi-value">7</div>
+          <div class="kpi-value" id="managerPendingTasks">0</div>
           <div class="kpi-label">Pending</div>
         </div>
         <div class="kpi-card purple fade-in fade-in-d3">
           <div class="kpi-top"><div class="kpi-icon purple"><i class="fa-solid fa-users"></i></div><span class="kpi-trend up">+2</span></div>
-          <div class="kpi-value">12</div>
+          <div class="kpi-value" id="managerTeamMembers">0</div>
           <div class="kpi-label">Team Members</div>
         </div>
       </div>
@@ -145,13 +145,8 @@
             </div>
             <div class="form-group">
               <label>Assign To</label>
-              <select class="form-control">
-                <option value="">Select employee…</option>
-                <option>Maria Lopez</option>
-                <option>Sarah Kim</option>
-                <option>Tom Brown</option>
-                <option>Nina Patel</option>
-                <option>Carlos Rivera</option>
+              <select class="form-control" id="managerAssignToSelect">
+                <option value="">Connect data source to load employees…</option>
               </select>
             </div>
             <div class="form-row">
@@ -159,7 +154,7 @@
                 <label>Date</label>
                 <div class="input-icon-wrap">
                   <i class="fa-regular fa-calendar"></i>
-                  <input type="date" class="form-control" value="2025-07-14"/>
+                  <input type="date" class="form-control"/>
                 </div>
               </div>
               <div class="form-group">
@@ -199,57 +194,7 @@
             <div><h3>Team Status</h3><p>Today's availability</p></div>
             <a href="employee.html" class="text-sm" style="color:var(--green);font-weight:600">View all</a>
           </div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:12px">
-
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <div style="display:flex;align-items:center;gap:10px">
-                <div class="avatar avatar-sm avatar-green">ML</div>
-                <div><div style="font-size:.88rem;font-weight:600">Maria Lopez</div><div class="text-sm text-muted">Customer Support</div></div>
-              </div>
-              <span class="badge badge-confirmed">On Shift</span>
-            </div>
-
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <div style="display:flex;align-items:center;gap:10px">
-                <div class="avatar avatar-sm avatar-orange">SK</div>
-                <div><div style="font-size:.88rem;font-weight:600">Sarah Kim</div><div class="text-sm text-muted">Logistics</div></div>
-              </div>
-              <span class="badge badge-pending">Pending</span>
-            </div>
-
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <div style="display:flex;align-items:center;gap:10px">
-                <div class="avatar avatar-sm avatar-blue">NP</div>
-                <div><div style="font-size:.88rem;font-weight:600">Nina Patel</div><div class="text-sm text-muted">Operations</div></div>
-              </div>
-              <span class="badge badge-confirmed">On Shift</span>
-            </div>
-
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <div style="display:flex;align-items:center;gap:10px">
-                <div class="avatar avatar-sm avatar-pink">CR</div>
-                <div><div style="font-size:.88rem;font-weight:600">Carlos Rivera</div><div class="text-sm text-muted">Operations</div></div>
-              </div>
-              <span class="badge badge-confirmed">On Shift</span>
-            </div>
-
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <div style="display:flex;align-items:center;gap:10px">
-                <div class="avatar avatar-sm avatar-purple">TB</div>
-                <div><div style="font-size:.88rem;font-weight:600">Tom Brown</div><div class="text-sm text-muted">Maintenance</div></div>
-              </div>
-              <span class="badge badge-rejected">Off Today</span>
-            </div>
-
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <div style="display:flex;align-items:center;gap:10px">
-                <div class="avatar avatar-sm avatar-green">AN</div>
-                <div><div style="font-size:.88rem;font-weight:600">Amy Nguyen</div><div class="text-sm text-muted">Customer Support</div></div>
-              </div>
-              <span class="badge badge-confirmed">On Shift</span>
-            </div>
-
-          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:12px" id="managerTeamStatus"></div>
         </div>
       </div>
 
@@ -280,62 +225,7 @@
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><div style="font-weight:600;font-size:.9rem">Morning Inventory Check</div><div class="text-sm text-muted">Operations</div></td>
-                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-green">ML</div>Maria Lopez</div></td>
-                <td>Jul 14, 2025</td>
-                <td>08:00 – 10:00</td>
-                <td>Operations</td>
-                <td><span class="badge badge-confirmed">Confirmed</span></td>
-                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-              </tr>
-              <tr>
-                <td><div style="font-weight:600;font-size:.9rem">Customer Intake Processing</div><div class="text-sm text-muted">Support</div></td>
-                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-blue">NP</div>Nina Patel</div></td>
-                <td>Jul 14, 2025</td>
-                <td>09:00 – 13:00</td>
-                <td>Customer Support</td>
-                <td><span class="badge badge-confirmed">Confirmed</span></td>
-                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-              </tr>
-              <tr>
-                <td><div style="font-weight:600;font-size:.9rem">Warehouse Dispatch</div><div class="text-sm text-muted">Logistics</div></td>
-                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-orange">SK</div>Sarah Kim</div></td>
-                <td>Jul 14, 2025</td>
-                <td>10:00 – 14:00</td>
-                <td>Logistics</td>
-                <td><span class="badge badge-pending">Pending</span></td>
-                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-              </tr>
-              <tr>
-                <td><div style="font-weight:600;font-size:.9rem">Equipment Maintenance Round</div><div class="text-sm text-muted">Maintenance</div></td>
-                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-purple">TB</div>Tom Brown</div></td>
-                <td>Jul 15, 2025</td>
-                <td>07:00 – 11:00</td>
-                <td>Maintenance</td>
-                <td><span class="badge badge-rejected">Rejected</span></td>
-                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-              </tr>
-              <tr>
-                <td><div style="font-weight:600;font-size:.9rem">Afternoon Floor Supervision</div><div class="text-sm text-muted">Operations</div></td>
-                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-pink">CR</div>Carlos Rivera</div></td>
-                <td>Jul 15, 2025</td>
-                <td>13:00 – 17:00</td>
-                <td>Operations</td>
-                <td><span class="badge badge-confirmed">Confirmed</span></td>
-                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-              </tr>
-              <tr>
-                <td><div style="font-weight:600;font-size:.9rem">End-of-Day Report Compilation</div><div class="text-sm text-muted">Operations</div></td>
-                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-green">AN</div>Amy Nguyen</div></td>
-                <td>Jul 15, 2025</td>
-                <td>16:00 – 18:00</td>
-                <td>Operations</td>
-                <td><span class="badge badge-pending">Pending</span></td>
-                <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
-              </tr>
-            </tbody>
+            <tbody id="managerTaskTableBody"></tbody>
           </table>
         </div>
       </div>
@@ -382,11 +272,7 @@
     <div class="form-group">
       <label>Assign Employee</label>
       <select class="form-control">
-        <option value="">— Select —</option>
-        <option>Maria Lopez</option>
-        <option>Nina Patel</option>
-        <option>Carlos Rivera</option>
-        <option>Amy Nguyen</option>
+        <option value="">Connect data source to load employees…</option>
       </select>
     </div>
     <div style="display:flex;gap:10px;justify-content:flex-end">
@@ -404,26 +290,7 @@
       <button class="modal-close" onclick="closeModal('assignModal')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <p class="text-muted text-sm" style="margin-bottom:16px">Select an available employee for this task</p>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
-      <label style="display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer">
-        <input type="radio" name="emp" style="accent-color:var(--green)"/>
-        <div class="avatar avatar-sm avatar-green">ML</div>
-        <div><div style="font-weight:600;font-size:.88rem">Maria Lopez</div><div class="text-sm text-muted">Customer Support</div></div>
-        <span class="badge badge-confirmed" style="margin-left:auto">Available</span>
-      </label>
-      <label style="display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer">
-        <input type="radio" name="emp" style="accent-color:var(--green)"/>
-        <div class="avatar avatar-sm avatar-blue">NP</div>
-        <div><div style="font-weight:600;font-size:.88rem">Nina Patel</div><div class="text-sm text-muted">Operations</div></div>
-        <span class="badge badge-confirmed" style="margin-left:auto">Available</span>
-      </label>
-      <label style="display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;opacity:.6">
-        <input type="radio" name="emp" disabled style="accent-color:var(--green)"/>
-        <div class="avatar avatar-sm avatar-orange">SK</div>
-        <div><div style="font-weight:600;font-size:.88rem">Sarah Kim</div><div class="text-sm text-muted">Logistics</div></div>
-        <span class="badge badge-pending" style="margin-left:auto">On Leave</span>
-      </label>
-    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px" id="assignModalOptions"></div>
     <div style="display:flex;gap:10px;justify-content:flex-end">
       <button class="btn btn-outline" onclick="closeModal('assignModal')">Cancel</button>
       <button class="btn btn-primary"><i class="fa-solid fa-check"></i> Confirm Assignment</button>
@@ -431,11 +298,85 @@
   </div>
 </div>
 
+<script src="data.js"></script>
 <script>
   function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
   function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
   function openModal(id)   { document.getElementById(id).classList.add('open'); }
   function closeModal(id)  { document.getElementById(id).classList.remove('open'); }
+
+  (function renderManagerPage() {
+    const data = window.getData();
+    const helpers = window.helpers;
+    const currentUser = data.session.currentUser || {};
+    const users = data.users || [];
+    const tasks = data.tasks || [];
+    const unreadCount = (data.notifications || []).filter((item) => item.unread).length;
+    const employees = users.filter((user) => String(user.role || '').toLowerCase() === 'employee');
+    const confirmedTasks = tasks.filter((task) => String(task.status || '').toLowerCase() === 'confirmed');
+    const pendingTasks = tasks.filter((task) => String(task.status || '').toLowerCase() === 'pending');
+
+    const name = currentUser.name || 'No user loaded';
+    const role = currentUser.role || 'Manager';
+    const initials = currentUser.initials || helpers.initialsFromName(name);
+
+    document.getElementById('managerSidebarInitials').textContent = initials;
+    document.getElementById('managerTopbarInitials').textContent = initials;
+    document.getElementById('managerSidebarName').textContent = name;
+    document.getElementById('managerTopbarName').textContent = name;
+    document.getElementById('managerSidebarRole').textContent = role;
+    document.getElementById('managerTopbarRole').textContent = role;
+    document.getElementById('managerSidebarNotifCount').textContent = unreadCount;
+    document.getElementById('managerSummaryLabel').textContent = data.schedule.label
+      ? `${data.schedule.department || 'All departments'} — ${data.schedule.label}`
+      : 'Task and team data will appear here when connected.';
+
+    document.getElementById('managerTotalTasks').textContent = tasks.length;
+    document.getElementById('managerConfirmedTasks').textContent = confirmedTasks.length;
+    document.getElementById('managerPendingTasks').textContent = pendingTasks.length;
+    document.getElementById('managerTeamMembers').textContent = employees.length;
+
+    document.getElementById('managerAssignToSelect').innerHTML = employees.length
+      ? `<option value="">Select employee…</option>${employees.map((user) => `<option>${helpers.escapeHtml(user.name || 'Unnamed user')}</option>`).join('')}`
+      : '<option value="">Connect data source to load employees…</option>';
+
+    document.getElementById('managerTeamStatus').innerHTML = employees.length
+      ? employees.map((user, index) => `
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(user.initials || helpers.initialsFromName(user.name))}</div>
+              <div><div style="font-size:.88rem;font-weight:600">${helpers.escapeHtml(user.name || 'Unnamed user')}</div><div class="text-sm text-muted">${helpers.escapeHtml(user.dept || 'No department')}</div></div>
+            </div>
+            <span class="badge ${helpers.statusBadgeClass(user.status)}">${helpers.escapeHtml(user.status || 'Unknown')}</span>
+          </div>
+        `).join('')
+      : helpers.emptyState('No team members loaded', 'Employee availability will appear here after your frontend is connected to real user data.', 'users');
+
+    document.getElementById('managerTaskTableBody').innerHTML = tasks.length
+      ? tasks.map((task, index) => `
+          <tr>
+            <td><div style="font-weight:600;font-size:.9rem">${helpers.escapeHtml(task.title || 'Untitled task')}</div><div class="text-sm text-muted">${helpers.escapeHtml(task.location || 'No location')}</div></td>
+            <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(helpers.initialsFromName(task.assignee || 'Unassigned'))}</div>${helpers.escapeHtml(task.assignee || 'Unassigned')}</div></td>
+            <td>${helpers.escapeHtml(task.date || '--')}</td>
+            <td>${helpers.escapeHtml(task.time || '--')}</td>
+            <td>${helpers.escapeHtml(task.dept || 'Not set')}</td>
+            <td><span class="badge ${helpers.statusBadgeClass(task.status)}">${helpers.escapeHtml(task.status || 'Unknown')}</span></td>
+            <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-outline btn-sm" onclick="openModal('assignModal')"><i class="fa-solid fa-user-plus"></i></button><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button></div></td>
+          </tr>
+        `).join('')
+      : `<tr><td colspan="7">${helpers.emptyState('No tasks loaded', 'Task rows will render here once the backend returns assignments.', 'list-check')}</td></tr>`;
+
+    document.getElementById('assignModalOptions').innerHTML = employees.length
+      ? employees.map((user, index) => `
+          <label style="display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer">
+            <input type="radio" name="emp" style="accent-color:var(--green)"/>
+            <div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(user.initials || helpers.initialsFromName(user.name))}</div>
+            <div><div style="font-weight:600;font-size:.88rem">${helpers.escapeHtml(user.name || 'Unnamed user')}</div><div class="text-sm text-muted">${helpers.escapeHtml(user.dept || 'No department')}</div></div>
+            <span class="badge ${helpers.statusBadgeClass(user.status)}" style="margin-left:auto">${helpers.escapeHtml(user.status || 'Unknown')}</span>
+          </label>
+        `).join('')
+      : helpers.emptyState('No employees available', 'Assignable team members will appear here after live user data is loaded.', 'user-plus');
+  })();
 </script>
 </body>
 </html>

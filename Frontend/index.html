@@ -43,7 +43,7 @@
       <div class="hero-copy fade-in">
         <div class="hero-badge">
           <span class="dot"></span>
-          Now with AI-powered conflict detection
+          <span id="heroBadgeText">Frontend ready for live scheduling data</span>
         </div>
         <h1>Schedule Smarter,<br/><span>Work Better</span></h1>
         <p>
@@ -58,19 +58,8 @@
             <i class="fa-solid fa-play-circle"></i> See How It Works
           </a>
         </div>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <strong>10k+</strong>
-            <span>Companies</span>
-          </div>
-          <div class="hero-stat">
-            <strong>98%</strong>
-            <span>Uptime SLA</span>
-          </div>
-          <div class="hero-stat">
-            <strong>4.9★</strong>
-            <span>Avg Rating</span>
-          </div>
+        <div class="hero-stats" id="heroStats">
+          <!-- Dynamic stats will be rendered here -->
         </div>
       </div>
 
@@ -82,27 +71,8 @@
             <h4><i class="fa-regular fa-calendar" style="color:var(--green);margin-right:6px"></i>Today's Shifts</h4>
             <span class="badge badge-confirmed">Live</span>
           </div>
-          <div class="hero-mini-schedule">
-            <div class="mini-slot">
-              <span class="slot-time">08:00 – 12:00</span>
-              <div class="slot-bar" style="--w:80%"></div>
-              <span class="slot-name">Alice M.</span>
-            </div>
-            <div class="mini-slot">
-              <span class="slot-time">09:00 – 13:00</span>
-              <div class="slot-bar" style="--w:90%"></div>
-              <span class="slot-name">Bob K.</span>
-            </div>
-            <div class="mini-slot">
-              <span class="slot-time">12:00 – 16:00</span>
-              <div class="slot-bar" style="--w:60%"></div>
-              <span class="slot-name">Carol S.</span>
-            </div>
-            <div class="mini-slot">
-              <span class="slot-time">14:00 – 18:00</span>
-              <div class="slot-bar" style="--w:75%"></div>
-              <span class="slot-name">David L.</span>
-            </div>
+          <div class="hero-mini-schedule" id="heroMiniSchedule">
+            <!-- Dynamic mini schedule will be rendered here -->
           </div>
         </div>
 
@@ -113,8 +83,8 @@
               <i class="fa-solid fa-shield-check"></i>
             </div>
             <div>
-              <div style="font-size:.88rem;font-weight:700">No conflicts detected</div>
-              <div style="font-size:.78rem;color:var(--subtext)">All 12 shifts are covered this week</div>
+              <div style="font-size:.88rem;font-weight:700" id="heroStatusTitle">No live data connected</div>
+              <div style="font-size:.78rem;color:var(--subtext)" id="heroStatusBody">Connect your API to show real shift coverage, alerts, and team activity.</div>
             </div>
             <div style="margin-left:auto">
               <span class="badge badge-confirmed">✓</span>
@@ -123,19 +93,8 @@
         </div>
 
         <!-- Mini stat row -->
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-          <div class="hero-card" style="padding:16px;text-align:center">
-            <div style="font-size:1.4rem;font-weight:800;color:var(--accent)">24</div>
-            <div style="font-size:.75rem;color:var(--subtext)">On Shift</div>
-          </div>
-          <div class="hero-card" style="padding:16px;text-align:center">
-            <div style="font-size:1.4rem;font-weight:800;color:var(--green)">3</div>
-            <div style="font-size:.75rem;color:var(--subtext)">Pending</div>
-          </div>
-          <div class="hero-card" style="padding:16px;text-align:center">
-            <div style="font-size:1.4rem;font-weight:800;color:#3b82f6">7</div>
-            <div style="font-size:.75rem;color:var(--subtext)">Off Today</div>
-          </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px" id="heroMiniStats">
+          <!-- Dynamic mini stats rendered here -->
         </div>
       </div>
 
@@ -223,35 +182,9 @@
 
       <div class="about-visual">
         <div class="about-stat-grid">
-          <div class="about-stat">
-            <strong>10K+</strong>
-            <span>Companies</span>
-          </div>
-          <div class="about-stat">
-            <strong>500K+</strong>
-            <span>Employees</span>
-          </div>
-          <div class="about-stat">
-            <strong>80%</strong>
-            <span>Time Saved</span>
-          </div>
-          <div class="about-stat">
-            <strong>99.9%</strong>
-            <span>Uptime</span>
-          </div>
+          <div id="aboutStatsGrid" style="grid-column:1 / -1"></div>
         </div>
-        <div style="margin-top:20px;background:rgba(255,255,255,.06);border-radius:10px;padding:20px;border:1px solid rgba(255,255,255,.06)">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-            <div class="avatar avatar-green"><i class="fa-solid fa-quote-left" style="font-size:.8rem"></i></div>
-            <div>
-              <div style="font-size:.88rem;font-weight:700;color:#fff">Sarah Chen</div>
-              <div style="font-size:.75rem;color:#64748b">Operations Manager, NovaMed</div>
-            </div>
-          </div>
-          <p style="font-size:.88rem;color:#94a3b8;line-height:1.7;margin:0">
-            "ShiftSmart cut our scheduling time from 6 hours to 30 minutes. Conflict errors dropped to zero. It's genuinely changed how we run our department."
-          </p>
-        </div>
+        <div id="aboutConnectionCard" style="margin-top:20px;background:rgba(255,255,255,.06);border-radius:10px;padding:20px;border:1px solid rgba(255,255,255,.06)"></div>
       </div>
 
     </div>
@@ -309,7 +242,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2025 ShiftSmart Inc. All rights reserved.</span>
+      <span id="footerYearText">© ShiftSmart Inc. All rights reserved.</span>
       <div style="display:flex;gap:16px">
         <a href="#" style="color:#475569;font-size:.9rem"><i class="fa-brands fa-twitter"></i></a>
         <a href="#" style="color:#475569;font-size:.9rem"><i class="fa-brands fa-linkedin"></i></a>
@@ -318,9 +251,13 @@
     </div>
   </footer>
 
-  <!-- ── Minimal JS for mobile menu ──────────────────────── -->
+  <!-- Data.js & Dynamic Rendering -->
+  <script src="data.js"></script>
+  
+  <!-- ── App JS (mobile + dynamic) ────────────────────────── -->
   <script>
-    document.getElementById('hamburger').addEventListener('click', function() {
+    // Existing mobile menu
+    document.getElementById('hamburger')?.addEventListener('click', function() {
       const links = document.querySelector('.nav-links');
       if (links) {
         links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
@@ -334,6 +271,72 @@
         links.style.boxShadow = '0 4px 16px rgba(0,0,0,.08)';
       }
     });
+
+    // Render dynamic hero content
+    function renderHeroData() {
+      const data = window.getData();
+      const helpers = window.helpers;
+      const heroStats = data.landing.heroStats || [];
+      const miniStats = data.landing.miniStats || [];
+      const tasks = data.tasks || [];
+      const status = data.landing.highlights || {};
+
+      document.getElementById('heroBadgeText').textContent = data.landing.badge || 'Frontend ready for live scheduling data';
+      document.getElementById('heroStatusTitle').textContent = status.statusTitle || 'No live data connected';
+      document.getElementById('heroStatusBody').textContent = status.statusBody || 'Connect your API to show real shift coverage, alerts, and team activity.';
+      
+      // Hero stats
+      document.getElementById('heroStats').innerHTML = heroStats.length
+        ? heroStats.map((stat) => `
+            <div class="hero-stat">
+              <strong>${helpers.escapeHtml(stat.value)}</strong>
+              <span>${helpers.escapeHtml(stat.label)}</span>
+            </div>
+          `).join('')
+        : helpers.emptyState('No landing metrics yet', 'Hero metrics will appear here after your frontend receives live dashboard data.', 'chart-column').replace('empty-state"', 'empty-state compact"');
+      
+      const miniTasks = tasks.slice(0, 4).map((task) => `
+        <div class="mini-slot">
+          <span class="slot-time">${helpers.escapeHtml(task.time || '--:--')}</span>
+          <div class="slot-bar" style="--w:${Math.floor(Math.random()*20+70)}%"></div>
+          <span class="slot-name">${helpers.escapeHtml((task.assignee || 'Unassigned').split(' ')[0])}</span>
+        </div>
+      `).join('');
+      document.getElementById('heroMiniSchedule').innerHTML = miniTasks || helpers.emptyState('No shifts scheduled yet', 'Today\'s schedule preview will appear here once shift data is loaded.', 'calendar-days').replace('empty-state"', 'empty-state compact"');
+      
+      document.getElementById('heroMiniStats').innerHTML = miniStats.length
+        ? miniStats.map((stat) => `
+            <div class="hero-card" style="padding:16px;text-align:center">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--accent)">${helpers.escapeHtml(stat.value)}</div>
+              <div style="font-size:.75rem;color:var(--subtext)">${helpers.escapeHtml(stat.label)}</div>
+            </div>
+          `).join('')
+        : helpers.emptyState('Waiting for live totals', 'Mini dashboard numbers will render here after connection.', 'signal').replace('empty-state"', 'empty-state compact"');
+
+      document.getElementById('aboutStatsGrid').innerHTML = helpers.emptyState(
+        'No public metrics embedded',
+        'This marketing panel is now free of sample numbers so you can populate it with verified live product data later.',
+        'link'
+      );
+
+      document.getElementById('aboutConnectionCard').innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div class="avatar avatar-green"><i class="fa-solid fa-plug" style="font-size:.8rem"></i></div>
+          <div>
+            <div style="font-size:.88rem;font-weight:700;color:#fff">Backend Integration Ready</div>
+            <div style="font-size:.75rem;color:#64748b">Swap the empty frontend state with your API responses when the backend is available.</div>
+          </div>
+        </div>
+        <p style="font-size:.88rem;color:#94a3b8;line-height:1.7;margin:0">
+          This landing page now avoids demo business metrics and sample testimonials so it can safely display verified production data later.
+        </p>
+      `;
+
+      document.getElementById('footerYearText').textContent = `© ${new Date().getFullYear()} ShiftSmart Inc. All rights reserved.`;
+    }
+
+    // Init on load
+    window.addEventListener('load', renderHeroData);
   </script>
 </body>
 </html>

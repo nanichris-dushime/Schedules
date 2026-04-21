@@ -26,7 +26,7 @@
       <a href="schedule.html" class="nav-item"><i class="fa-solid fa-calendar-days"></i> Schedule</a>
       <a href="notifications.html" class="nav-item active">
         <i class="fa-solid fa-bell"></i> Notifications
-        <span class="badge-pill">4</span>
+        <span class="badge-pill" id="notificationsSidebarCount">0</span>
       </a>
     </div>
     <div class="sidebar-section">
@@ -37,8 +37,8 @@
     </div>
     <div class="sidebar-footer">
       <div class="sidebar-user">
-        <div class="avatar avatar-green">AK</div>
-        <div class="user-info"><div class="user-name">Alex Kim</div><div class="user-role">Administrator</div></div>
+        <div class="avatar avatar-green" id="notificationsSidebarInitials">--</div>
+        <div class="user-info"><div class="user-name" id="notificationsSidebarName">No user loaded</div><div class="user-role" id="notificationsSidebarRole">Admin</div></div>
         <a href="login.html" style="color:#475569;font-size:.85rem;margin-left:auto"><i class="fa-solid fa-right-from-bracket"></i></a>
       </div>
     </div>
@@ -60,8 +60,8 @@
         <span class="notif-dot"></span>
       </div>
       <div class="topbar-profile">
-        <div class="avatar avatar-green">AK</div>
-        <div><div class="profile-name">Alex Kim</div><div class="profile-role">Admin</div></div>
+        <div class="avatar avatar-green" id="notificationsTopbarInitials">--</div>
+        <div><div class="profile-name" id="notificationsTopbarName">No user loaded</div><div class="profile-role" id="notificationsTopbarRole">Admin</div></div>
       </div>
     </div>
   </header>
@@ -74,7 +74,7 @@
       <div class="page-header">
         <div class="page-header-left">
           <h2>Notifications</h2>
-          <p>You have <strong style="color:var(--green)">4 unread</strong> notifications</p>
+          <p id="notificationsSummary">You have <strong style="color:var(--green)">0 unread</strong> notifications</p>
         </div>
         <div class="page-header-right">
           <button class="btn btn-outline btn-sm" onclick="markAllRead()">
@@ -95,148 +95,14 @@
             <div><h3>All Notifications</h3></div>
             <div class="notif-filters">
               <button class="filter-pill active" onclick="filterNotif(this,'all')">All</button>
-              <button class="filter-pill" onclick="filterNotif(this,'unread')">Unread (4)</button>
+              <button class="filter-pill" id="unreadFilterBtn" onclick="filterNotif(this,'unread')">Unread (0)</button>
               <button class="filter-pill" onclick="filterNotif(this,'shifts')">Shifts</button>
               <button class="filter-pill" onclick="filterNotif(this,'system')">System</button>
               <button class="filter-pill" onclick="filterNotif(this,'alerts')">Alerts</button>
             </div>
           </div>
 
-          <!-- Today -->
-          <div style="padding:12px 20px 4px">
-            <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--subtext)">Today</div>
-          </div>
-          <div class="notif-list" id="notifList">
-
-            <div class="notif-item unread" data-cat="shifts" onclick="readNotif(this)">
-              <div class="notif-icon green"><i class="fa-solid fa-calendar-check"></i></div>
-              <div class="notif-body">
-                <p><strong>Shift Confirmed</strong> — Maria Lopez confirmed her shift for Monday Jul 14, 08:00–10:00.</p>
-                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Just now</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
-                <span class="badge badge-confirmed">Shift</span>
-                <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:.75rem"><i class="fa-solid fa-xmark"></i></button>
-              </div>
-            </div>
-
-            <div class="notif-item unread" data-cat="alerts" onclick="readNotif(this)">
-              <div class="notif-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
-              <div class="notif-body">
-                <p><strong>Conflict Detected</strong> — Tom Brown has overlapping shifts on Thursday Jul 17. Immediate review required.</p>
-                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>12 min ago</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
-                <span class="badge badge-rejected">Alert</span>
-                <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:.75rem"><i class="fa-solid fa-xmark"></i></button>
-              </div>
-            </div>
-
-            <div class="notif-item unread" data-cat="shifts" onclick="readNotif(this)">
-              <div class="notif-icon yellow"><i class="fa-solid fa-arrows-rotate"></i></div>
-              <div class="notif-body">
-                <p><strong>Swap Request</strong> — Sarah Kim requested a shift swap for Wednesday Jul 16. Awaiting your approval.</p>
-                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>38 min ago</div>
-                <div style="display:flex;gap:8px;margin-top:8px">
-                  <button class="btn btn-primary btn-sm"><i class="fa-solid fa-check"></i> Approve</button>
-                  <button class="btn btn-danger btn-sm"><i class="fa-solid fa-xmark"></i> Deny</button>
-                </div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
-                <span class="badge badge-pending">Request</span>
-                <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:.75rem"><i class="fa-solid fa-xmark"></i></button>
-              </div>
-            </div>
-
-            <div class="notif-item unread" data-cat="system" onclick="readNotif(this)">
-              <div class="notif-icon blue"><i class="fa-solid fa-user-plus"></i></div>
-              <div class="notif-body">
-                <p><strong>New User Registered</strong> — David Park joined the system and is pending role assignment.</p>
-                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>1 hr ago</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
-                <span class="badge badge-manager">System</span>
-                <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:.75rem"><i class="fa-solid fa-xmark"></i></button>
-              </div>
-            </div>
-
-            <!-- Yesterday -->
-            <div style="padding:12px 20px 4px;background:var(--muted);border-top:1px solid var(--border)">
-              <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--subtext)">Yesterday</div>
-            </div>
-
-            <div class="notif-item" data-cat="shifts" onclick="readNotif(this)">
-              <div class="notif-icon green"><i class="fa-solid fa-calendar-plus"></i></div>
-              <div class="notif-body">
-                <p><strong>New Shift Created</strong> — James Owens created 3 new shifts for the Operations team this Friday.</p>
-                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Jul 13 · 4:22 PM</div>
-              </div>
-              <div style="flex-shrink:0">
-                <span class="badge badge-confirmed">Shift</span>
-              </div>
-            </div>
-
-            <div class="notif-item" data-cat="system" onclick="readNotif(this)">
-              <div class="notif-icon blue"><i class="fa-solid fa-shield-check"></i></div>
-              <div class="notif-body">
-                <p><strong>Security Alert</strong> — Login from a new device detected for account j.owens@company.com.</p>
-                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Jul 13 · 1:08 PM</div>
-              </div>
-              <div style="flex-shrink:0">
-                <span class="badge badge-manager">System</span>
-              </div>
-            </div>
-
-            <div class="notif-item" data-cat="shifts" onclick="readNotif(this)">
-              <div class="notif-icon green"><i class="fa-solid fa-circle-check"></i></div>
-              <div class="notif-body">
-                <p><strong>Shift Completed</strong> — Carlos Rivera completed his afternoon floor supervision shift successfully.</p>
-                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Jul 13 · 11:00 AM</div>
-              </div>
-              <div style="flex-shrink:0">
-                <span class="badge badge-confirmed">Shift</span>
-              </div>
-            </div>
-
-            <div class="notif-item" data-cat="alerts" onclick="readNotif(this)">
-              <div class="notif-icon yellow"><i class="fa-solid fa-clock"></i></div>
-              <div class="notif-body">
-                <p><strong>Overtime Warning</strong> — Sarah Kim is approaching 40 hours this week. Review her schedule to avoid violations.</p>
-                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Jul 13 · 9:45 AM</div>
-              </div>
-              <div style="flex-shrink:0">
-                <span class="badge badge-pending">Alert</span>
-              </div>
-            </div>
-
-            <!-- Older -->
-            <div style="padding:12px 20px 4px;background:var(--muted);border-top:1px solid var(--border)">
-              <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--subtext)">Older</div>
-            </div>
-
-            <div class="notif-item" data-cat="system" onclick="readNotif(this)">
-              <div class="notif-icon blue"><i class="fa-solid fa-wrench"></i></div>
-              <div class="notif-body">
-                <p><strong>Scheduled Maintenance</strong> — ShiftSmart will undergo routine maintenance on Jul 20, 02:00–04:00 AM UTC.</p>
-                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Jul 12 · 8:00 AM</div>
-              </div>
-              <div style="flex-shrink:0">
-                <span class="badge badge-manager">System</span>
-              </div>
-            </div>
-
-            <div class="notif-item" data-cat="shifts" onclick="readNotif(this)">
-              <div class="notif-icon red"><i class="fa-solid fa-xmark-circle"></i></div>
-              <div class="notif-body">
-                <p><strong>Shift Rejected</strong> — Tom Brown declined the Evening Coverage shift for Jul 17. Reassignment needed.</p>
-                <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Jul 11 · 3:00 PM</div>
-              </div>
-              <div style="flex-shrink:0">
-                <span class="badge badge-rejected">Shift</span>
-              </div>
-            </div>
-
-          </div>
+          <div class="notif-list" id="notifList"></div>
 
           <!-- Load More -->
           <div style="padding:16px 20px;text-align:center;border-top:1px solid var(--border)">
@@ -317,6 +183,7 @@
   </main>
 </div>
 
+<script src="data.js"></script>
 <script>
   function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
   function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
@@ -332,8 +199,10 @@
   function updateUnreadCount() {
     const count = document.querySelectorAll('.notif-item.unread').length;
     document.querySelectorAll('.badge-pill').forEach(b => b.textContent = count);
-    const desc = document.querySelector('.page-header-left p');
+    const desc = document.getElementById('notificationsSummary');
     if (desc) desc.innerHTML = `You have <strong style="color:var(--green)">${count} unread</strong> notifications`;
+    const unreadBtn = document.getElementById('unreadFilterBtn');
+    if (unreadBtn) unreadBtn.textContent = `Unread (${count})`;
   }
   function filterNotif(btn, cat) {
     document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
@@ -344,6 +213,42 @@
       item.style.display = (item.dataset.cat === cat) ? '' : 'none';
     });
   }
+
+  (function renderNotificationsPage() {
+    const data = window.getData();
+    const helpers = window.helpers;
+    const currentUser = data.session.currentUser || {};
+    const notifications = data.notifications || [];
+
+    const name = currentUser.name || 'No user loaded';
+    const role = currentUser.role || 'Admin';
+    const initials = currentUser.initials || helpers.initialsFromName(name);
+
+    document.getElementById('notificationsSidebarInitials').textContent = initials;
+    document.getElementById('notificationsTopbarInitials').textContent = initials;
+    document.getElementById('notificationsSidebarName').textContent = name;
+    document.getElementById('notificationsTopbarName').textContent = name;
+    document.getElementById('notificationsSidebarRole').textContent = role;
+    document.getElementById('notificationsTopbarRole').textContent = role;
+
+    document.getElementById('notifList').innerHTML = notifications.length
+      ? notifications.map((item) => `
+          <div class="notif-item ${item.unread ? 'unread' : ''}" data-cat="${helpers.escapeHtml(item.cat || 'system')}" onclick="readNotif(this)">
+            <div class="notif-icon ${helpers.escapeHtml(item.tone || 'blue')}"><i class="fa-solid fa-${helpers.escapeHtml(item.icon || 'bell')}"></i></div>
+            <div class="notif-body">
+              <p><strong>${helpers.escapeHtml(item.title || 'Notification')}</strong> — ${helpers.escapeHtml(item.body || '')}</p>
+              <div class="notif-time"><i class="fa-regular fa-clock" style="margin-right:4px"></i>${helpers.escapeHtml(item.time || '')}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
+              <span class="badge ${helpers.statusBadgeClass(item.badge || item.cat)}">${helpers.escapeHtml(item.badgeLabel || item.cat || 'Notice')}</span>
+              <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:.75rem"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          </div>
+        `).join('')
+      : helpers.emptyState('No notifications yet', 'Messages, alerts, and approvals will appear here after your backend starts sending notification data.', 'bell');
+
+    updateUnreadCount();
+  })();
 </script>
 </body>
 </html>

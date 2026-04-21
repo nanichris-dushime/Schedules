@@ -30,7 +30,7 @@
       </a>
       <a href="notifications.html" class="nav-item">
         <i class="fa-solid fa-bell"></i> Notifications
-        <span class="badge-pill">3</span>
+        <span class="badge-pill" id="employeeNotifCount">0</span>
       </a>
       <a href="#" class="nav-item">
         <i class="fa-solid fa-clock-rotate-left"></i> History
@@ -41,10 +41,10 @@
     </div>
     <div class="sidebar-footer">
       <div class="sidebar-user">
-        <div class="avatar avatar-orange">ML</div>
+        <div class="avatar avatar-orange" id="employeeSidebarInitials">--</div>
         <div class="user-info">
-          <div class="user-name">Maria Lopez</div>
-          <div class="user-role">Employee</div>
+          <div class="user-name" id="employeeSidebarName">No user loaded</div>
+          <div class="user-role" id="employeeSidebarRole">Employee</div>
         </div>
         <a href="login.html" style="color:#475569;font-size:.85rem;margin-left:auto">
           <i class="fa-solid fa-right-from-bracket"></i>
@@ -69,10 +69,10 @@
         <span class="notif-dot"></span>
       </div>
       <div class="topbar-profile">
-        <div class="avatar avatar-orange">ML</div>
+        <div class="avatar avatar-orange" id="employeeTopbarInitials">--</div>
         <div>
-          <div class="profile-name">Maria Lopez</div>
-          <div class="profile-role">Employee</div>
+          <div class="profile-name" id="employeeTopbarName">No user loaded</div>
+          <div class="profile-role" id="employeeTopbarRole">Employee</div>
         </div>
       </div>
     </div>
@@ -85,9 +85,9 @@
       <!-- Welcome Banner -->
       <div style="background:linear-gradient(135deg,var(--accent) 0%,#1e3a5f 100%);border-radius:var(--radius-lg);padding:28px 32px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px">
         <div>
-          <div style="font-size:.8rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Good Morning 👋</div>
-          <h2 style="font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:6px">Welcome back, Maria!</h2>
-          <p style="color:#94a3b8;font-size:.9rem">You have <strong style="color:#4ade80">2 confirmed shifts</strong> and <strong style="color:#fbbf24">1 pending</strong> this week.</p>
+          <div style="font-size:.8rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px" id="employeeGreeting">Welcome</div>
+          <h2 style="font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:6px" id="employeeWelcomeName">Employee dashboard</h2>
+          <p style="color:#94a3b8;font-size:.9rem" id="employeeWelcomeSummary">Your shifts and requests will appear here after live data is connected.</p>
         </div>
         <div style="display:flex;gap:12px">
           <a href="schedule.html" class="btn btn-outline" style="border-color:rgba(255,255,255,.2);color:#fff">
@@ -103,22 +103,22 @@
       <div class="kpi-grid" style="margin-bottom:28px">
         <div class="kpi-card green fade-in">
           <div class="kpi-top"><div class="kpi-icon green"><i class="fa-solid fa-calendar-check"></i></div></div>
-          <div class="kpi-value">8</div>
+          <div class="kpi-value" id="employeeShiftsMonth">0</div>
           <div class="kpi-label">Shifts This Month</div>
         </div>
         <div class="kpi-card blue fade-in fade-in-d1">
           <div class="kpi-top"><div class="kpi-icon blue"><i class="fa-solid fa-circle-check"></i></div></div>
-          <div class="kpi-value">6</div>
+          <div class="kpi-value" id="employeeCompletedCount">0</div>
           <div class="kpi-label">Completed</div>
         </div>
         <div class="kpi-card orange fade-in fade-in-d2">
           <div class="kpi-top"><div class="kpi-icon orange"><i class="fa-solid fa-clock"></i></div></div>
-          <div class="kpi-value">1</div>
+          <div class="kpi-value" id="employeePendingCount">0</div>
           <div class="kpi-label">Pending</div>
         </div>
         <div class="kpi-card purple fade-in fade-in-d3">
           <div class="kpi-top"><div class="kpi-icon purple"><i class="fa-solid fa-hourglass-half"></i></div></div>
-          <div class="kpi-value">38h</div>
+          <div class="kpi-value" id="employeeHoursWeek">0h</div>
           <div class="kpi-label">Hours This Week</div>
         </div>
       </div>
@@ -134,72 +134,7 @@
               <option>All</option><option>Confirmed</option><option>Pending</option>
             </select>
           </div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:12px">
-
-            <div class="task-card confirmed">
-              <div class="task-card-head">
-                <div>
-                  <div style="font-size:.75rem;color:var(--subtext);margin-bottom:3px">Monday, Jul 14</div>
-                  <h4>Morning Inventory Check</h4>
-                </div>
-                <span class="badge badge-confirmed">Confirmed</span>
-              </div>
-              <div class="task-meta">
-                <div class="task-meta-item"><i class="fa-regular fa-clock"></i>08:00 – 10:00</div>
-                <div class="task-meta-item"><i class="fa-solid fa-location-dot"></i>Warehouse A</div>
-                <div class="task-meta-item"><i class="fa-solid fa-user-tie"></i>James Owens</div>
-              </div>
-            </div>
-
-            <div class="task-card confirmed">
-              <div class="task-card-head">
-                <div>
-                  <div style="font-size:.75rem;color:var(--subtext);margin-bottom:3px">Tuesday, Jul 15</div>
-                  <h4>Customer Intake Processing</h4>
-                </div>
-                <span class="badge badge-confirmed">Confirmed</span>
-              </div>
-              <div class="task-meta">
-                <div class="task-meta-item"><i class="fa-regular fa-clock"></i>09:00 – 13:00</div>
-                <div class="task-meta-item"><i class="fa-solid fa-location-dot"></i>Front Desk</div>
-                <div class="task-meta-item"><i class="fa-solid fa-user-tie"></i>James Owens</div>
-              </div>
-            </div>
-
-            <div class="task-card pending">
-              <div class="task-card-head">
-                <div>
-                  <div style="font-size:.75rem;color:var(--subtext);margin-bottom:3px">Wednesday, Jul 16</div>
-                  <h4>Stock Reconciliation Report</h4>
-                </div>
-                <span class="badge badge-pending">Pending</span>
-              </div>
-              <div class="task-meta">
-                <div class="task-meta-item"><i class="fa-regular fa-clock"></i>10:00 – 12:00</div>
-                <div class="task-meta-item"><i class="fa-solid fa-location-dot"></i>Office B2</div>
-                <div class="task-meta-item"><i class="fa-solid fa-user-tie"></i>James Owens</div>
-              </div>
-              <div style="margin-top:12px;display:flex;gap:8px">
-                <button class="btn btn-primary btn-sm"><i class="fa-solid fa-check"></i> Accept</button>
-                <button class="btn btn-danger btn-sm"><i class="fa-solid fa-xmark"></i> Decline</button>
-              </div>
-            </div>
-
-            <div class="task-card rejected">
-              <div class="task-card-head">
-                <div>
-                  <div style="font-size:.75rem;color:var(--subtext);margin-bottom:3px">Thursday, Jul 17</div>
-                  <h4>Late Evening Coverage</h4>
-                </div>
-                <span class="badge badge-rejected">Rejected</span>
-              </div>
-              <div class="task-meta">
-                <div class="task-meta-item"><i class="fa-regular fa-clock"></i>20:00 – 00:00</div>
-                <div class="task-meta-item"><i class="fa-solid fa-location-dot"></i>Floor 2</div>
-              </div>
-            </div>
-
-          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:12px" id="employeeTaskCards"></div>
         </div>
 
         <!-- Right col: upcoming + profile -->
@@ -211,9 +146,9 @@
               <div style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.7);font-weight:700;margin-bottom:8px">
                 Next Shift In
               </div>
-              <div style="font-size:3rem;font-weight:800;color:#fff;line-height:1;margin-bottom:6px" id="countdown">14h 32m</div>
-              <div style="color:rgba(255,255,255,.8);font-size:.9rem">Customer Intake Processing</div>
-              <div style="color:rgba(255,255,255,.6);font-size:.82rem;margin-top:4px">Tuesday 09:00 – 13:00</div>
+              <div style="font-size:3rem;font-weight:800;color:#fff;line-height:1;margin-bottom:6px" id="countdown">--</div>
+              <div style="color:rgba(255,255,255,.8);font-size:.9rem" id="employeeNextShiftTitle">No upcoming shift loaded</div>
+              <div style="color:rgba(255,255,255,.6);font-size:.82rem;margin-top:4px" id="employeeNextShiftTime">Connect schedule data to show the next assignment.</div>
               <button class="btn" style="margin-top:16px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">
                 <i class="fa-solid fa-location-arrow"></i> Get Directions
               </button>
@@ -226,32 +161,7 @@
               <h3>My Availability</h3>
               <button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i> Edit</button>
             </div>
-            <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-              <div style="padding:10px;border-radius:8px;background:var(--green-light);display:flex;align-items:center;justify-content:space-between">
-                <span style="font-size:.82rem;font-weight:600">Mon</span>
-                <span class="badge badge-confirmed" style="font-size:.72rem">Available</span>
-              </div>
-              <div style="padding:10px;border-radius:8px;background:var(--green-light);display:flex;align-items:center;justify-content:space-between">
-                <span style="font-size:.82rem;font-weight:600">Tue</span>
-                <span class="badge badge-confirmed" style="font-size:.72rem">Available</span>
-              </div>
-              <div style="padding:10px;border-radius:8px;background:#f1f5f9;display:flex;align-items:center;justify-content:space-between">
-                <span style="font-size:.82rem;font-weight:600">Wed</span>
-                <span class="badge badge-pending" style="font-size:.72rem">AM Only</span>
-              </div>
-              <div style="padding:10px;border-radius:8px;background:var(--red-light);display:flex;align-items:center;justify-content:space-between">
-                <span style="font-size:.82rem;font-weight:600">Thu</span>
-                <span class="badge badge-rejected" style="font-size:.72rem">Off</span>
-              </div>
-              <div style="padding:10px;border-radius:8px;background:var(--green-light);display:flex;align-items:center;justify-content:space-between">
-                <span style="font-size:.82rem;font-weight:600">Fri</span>
-                <span class="badge badge-confirmed" style="font-size:.72rem">Available</span>
-              </div>
-              <div style="padding:10px;border-radius:8px;background:#f1f5f9;display:flex;align-items:center;justify-content:space-between">
-                <span style="font-size:.82rem;font-weight:600">Sat</span>
-                <span class="badge badge-pending" style="font-size:.72rem">PM Only</span>
-              </div>
-            </div>
+            <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="employeeAvailabilityGrid"></div>
           </div>
 
         </div>
@@ -275,32 +185,7 @@
                 <th>Status</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td style="font-weight:600">Floor Supervision</td>
-                <td>Jul 10, 2025</td>
-                <td>08:00 – 14:00</td>
-                <td>Building A</td>
-                <td>6h</td>
-                <td><span class="badge badge-confirmed">Completed</span></td>
-              </tr>
-              <tr>
-                <td style="font-weight:600">Inventory Audit</td>
-                <td>Jul 8, 2025</td>
-                <td>09:00 – 12:00</td>
-                <td>Warehouse B</td>
-                <td>3h</td>
-                <td><span class="badge badge-confirmed">Completed</span></td>
-              </tr>
-              <tr>
-                <td style="font-weight:600">Customer Support Shift</td>
-                <td>Jul 5, 2025</td>
-                <td>13:00 – 17:00</td>
-                <td>Front Desk</td>
-                <td>4h</td>
-                <td><span class="badge badge-confirmed">Completed</span></td>
-              </tr>
-            </tbody>
+            <tbody id="employeeHistoryTable"></tbody>
           </table>
         </div>
       </div>
@@ -318,9 +203,8 @@
     </div>
     <div class="form-group">
       <label>Select Your Shift to Swap</label>
-      <select class="form-control">
-        <option>Morning Inventory Check — Jul 14, 08:00–10:00</option>
-        <option>Customer Intake — Jul 15, 09:00–13:00</option>
+      <select class="form-control" id="employeeSwapSelect">
+        <option>Connect live shift data to request a swap…</option>
       </select>
     </div>
     <div class="form-group">
@@ -334,11 +218,100 @@
   </div>
 </div>
 
+<script src="data.js"></script>
 <script>
   function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
   function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
   function openModal(id)   { document.getElementById(id).classList.add('open'); }
   function closeModal(id)  { document.getElementById(id).classList.remove('open'); }
+
+  (function renderEmployeePage() {
+    const data = window.getData();
+    const helpers = window.helpers;
+    const currentUser = data.session.currentUser || {};
+    const tasks = data.tasks || [];
+    const employeeName = currentUser.name || 'Employee';
+    const employeeTasks = currentUser.name ? tasks.filter((task) => task.assignee === currentUser.name) : tasks;
+    const completedTasks = employeeTasks.filter((task) => String(task.status || '').toLowerCase() === 'completed');
+    const pendingTasks = employeeTasks.filter((task) => String(task.status || '').toLowerCase() === 'pending');
+    const unreadCount = (data.notifications || []).filter((item) => item.unread).length;
+    const historyRows = completedTasks;
+    const totalHours = completedTasks.reduce((sum, task) => sum + Number(task.hours || 0), 0);
+    const availability = data.availability || [];
+    const nextTask = employeeTasks.find((task) => ['confirmed', 'pending'].includes(String(task.status || '').toLowerCase()));
+
+    const initials = currentUser.initials || helpers.initialsFromName(employeeName);
+    const role = currentUser.role || 'Employee';
+
+    document.getElementById('employeeNotifCount').textContent = unreadCount;
+    document.getElementById('employeeSidebarInitials').textContent = initials;
+    document.getElementById('employeeTopbarInitials').textContent = initials;
+    document.getElementById('employeeSidebarName').textContent = currentUser.name || 'No user loaded';
+    document.getElementById('employeeTopbarName').textContent = currentUser.name || 'No user loaded';
+    document.getElementById('employeeSidebarRole').textContent = role;
+    document.getElementById('employeeTopbarRole').textContent = role;
+    document.getElementById('employeeGreeting').textContent = currentUser.name ? 'Welcome back' : 'Welcome';
+    document.getElementById('employeeWelcomeName').textContent = currentUser.name ? `Hello, ${employeeName}` : 'Employee dashboard';
+    document.getElementById('employeeWelcomeSummary').textContent = employeeTasks.length
+      ? `You have ${employeeTasks.filter((task) => String(task.status || '').toLowerCase() === 'confirmed').length} confirmed shifts and ${pendingTasks.length} pending requests.`
+      : 'Your shifts and requests will appear here after live data is connected.';
+
+    document.getElementById('employeeShiftsMonth').textContent = employeeTasks.length;
+    document.getElementById('employeeCompletedCount').textContent = completedTasks.length;
+    document.getElementById('employeePendingCount').textContent = pendingTasks.length;
+    document.getElementById('employeeHoursWeek').textContent = `${totalHours}h`;
+
+    document.getElementById('employeeTaskCards').innerHTML = employeeTasks.length
+      ? employeeTasks.map((task) => `
+          <div class="task-card ${helpers.escapeHtml(String(task.status || 'pending').toLowerCase())}">
+            <div class="task-card-head">
+              <div>
+                <div style="font-size:.75rem;color:var(--subtext);margin-bottom:3px">${helpers.escapeHtml(task.date || '--')}</div>
+                <h4>${helpers.escapeHtml(task.title || 'Untitled task')}</h4>
+              </div>
+              <span class="badge ${helpers.statusBadgeClass(task.status)}">${helpers.escapeHtml(task.status || 'Unknown')}</span>
+            </div>
+            <div class="task-meta">
+              <div class="task-meta-item"><i class="fa-regular fa-clock"></i>${helpers.escapeHtml(task.time || '--')}</div>
+              <div class="task-meta-item"><i class="fa-solid fa-location-dot"></i>${helpers.escapeHtml(task.location || 'No location')}</div>
+              <div class="task-meta-item"><i class="fa-solid fa-user-tie"></i>${helpers.escapeHtml(task.manager || 'Manager not assigned')}</div>
+            </div>
+          </div>
+        `).join('')
+      : helpers.emptyState('No assigned tasks yet', 'Your upcoming shifts will appear here once the frontend receives live task data.', 'calendar-check');
+
+    document.getElementById('countdown').textContent = nextTask ? (nextTask.time || '--') : '--';
+    document.getElementById('employeeNextShiftTitle').textContent = nextTask ? (nextTask.title || 'Upcoming shift') : 'No upcoming shift loaded';
+    document.getElementById('employeeNextShiftTime').textContent = nextTask
+      ? `${nextTask.date || ''} ${nextTask.time || ''}`.trim()
+      : 'Connect schedule data to show the next assignment.';
+
+    document.getElementById('employeeAvailabilityGrid').innerHTML = availability.length
+      ? availability.map((slot) => `
+          <div style="padding:10px;border-radius:8px;background:${slot.status === 'Off' ? 'var(--red-light)' : (slot.status || '').includes('Only') ? '#f1f5f9' : 'var(--green-light)'};display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:.82rem;font-weight:600">${helpers.escapeHtml(slot.day || '--')}</span>
+            <span class="badge ${helpers.statusBadgeClass(slot.status)}" style="font-size:.72rem">${helpers.escapeHtml(slot.status || 'Unknown')}</span>
+          </div>
+        `).join('')
+      : helpers.emptyState('No availability set', 'Weekly availability will appear here after your frontend receives user preferences.', 'clock');
+
+    document.getElementById('employeeHistoryTable').innerHTML = historyRows.length
+      ? historyRows.map((task) => `
+          <tr>
+            <td style="font-weight:600">${helpers.escapeHtml(task.title || 'Untitled task')}</td>
+            <td>${helpers.escapeHtml(task.date || '--')}</td>
+            <td>${helpers.escapeHtml(task.time || '--')}</td>
+            <td>${helpers.escapeHtml(task.location || 'No location')}</td>
+            <td>${helpers.escapeHtml(task.hours || 0)}h</td>
+            <td><span class="badge ${helpers.statusBadgeClass(task.status)}">${helpers.escapeHtml(task.status || 'Unknown')}</span></td>
+          </tr>
+        `).join('')
+      : `<tr><td colspan="6">${helpers.emptyState('No shift history yet', 'Completed assignments will appear here once real employee history is available.', 'clock-rotate-left')}</td></tr>`;
+
+    document.getElementById('employeeSwapSelect').innerHTML = employeeTasks.length
+      ? employeeTasks.map((task) => `<option>${helpers.escapeHtml(`${task.title || 'Untitled task'} — ${task.date || ''} ${task.time || ''}`.trim())}</option>`).join('')
+      : '<option>Connect live shift data to request a swap…</option>';
+  })();
 </script>
 </body>
 </html>

@@ -41,7 +41,7 @@
       <div class="sidebar-section-label">Main</div>
       <a href="admin.html" class="nav-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
       <a href="schedule.html" class="nav-item active"><i class="fa-solid fa-calendar-days"></i> Schedule</a>
-      <a href="notifications.html" class="nav-item"><i class="fa-solid fa-bell"></i> Notifications<span class="badge-pill">4</span></a>
+      <a href="notifications.html" class="nav-item"><i class="fa-solid fa-bell"></i> Notifications<span class="badge-pill" id="scheduleNotifCount">0</span></a>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-section-label">Management</div>
@@ -51,8 +51,8 @@
     </div>
     <div class="sidebar-footer">
       <div class="sidebar-user">
-        <div class="avatar avatar-green">AK</div>
-        <div class="user-info"><div class="user-name">Alex Kim</div><div class="user-role">Administrator</div></div>
+        <div class="avatar avatar-green" id="scheduleSidebarInitials">--</div>
+        <div class="user-info"><div class="user-name" id="scheduleSidebarName">No user loaded</div><div class="user-role" id="scheduleSidebarRole">Admin</div></div>
         <a href="login.html" style="color:#475569;font-size:.85rem;margin-left:auto"><i class="fa-solid fa-right-from-bracket"></i></a>
       </div>
     </div>
@@ -71,8 +71,8 @@
     <div class="topbar-right">
       <div class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></div>
       <div class="topbar-profile">
-        <div class="avatar avatar-green">AK</div>
-        <div><div class="profile-name">Alex Kim</div><div class="profile-role">Admin</div></div>
+        <div class="avatar avatar-green" id="scheduleTopbarInitials">--</div>
+        <div><div class="profile-name" id="scheduleTopbarName">No user loaded</div><div class="profile-role" id="scheduleTopbarRole">Admin</div></div>
       </div>
     </div>
   </header>
@@ -85,7 +85,7 @@
       <div class="page-header">
         <div class="page-header-left">
           <h2>Weekly Schedule</h2>
-          <p>July 14 – 20, 2025 &nbsp;·&nbsp; Operations Department</p>
+          <p id="scheduleHeaderLabel">Schedule range and department will appear here when connected.</p>
         </div>
         <div class="page-header-right">
           <!-- Week nav -->
@@ -105,24 +105,13 @@
 
       <!-- Filter row -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
-        <div class="sched-legend">
-          <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Operations</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>Customer Support</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>Logistics</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Maintenance</div>
-        </div>
+        <div class="sched-legend" id="scheduleLegend"></div>
         <div style="display:flex;gap:10px;align-items:center">
-          <select class="select-control" style="font-size:.82rem">
+          <select class="select-control" style="font-size:.82rem" id="scheduleDepartmentSelect">
             <option>All Departments</option>
-            <option>Operations</option>
-            <option>Customer Support</option>
-            <option>Logistics</option>
           </select>
-          <select class="select-control" style="font-size:.82rem">
+          <select class="select-control" style="font-size:.82rem" id="scheduleEmployeeSelect">
             <option>All Employees</option>
-            <option>Maria Lopez</option>
-            <option>Nina Patel</option>
-            <option>Carlos Rivera</option>
           </select>
         </div>
       </div>
@@ -130,244 +119,7 @@
       <!-- Schedule Grid Card -->
       <div class="card fade-in" style="margin-bottom:24px">
         <div class="schedule-container">
-          <div class="schedule-grid">
-
-            <!-- Header row -->
-            <div class="sched-header" style="background:var(--muted)">Time</div>
-            <div class="sched-header">Mon 14</div>
-            <div class="sched-header today">Tue 15 <span class="sched-today-indicator">Today</span></div>
-            <div class="sched-header">Wed 16</div>
-            <div class="sched-header">Thu 17</div>
-            <div class="sched-header">Fri 18</div>
-            <div class="sched-header">Sat 19</div>
-            <div class="sched-header">Sun 20</div>
-
-            <!-- 07:00 row -->
-            <div class="sched-time">07:00</div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event orange">
-                <div>Tom B.</div>
-                <div style="font-weight:400;font-size:.7rem">Maintenance</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-
-            <!-- 08:00 row -->
-            <div class="sched-time">08:00</div>
-            <div class="sched-cell">
-              <div class="sched-event">
-                <div>Maria L.</div>
-                <div style="font-weight:400;font-size:.7rem">Inventory Check</div>
-              </div>
-            </div>
-            <div class="sched-cell">
-              <div class="sched-event blue">
-                <div>Nina P.</div>
-                <div style="font-weight:400;font-size:.7rem">Cust. Support</div>
-              </div>
-            </div>
-            <div class="sched-cell">
-              <div class="sched-event">
-                <div>Carlos R.</div>
-                <div style="font-weight:400;font-size:.7rem">Floor Ops</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event">
-                <div>Amy N.</div>
-                <div style="font-weight:400;font-size:.7rem">Operations</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-
-            <!-- 09:00 row -->
-            <div class="sched-time">09:00</div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event blue">
-                <div>Maria L.</div>
-                <div style="font-weight:400;font-size:.7rem">Intake Desk</div>
-              </div>
-            </div>
-            <div class="sched-cell">
-              <div class="sched-event purple">
-                <div>Sarah K.</div>
-                <div style="font-weight:400;font-size:.7rem">Dispatch</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event">
-                <div>Carlos R.</div>
-                <div style="font-weight:400;font-size:.7rem">Operations</div>
-              </div>
-            </div>
-            <div class="sched-cell">
-              <div class="sched-event blue">
-                <div>Nina P.</div>
-                <div style="font-weight:400;font-size:.7rem">Support</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-
-            <!-- 10:00 row -->
-            <div class="sched-time">10:00</div>
-            <div class="sched-cell">
-              <div class="sched-event purple">
-                <div>Sarah K.</div>
-                <div style="font-weight:400;font-size:.7rem">Warehouse</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event">
-                <div>Maria L.</div>
-                <div style="font-weight:400;font-size:.7rem">Stock Report</div>
-              </div>
-            </div>
-            <div class="sched-cell">
-              <div class="sched-event blue">
-                <div>Amy N.</div>
-                <div style="font-weight:400;font-size:.7rem">Support</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-
-            <!-- 11:00 row -->
-            <div class="sched-time">11:00</div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event orange">
-                <div>Tom B.</div>
-                <div style="font-weight:400;font-size:.7rem">Maintenance</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-
-            <!-- 12:00 row -->
-            <div class="sched-time">12:00</div>
-            <div class="sched-cell">
-              <div class="sched-event">
-                <div>Carlos R.</div>
-                <div style="font-weight:400;font-size:.7rem">Floor Ops</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event purple">
-                <div>Sarah K.</div>
-                <div style="font-weight:400;font-size:.7rem">Logistics</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event">
-                <div>Carlos R.</div>
-                <div style="font-weight:400;font-size:.7rem">Afternoon</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-
-            <!-- 13:00 row -->
-            <div class="sched-time">13:00</div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event">
-                <div>Carlos R.</div>
-                <div style="font-weight:400;font-size:.7rem">Afternoon Ops</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event blue">
-                <div>Nina P.</div>
-                <div style="font-weight:400;font-size:.7rem">Support</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-
-            <!-- 14:00 row -->
-            <div class="sched-time">14:00</div>
-            <div class="sched-cell">
-              <div class="sched-event blue">
-                <div>Amy N.</div>
-                <div style="font-weight:400;font-size:.7rem">Afternoon</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-
-            <!-- 15:00 row -->
-            <div class="sched-time">15:00</div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event orange">
-                <div>Tom B.</div>
-                <div style="font-weight:400;font-size:.7rem">Evening Maint.</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event">
-                <div>Maria L.</div>
-                <div style="font-weight:400;font-size:.7rem">Operations</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-
-            <!-- 16:00 row -->
-            <div class="sched-time">16:00</div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event">
-                <div>Amy N.</div>
-                <div style="font-weight:400;font-size:.7rem">EOD Report</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell">
-              <div class="sched-event blue">
-                <div>Maria L.</div>
-                <div style="font-weight:400;font-size:.7rem">Support</div>
-              </div>
-            </div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-
-            <!-- 17:00 row -->
-            <div class="sched-time">17:00</div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-            <div class="sched-cell"></div>
-
-          </div>
+          <div class="schedule-grid" id="scheduleGrid"></div>
         </div>
       </div>
 
@@ -376,71 +128,20 @@
         <div class="card fade-in">
           <div class="card-header"><h3>Shift Summary</h3></div>
           <div class="card-body">
-            <div style="display:flex;flex-direction:column;gap:10px">
-              <div style="display:flex;justify-content:space-between;font-size:.88rem">
-                <span class="text-muted">Total Shifts</span><strong>34</strong>
-              </div>
-              <div style="display:flex;justify-content:space-between;font-size:.88rem">
-                <span class="text-muted">Covered</span><strong style="color:var(--green)">29</strong>
-              </div>
-              <div style="display:flex;justify-content:space-between;font-size:.88rem">
-                <span class="text-muted">Uncovered</span><strong style="color:var(--red)">5</strong>
-              </div>
-              <div style="display:flex;justify-content:space-between;font-size:.88rem">
-                <span class="text-muted">Total Hours</span><strong>218h</strong>
-              </div>
-              <div class="progress-bar mt-4"><div class="progress-fill" style="width:85%"></div></div>
-              <div class="text-sm text-muted" style="text-align:right">85% coverage</div>
-            </div>
+            <div style="display:flex;flex-direction:column;gap:10px" id="scheduleSummaryPanel"></div>
           </div>
         </div>
 
         <div class="card fade-in fade-in-d1">
           <div class="card-header"><h3>Conflicts</h3></div>
           <div class="card-body">
-            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--red-light);border-radius:10px;margin-bottom:10px">
-              <i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i>
-              <div><div style="font-size:.85rem;font-weight:700">Tom B. — Thu 17</div><div class="text-sm text-muted">Overlap: 07:00–11:00 &amp; 11:00–15:00</div></div>
-            </div>
-            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--yellow-light);border-radius:10px">
-              <i class="fa-solid fa-clock" style="color:var(--yellow)"></i>
-              <div><div style="font-size:.85rem;font-weight:700">Sarah K. — Wed 16</div><div class="text-sm text-muted">Overtime warning: 12h scheduled</div></div>
-            </div>
+            <div id="scheduleConflictsPanel"></div>
           </div>
         </div>
 
         <div class="card fade-in fade-in-d2">
           <div class="card-header"><h3>Staff on Shift</h3></div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:8px">
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <div style="display:flex;align-items:center;gap:8px">
-                <div class="avatar avatar-sm avatar-green">ML</div>
-                <span style="font-size:.88rem;font-weight:600">Maria L.</span>
-              </div>
-              <span class="badge badge-confirmed">5 shifts</span>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <div style="display:flex;align-items:center;gap:8px">
-                <div class="avatar avatar-sm avatar-blue">NP</div>
-                <span style="font-size:.88rem;font-weight:600">Nina P.</span>
-              </div>
-              <span class="badge badge-confirmed">4 shifts</span>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <div style="display:flex;align-items:center;gap:8px">
-                <div class="avatar avatar-sm avatar-pink">CR</div>
-                <span style="font-size:.88rem;font-weight:600">Carlos R.</span>
-              </div>
-              <span class="badge badge-confirmed">5 shifts</span>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between">
-              <div style="display:flex;align-items:center;gap:8px">
-                <div class="avatar avatar-sm avatar-orange">SK</div>
-                <span style="font-size:.88rem;font-weight:600">Sarah K.</span>
-              </div>
-              <span class="badge badge-pending">3 shifts</span>
-            </div>
-          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:8px" id="scheduleStaffPanel"></div>
         </div>
       </div>
 
@@ -457,16 +158,14 @@
     </div>
     <div class="form-group">
       <label>Employee</label>
-      <select class="form-control">
-        <option>Maria Lopez</option><option>Nina Patel</option><option>Carlos Rivera</option>
-        <option>Sarah Kim</option><option>Amy Nguyen</option><option>Tom Brown</option>
+      <select class="form-control" id="scheduleModalEmployeeSelect">
+        <option>Connect live data to load employees…</option>
       </select>
     </div>
     <div class="form-group">
       <label>Shift Type</label>
-      <select class="form-control">
-        <option>Operations</option><option>Customer Support</option>
-        <option>Logistics</option><option>Maintenance</option>
+      <select class="form-control" id="scheduleModalShiftTypeSelect">
+        <option>Connect live data to load departments…</option>
       </select>
     </div>
     <div class="form-row">
@@ -496,6 +195,7 @@
   </div>
 </div>
 
+<script src="data.js"></script>
 <script>
   // View toggle
   document.querySelectorAll('.view-toggle button').forEach(btn => {
@@ -508,6 +208,121 @@
   function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
   function openModal(id)   { document.getElementById(id).classList.add('open'); }
   function closeModal(id)  { document.getElementById(id).classList.remove('open'); }
+
+  (function renderSchedulePage() {
+    const data = window.getData();
+    const helpers = window.helpers;
+    const currentUser = data.session.currentUser || {};
+    const users = data.users || [];
+    const schedule = data.schedule || {};
+    const unreadCount = (data.notifications || []).filter((item) => item.unread).length;
+    const coverageEntries = Object.keys(data.stats.coverage || {});
+    const departmentOptions = coverageEntries.length ? coverageEntries : ['All Departments'];
+    const employeeOptions = users.filter((user) => String(user.role || '').toLowerCase() === 'employee');
+    const dayHeaders = schedule.days.length ? schedule.days : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const timeSlots = schedule.timeSlots.length ? schedule.timeSlots : ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
+    const events = schedule.events || [];
+
+    const name = currentUser.name || 'No user loaded';
+    const role = currentUser.role || 'Admin';
+    const initials = currentUser.initials || helpers.initialsFromName(name);
+
+    document.getElementById('scheduleNotifCount').textContent = unreadCount;
+    document.getElementById('scheduleSidebarInitials').textContent = initials;
+    document.getElementById('scheduleTopbarInitials').textContent = initials;
+    document.getElementById('scheduleSidebarName').textContent = name;
+    document.getElementById('scheduleTopbarName').textContent = name;
+    document.getElementById('scheduleSidebarRole').textContent = role;
+    document.getElementById('scheduleTopbarRole').textContent = role;
+    document.getElementById('scheduleHeaderLabel').textContent = schedule.label
+      ? `${schedule.label}${schedule.department ? ` · ${schedule.department}` : ''}`
+      : 'Schedule range and department will appear here when connected.';
+
+    document.getElementById('scheduleLegend').innerHTML = coverageEntries.length
+      ? coverageEntries.map((dept, index) => `
+          <div class="legend-item"><div class="legend-dot" style="background:${['var(--green)', '#3b82f6', '#8b5cf6', '#f59e0b'][index % 4]}"></div>${helpers.escapeHtml(dept)}</div>
+        `).join('')
+      : helpers.emptyState('No departments loaded', 'Department legend items will appear here after schedule data is connected.', 'layer-group').replace('empty-state"', 'empty-state compact"');
+
+    document.getElementById('scheduleDepartmentSelect').innerHTML = departmentOptions.map((dept, index) => `
+      <option ${index === 0 ? 'selected' : ''}>${helpers.escapeHtml(dept)}</option>
+    `).join('');
+
+    document.getElementById('scheduleEmployeeSelect').innerHTML = [
+      '<option>All Employees</option>',
+      ...employeeOptions.map((user) => `<option>${helpers.escapeHtml(user.name || 'Unnamed user')}</option>`)
+    ].join('');
+
+    if (!events.length) {
+      document.getElementById('scheduleGrid').innerHTML = helpers.emptyState(
+        'No schedule events loaded',
+        'The week grid is now free of sample shifts. Connect your backend and render live events into this grid.',
+        'calendar-days'
+      );
+    } else {
+      const eventMap = new Map(events.map((event) => [`${event.day}|${event.time}`, event]));
+      const headerHtml = [
+        '<div class="sched-header" style="background:var(--muted)">Time</div>',
+        ...dayHeaders.map((day) => `<div class="sched-header">${helpers.escapeHtml(day)}</div>`)
+      ].join('');
+      const bodyHtml = timeSlots.map((time) => {
+        const cells = dayHeaders.map((day, index) => {
+          const event = eventMap.get(`${day}|${time}`);
+          if (!event) return '<div class="sched-cell"></div>';
+          const tone = ['green', 'blue', 'purple', 'orange'][index % 4];
+          return `
+            <div class="sched-cell">
+              <div class="sched-event ${tone === 'green' ? '' : tone}">
+                <div>${helpers.escapeHtml(event.employee || 'Unassigned')}</div>
+                <div style="font-weight:400;font-size:.7rem">${helpers.escapeHtml(event.label || event.dept || '')}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        return `<div class="sched-time">${helpers.escapeHtml(time)}</div>${cells}`;
+      }).join('');
+      document.getElementById('scheduleGrid').innerHTML = headerHtml + bodyHtml;
+    }
+
+    const summary = schedule.summary || {};
+    document.getElementById('scheduleSummaryPanel').innerHTML = `
+      <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Total Shifts</span><strong>${helpers.escapeHtml(summary.totalShifts || 0)}</strong></div>
+      <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Covered</span><strong style="color:var(--green)">${helpers.escapeHtml(summary.covered || 0)}</strong></div>
+      <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Uncovered</span><strong style="color:var(--red)">${helpers.escapeHtml(summary.uncovered || 0)}</strong></div>
+      <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Total Hours</span><strong>${helpers.escapeHtml(summary.totalHours || 0)}h</strong></div>
+      <div class="progress-bar mt-4"><div class="progress-fill" style="width:${helpers.escapeHtml(summary.coveragePercent || 0)}%"></div></div>
+      <div class="text-sm text-muted" style="text-align:right">${helpers.escapeHtml(summary.coveragePercent || 0)}% coverage</div>
+    `;
+
+    document.getElementById('scheduleConflictsPanel').innerHTML = schedule.conflicts.length
+      ? schedule.conflicts.map((conflict) => `
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;background:${conflict.level === 'warning' ? 'var(--yellow-light)' : 'var(--red-light)'};border-radius:10px;margin-bottom:10px">
+            <i class="fa-solid fa-${conflict.level === 'warning' ? 'clock' : 'triangle-exclamation'}" style="color:${conflict.level === 'warning' ? 'var(--yellow)' : 'var(--red)'}"></i>
+            <div><div style="font-size:.85rem;font-weight:700">${helpers.escapeHtml(conflict.title || 'Conflict')}</div><div class="text-sm text-muted">${helpers.escapeHtml(conflict.body || '')}</div></div>
+          </div>
+        `).join('')
+      : helpers.emptyState('No conflicts reported', 'Any overlap or overtime warnings will appear here after live validation runs.', 'shield');
+
+    document.getElementById('scheduleStaffPanel').innerHTML = schedule.staffOnShift.length
+      ? schedule.staffOnShift.map((person, index) => `
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(person.initials || helpers.initialsFromName(person.name))}</div>
+              <span style="font-size:.88rem;font-weight:600">${helpers.escapeHtml(person.name || 'Unnamed user')}</span>
+            </div>
+            <span class="badge ${helpers.statusBadgeClass(person.status || 'confirmed')}">${helpers.escapeHtml(person.label || person.status || 'Scheduled')}</span>
+          </div>
+        `).join('')
+      : helpers.emptyState('No staff assigned yet', 'Assigned employees will appear here after the schedule is populated from live data.', 'users');
+
+    document.getElementById('scheduleModalEmployeeSelect').innerHTML = employeeOptions.length
+      ? employeeOptions.map((user) => `<option>${helpers.escapeHtml(user.name || 'Unnamed user')}</option>`).join('')
+      : '<option>Connect live data to load employees…</option>';
+
+    document.getElementById('scheduleModalShiftTypeSelect').innerHTML = coverageEntries.length
+      ? coverageEntries.map((dept) => `<option>${helpers.escapeHtml(dept)}</option>`).join('')
+      : '<option>Connect live data to load departments…</option>';
+  })();
 </script>
 </body>
 </html>
