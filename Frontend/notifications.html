@@ -39,6 +39,28 @@
         <span class="badge-pill" id="notificationsSidebarCount">0</span>
       </a>
     </div>
+
+    <!-- Management section — shown only for admin role, injected by JS -->
+    <div class="sidebar-section" id="notifMgmtSection" style="display:none">
+      <div class="sidebar-section-label" data-i18n="sidebar_management">Management</div>
+      <a href="admin.html?view=all" class="nav-item">
+        <i class="fa-solid fa-users"></i>
+        <span data-i18n="sidebar_users">All Users</span>
+      </a>
+      <a href="admin.html?view=managers" class="nav-item">
+        <i class="fa-solid fa-briefcase"></i>
+        <span data-i18n="sidebar_managers">Managers</span>
+      </a>
+      <a href="admin.html?view=employees" class="nav-item">
+        <i class="fa-solid fa-id-badge"></i>
+        <span data-i18n="sidebar_employees">Employees</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-gear"></i>
+        <span data-i18n="sidebar_settings">Settings</span>
+      </a>
+    </div>
+
     <div class="sidebar-footer">
       <div class="sidebar-user">
         <div class="avatar avatar-green" id="notificationsSidebarInitials">--</div>
@@ -171,6 +193,11 @@
 
     const dashMap = { admin: 'admin.html', manager: 'manager.html', employee: 'employee.html' };
     document.getElementById('sidebarDashboardLink').href = dashMap[role] || 'admin.html';
+
+    // Show management section for admins
+    if (role === 'admin') {
+      document.getElementById('notifMgmtSection').style.display = '';
+    }
 
     document.getElementById('notificationsSidebarInitials').textContent = initials;
     document.getElementById('notificationsTopbarInitials').textContent  = initials;

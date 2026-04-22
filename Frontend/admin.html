@@ -43,15 +43,15 @@
 
     <div class="sidebar-section">
       <div class="sidebar-section-label" data-i18n="sidebar_management">Management</div>
-      <a href="#" class="nav-item">
+      <a href="admin.html?view=all" class="nav-item">
         <i class="fa-solid fa-users"></i>
         <span data-i18n="sidebar_users">All Users</span>
       </a>
-      <a href="manager.html" class="nav-item">
+      <a href="admin.html?view=managers" class="nav-item">
         <i class="fa-solid fa-briefcase"></i>
         <span data-i18n="sidebar_managers">Managers</span>
       </a>
-      <a href="employee.html" class="nav-item">
+      <a href="admin.html?view=employees" class="nav-item">
         <i class="fa-solid fa-id-badge"></i>
         <span data-i18n="sidebar_employees">Employees</span>
       </a>
@@ -93,9 +93,19 @@
         <i class="fa-solid fa-magnifying-glass"></i>
         <input type="text" data-i18n="topbar_search" data-i18n-attr="placeholder" placeholder="Search users…"/>
       </div>
-      <div class="topbar-icon-btn" data-tip="Notifications">
-        <i class="fa-solid fa-bell"></i>
-        <span class="notif-dot"></span>
+      <div class="notif-dropdown-wrap" id="adminNotifWrap">
+        <div class="topbar-icon-btn" id="adminNotifBtn" data-tip="Notifications" onclick="toggleNotifDropdown()">
+          <i class="fa-solid fa-bell"></i>
+          <span class="notif-dot" id="adminNotifDot" style="display:none"></span>
+        </div>
+        <div class="notif-dropdown" id="adminNotifDropdown">
+          <div class="notif-dd-header">
+            <h4>Notifications</h4>
+            <a href="notifications.html">View all</a>
+          </div>
+          <div class="notif-dd-list" id="adminNotifDDList"></div>
+          <div class="notif-dd-footer"><a href="notifications.html">See all notifications</a></div>
+        </div>
       </div>
       <div class="topbar-icon-btn" data-tip="Settings">
         <i class="fa-solid fa-gear"></i>
@@ -118,7 +128,7 @@
       <!-- Page Header -->
       <div class="page-header">
         <div class="page-header-left">
-          <h2 data-i18n="admin_overview">Overview</h2>
+          <h2 id="adminViewTitle" data-i18n="admin_overview">Overview</h2>
           <p id="adminSummaryLabel">Live summary will appear here when dashboard data is connected.</p>
         </div>
         <div class="page-header-right">
@@ -313,103 +323,156 @@
     document.getElementById('sidebar').classList.remove('open');
     document.getElementById('sidebarOverlay').classList.remove('open');
   }
-  function openModal(id) { document.getElementById(id).classList.add('open'); }
+  function openModal(id)  { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-  function renderAdminPage() {
-    const data = window.getData();
-    const helpers = window.helpers;
-    const currentUser = data.session.currentUser || {};
-    const users = data.users || [];
-    const tasks = data.tasks || [];
-    const assignments = data.assignments || [];
-    const notifications = data.notifications || [];
-    const unreadCount = helpers.getUnreadNotifications(currentUser.id).length;
-    const admins = helpers.getUsersByRole('admin');
-    const managers = helpers.getUsersByRole('manager');
-    const employees = helpers.getUsersByRole('employee');
+  // ── Notification dropdown ──────────────────────────────
+  function toggleNotifDropdown() {
+    document.getElementById('adminNotifDropdown').classList.toggle('open');
+  }
+  document.addEventListener('click', function (e) {
+    var wrap = document.getElementById('adminNotifWrap');
+    if (wrap && !wrap.contains(e.target)) {
+      document.getElementById('adminNotifDropdown').classList.remove('open');
+    }
+  });
 
-    const name = currentUser.fullName || 'No user loaded';
-    const role = currentUser.role || 'Admin';
-    const initials = helpers.initialsFromName(name);
+  function renderNotifDropdown(notifications, helpers) {
+    var unread = notifications.filter(function (n) { return n.status === 'unread'; });
+    var dot = document.getElementById('adminNotifDot');
+    dot.style.display = unread.length > 0 ? '' : 'none';
+
+    var iconMap = { shift: { icon: 'fa-calendar-check', color: 'green' }, task: { icon: 'fa-list-check', color: 'blue' } };
+    var list = document.getElementById('adminNotifDDList');
+    var items = notifications.slice(0, 6);
+    if (!items.length) {
+      list.innerHTML = '<div class="notif-dd-empty"><i class="fa-solid fa-bell-slash" style="font-size:1.4rem;margin-bottom:8px;display:block"></i>No notifications yet</div>';
+      return;
+    }
+    list.innerHTML = items.map(function (n) {
+      var m = iconMap[n.type] || { icon: 'fa-bell', color: 'yellow' };
+      return '<div class="notif-dd-item ' + (n.status === 'unread' ? 'unread' : '') + '" onclick="window.location.href=\'notifications.html\'">'
+        + '<div class="notif-dd-icon ' + m.color + '"><i class="fa-solid ' + m.icon + '"></i></div>'
+        + '<div class="notif-dd-body"><p>' + helpers.escapeHtml(n.message || 'Notification') + '</p>'
+        + '<span>' + helpers.escapeHtml(helpers.formatDate(n.createdAt)) + '</span></div>'
+        + (n.status === 'unread' ? '<div class="notif-dd-unread-dot"></div>' : '')
+        + '</div>';
+    }).join('');
+  }
+
+  // ── View filter (All / Managers / Employees) ───────────
+  function getView() {
+    return new URLSearchParams(window.location.search).get('view') || 'all';
+  }
+
+  function setActiveNavView(view) {
+    document.querySelectorAll('.sidebar .nav-item').forEach(function (el) {
+      el.classList.remove('active');
+    });
+    var map = { all: '[href="admin.html?view=all"]', managers: '[href="admin.html?view=managers"]', employees: '[href="admin.html?view=employees"]' };
+    var sel = map[view];
+    if (sel) { var el = document.querySelector('.sidebar ' + sel); if (el) el.classList.add('active'); }
+    if (view === 'all' || !map[view]) {
+      var dash = document.querySelector('.sidebar a[href="admin.html"]');
+      if (dash) dash.classList.add('active');
+    }
+  }
+
+  function renderAdminPage() {
+    var data = window.getData();
+    var helpers = window.helpers;
+    var currentUser = data.session.currentUser || {};
+    var users = data.users || [];
+    var tasks = data.tasks || [];
+    var assignments = data.assignments || [];
+    var notifications = data.notifications || [];
+    var unreadCount = helpers.getUnreadNotifications(currentUser.id).length;
+    var admins    = helpers.getUsersByRole('admin');
+    var managers  = helpers.getUsersByRole('manager');
+    var employees = helpers.getUsersByRole('employee');
+
+    var name     = currentUser.fullName || 'No user loaded';
+    var role     = currentUser.role || 'Admin';
+    var initials = helpers.initialsFromName(name);
 
     document.getElementById('adminSidebarInitials').textContent = initials;
-    document.getElementById('adminTopbarInitials').textContent = initials;
-    document.getElementById('adminSidebarName').textContent = name;
-    document.getElementById('adminTopbarName').textContent = name;
-    document.getElementById('adminSidebarRole').textContent = role;
-    document.getElementById('adminTopbarRole').textContent = role;
+    document.getElementById('adminTopbarInitials').textContent  = initials;
+    document.getElementById('adminSidebarName').textContent     = name;
+    document.getElementById('adminTopbarName').textContent      = name;
+    document.getElementById('adminSidebarRole').textContent     = role;
+    document.getElementById('adminTopbarRole').textContent      = role;
     document.getElementById('adminSidebarNotifCount').textContent = unreadCount;
     document.getElementById('adminSummaryLabel').textContent = users.length
-      ? `${users.length} users, ${tasks.length} tasks, ${assignments.length} assignments in the current backend dataset.`
+      ? users.length + ' users, ' + tasks.length + ' tasks, ' + assignments.length + ' assignments in the current backend dataset.'
       : 'User, task, assignment, and notification summaries will appear here when data is connected.';
 
     document.getElementById('adminEmployeesValue').textContent = employees.length;
-    document.getElementById('adminManagersValue').textContent = managers.length;
-    document.getElementById('adminShiftsValue').textContent = tasks.length;
-    document.getElementById('adminPendingValue').textContent = notifications.filter((item) => item.status === 'unread').length;
+    document.getElementById('adminManagersValue').textContent  = managers.length;
+    document.getElementById('adminShiftsValue').textContent    = tasks.length;
+    document.getElementById('adminPendingValue').textContent   = notifications.filter(function (i) { return i.status === 'unread'; }).length;
 
-    const roleEntries = [
-      ['Admins', admins.length],
-      ['Managers', managers.length],
-      ['Employees', employees.length]
-    ];
-    const maxRoleCount = Math.max(...roleEntries.map(([, value]) => value), 1);
+    // Notification dropdown
+    renderNotifDropdown(notifications, helpers);
 
+    // Role distribution chart
+    var roleEntries = [['Admins', admins.length], ['Managers', managers.length], ['Employees', employees.length]];
+    var maxRoleCount = Math.max.apply(null, roleEntries.map(function (e) { return e[1]; }).concat([1]));
     document.getElementById('adminCoveragePanel').innerHTML = users.length
-      ? roleEntries.map(([label, value], index) => `
-          <div style="margin-bottom:16px">
-            <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">
-              <span class="font-bold">${helpers.escapeHtml(label)}</span><span class="text-muted">${helpers.escapeHtml(value)}</span>
-            </div>
-            <div class="progress-bar"><div class="progress-fill" style="width:${(value / maxRoleCount) * 100}%;background:${['var(--green)', '#3b82f6', '#8b5cf6'][index % 3]}"></div></div>
-          </div>
-        `).join('')
+      ? roleEntries.map(function (entry, index) {
+          return '<div style="margin-bottom:16px">'
+            + '<div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">'
+            + '<span class="font-bold">' + helpers.escapeHtml(entry[0]) + '</span><span class="text-muted">' + helpers.escapeHtml(entry[1]) + '</span></div>'
+            + '<div class="progress-bar"><div class="progress-fill" style="width:' + ((entry[1] / maxRoleCount) * 100) + '%;background:' + ['var(--green)', '#3b82f6', '#8b5cf6'][index % 3] + '"></div></div></div>';
+        }).join('')
       : helpers.emptyState('No users loaded', 'Role distribution will render here after the frontend receives user records from the backend.', 'users');
 
-    const recentRecords = [
-      ...users.map((user) => ({ type: 'User', title: user.fullName || 'Unnamed user', meta: user.email || 'No email', createdAt: user.createdAt })),
-      ...tasks.map((task) => ({ type: 'Task', title: task.title || 'Untitled task', meta: helpers.formatDate(task.date), createdAt: task.createdAt })),
-      ...notifications.map((notification) => ({ type: 'Notification', title: notification.message || 'Notification', meta: notification.status || 'unknown', createdAt: notification.createdAt }))
-    ]
-      .filter((item) => item.createdAt)
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .slice(0, 5);
+    // Recent activity
+    var recentRecords = [
+      ...users.map(function (u) { return { type: 'User', title: u.fullName || 'Unnamed user', meta: u.email || 'No email', createdAt: u.createdAt }; }),
+      ...tasks.map(function (t) { return { type: 'Task', title: t.title || 'Untitled task', meta: helpers.formatDate(t.date), createdAt: t.createdAt }; }),
+      ...notifications.map(function (n) { return { type: 'Notification', title: n.message || 'Notification', meta: n.status || 'unknown', createdAt: n.createdAt }; })
+    ].filter(function (i) { return i.createdAt; })
+     .sort(function (a, b) { return new Date(b.createdAt) - new Date(a.createdAt); })
+     .slice(0, 5);
 
     document.getElementById('adminRecentActivity').innerHTML = recentRecords.length
-      ? recentRecords.map((item, index) => `
-          <div class="activity-item">
-            <div class="activity-dot ${['green', 'blue', 'yellow', 'red', 'green'][index % 5]}"></div>
-            <div>
-              <div class="activity-text"><strong>${helpers.escapeHtml(item.type)}</strong> — ${helpers.escapeHtml(item.title)}</div>
-              <div class="activity-time">${helpers.escapeHtml(item.meta)} · ${helpers.escapeHtml(helpers.formatDate(item.createdAt))}</div>
-            </div>
-          </div>
-        `).join('')
+      ? recentRecords.map(function (item, index) {
+          return '<div class="activity-item">'
+            + '<div class="activity-dot ' + ['green','blue','yellow','red','green'][index % 5] + '"></div>'
+            + '<div><div class="activity-text"><strong>' + helpers.escapeHtml(item.type) + '</strong> — ' + helpers.escapeHtml(item.title) + '</div>'
+            + '<div class="activity-time">' + helpers.escapeHtml(item.meta) + ' · ' + helpers.escapeHtml(helpers.formatDate(item.createdAt)) + '</div></div></div>';
+        }).join('')
       : helpers.emptyState('No records yet', 'Latest users, tasks, and notifications will appear here when the backend returns stored records.', 'clock-rotate-left');
 
-    document.getElementById('adminUsersTableBody').innerHTML = users.length
-      ? users.map((user, index) => `
-          <tr>
-            <td><input type="checkbox" style="accent-color:var(--green)"/></td>
-            <td>
-              <div class="user-cell">
-                <div class="avatar avatar-sm avatar-${helpers.avatarTone(index)}">${helpers.escapeHtml(helpers.initialsFromName(user.fullName))}</div>
-                <div>
-                  <div class="name">${helpers.escapeHtml(user.fullName || 'Unnamed user')}</div>
-                  <div class="email">${helpers.escapeHtml(user.email || 'No email')}</div>
-                </div>
-              </div>
-            </td>
-            <td><span class="badge ${helpers.roleBadgeClass(user.role)}">${helpers.escapeHtml(user.role || 'Unassigned')}</span></td>
-            <td>${helpers.escapeHtml(user.email || 'No email')}</td>
-            <td>${helpers.escapeHtml(helpers.formatDate(user.createdAt))}</td>
-            <td><div class="table-actions"><button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button><button class="btn btn-danger btn-sm" onclick="deleteUser('${helpers.escapeHtml(user.id)}')"><i class="fa-solid fa-trash"></i></button></div></td>
-          </tr>
-        `).join('')
-      : `<tr><td colspan="6">${helpers.emptyState('No users loaded', 'User accounts will appear here after you connect the frontend to the backend user endpoints.', 'users')}</td></tr>`;
+    // ── Users table with view filter ──
+    var view = getView();
+    var viewLabels = { all: 'All Users', managers: 'Managers', employees: 'Employees' };
+    document.getElementById('adminViewTitle').textContent = viewLabels[view] || 'Overview';
+    setActiveNavView(view);
 
-    document.getElementById('adminUsersSummary').textContent = `Showing ${users.length} of ${users.length} users`;
+    var filteredUsers = view === 'managers'  ? managers
+                      : view === 'employees' ? employees
+                      : users;
+
+    document.getElementById('adminUsersTableBody').innerHTML = filteredUsers.length
+      ? filteredUsers.map(function (user, index) {
+          return '<tr>'
+            + '<td><input type="checkbox" style="accent-color:var(--green)"/></td>'
+            + '<td><div class="user-cell">'
+            + '<div class="avatar avatar-sm avatar-' + helpers.avatarTone(index) + '">' + helpers.escapeHtml(helpers.initialsFromName(user.fullName)) + '</div>'
+            + '<div><div class="name">' + helpers.escapeHtml(user.fullName || 'Unnamed user') + '</div>'
+            + '<div class="email">' + helpers.escapeHtml(user.email || 'No email') + '</div></div></div></td>'
+            + '<td><span class="badge ' + helpers.roleBadgeClass(user.role) + '">' + helpers.escapeHtml(user.role || 'Unassigned') + '</span></td>'
+            + '<td>' + helpers.escapeHtml(user.email || 'No email') + '</td>'
+            + '<td>' + helpers.escapeHtml(helpers.formatDate(user.createdAt)) + '</td>'
+            + '<td><div class="table-actions">'
+            + '<button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button>'
+            + '<button class="btn btn-danger btn-sm" onclick="deleteUser(\'' + helpers.escapeHtml(user.id) + '\')"><i class="fa-solid fa-trash"></i></button>'
+            + '</div></td></tr>';
+        }).join('')
+      : '<tr><td colspan="6">' + helpers.emptyState('No ' + (viewLabels[view] || 'users') + ' found', 'Records will appear here once data is connected.', 'users') + '</td></tr>';
+
+    document.getElementById('adminUsersSummary').textContent = 'Showing ' + filteredUsers.length + ' of ' + filteredUsers.length + ' ' + (viewLabels[view] || 'users').toLowerCase();
   }
 
   async function deleteUser(id) {
@@ -418,30 +481,26 @@
       await window.api.del('/api/users/admin/users/' + id);
       await window.loadAllData();
       renderAdminPage();
-    } catch (err) {
-      alert(err.message);
-    }
+    } catch (err) { alert(err.message); }
   }
 
   async function createUser() {
-    const fullName = document.getElementById('newUserFullName').value.trim();
-    const email    = document.getElementById('newUserEmail').value.trim();
-    const password = document.getElementById('newUserPassword').value;
-    const role     = document.getElementById('newUserRole').value;
-    const errEl    = document.getElementById('userFormError');
-
+    var fullName = document.getElementById('newUserFullName').value.trim();
+    var email    = document.getElementById('newUserEmail').value.trim();
+    var password = document.getElementById('newUserPassword').value;
+    var role     = document.getElementById('newUserRole').value;
+    var errEl    = document.getElementById('userFormError');
     errEl.style.display = 'none';
     if (!fullName || !email || !password) {
       errEl.textContent = 'All fields are required.';
       errEl.style.display = 'block';
       return;
     }
-
     try {
       await window.api.post('/api/users/admin/users', { fullName, email, password, role });
       closeModal('addUserModal');
       document.getElementById('newUserFullName').value = '';
-      document.getElementById('newUserEmail').value = '';
+      document.getElementById('newUserEmail').value    = '';
       document.getElementById('newUserPassword').value = '';
       await window.loadAllData();
       renderAdminPage();

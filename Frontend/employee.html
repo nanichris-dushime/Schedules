@@ -73,9 +73,16 @@
     </div>
     <div class="topbar-right">
       <!-- Language switcher injected here by i18n.js -->
-      <div class="topbar-icon-btn">
-        <i class="fa-solid fa-bell"></i>
-        <span class="notif-dot"></span>
+      <div class="notif-dropdown-wrap" id="employeeNotifWrap">
+        <div class="topbar-icon-btn" onclick="toggleNotifDropdown()">
+          <i class="fa-solid fa-bell"></i>
+          <span class="notif-dot" id="employeeNotifDot" style="display:none"></span>
+        </div>
+        <div class="notif-dropdown" id="employeeNotifDropdown">
+          <div class="notif-dd-header"><h4>Notifications</h4><a href="notifications.html">View all</a></div>
+          <div class="notif-dd-list" id="employeeNotifDDList"></div>
+          <div class="notif-dd-footer"><a href="notifications.html">See all notifications</a></div>
+        </div>
       </div>
       <div class="topbar-profile">
         <div class="avatar avatar-orange" id="employeeTopbarInitials">--</div>
@@ -246,6 +253,31 @@
   function openModal(id)   { document.getElementById(id).classList.add('open'); }
   function closeModal(id)  { document.getElementById(id).classList.remove('open'); }
 
+  function toggleNotifDropdown() {
+    document.getElementById('employeeNotifDropdown').classList.toggle('open');
+  }
+  document.addEventListener('click', function (e) {
+    var wrap = document.getElementById('employeeNotifWrap');
+    if (wrap && !wrap.contains(e.target)) document.getElementById('employeeNotifDropdown').classList.remove('open');
+  });
+
+  function renderNotifDropdown(notifications, helpers) {
+    var unread = notifications.filter(function (n) { return n.status === 'unread'; });
+    document.getElementById('employeeNotifDot').style.display = unread.length > 0 ? '' : 'none';
+    var iconMap = { shift: { icon: 'fa-calendar-check', color: 'green' }, task: { icon: 'fa-list-check', color: 'blue' } };
+    var list = document.getElementById('employeeNotifDDList');
+    var items = notifications.slice(0, 6);
+    if (!items.length) { list.innerHTML = '<div class="notif-dd-empty">No notifications yet</div>'; return; }
+    list.innerHTML = items.map(function (n) {
+      var m = iconMap[n.type] || { icon: 'fa-bell', color: 'yellow' };
+      return '<div class="notif-dd-item ' + (n.status === 'unread' ? 'unread' : '') + '" onclick="window.location.href=\'notifications.html\'">'
+        + '<div class="notif-dd-icon ' + m.color + '"><i class="fa-solid ' + m.icon + '"></i></div>'
+        + '<div class="notif-dd-body"><p>' + helpers.escapeHtml(n.message || 'Notification') + '</p>'
+        + '<span>' + helpers.escapeHtml(helpers.formatDate(n.createdAt)) + '</span></div>'
+        + (n.status === 'unread' ? '<div class="notif-dd-unread-dot"></div>' : '') + '</div>';
+    }).join('');
+  }
+
   function renderEmployeePage() {
     const data = window.getData();
     const helpers = window.helpers;
@@ -271,6 +303,7 @@
     const initials = helpers.initialsFromName(name);
 
     document.getElementById('employeeNotifCount').textContent = unreadCount;
+    renderNotifDropdown(notifications, helpers);
     document.getElementById('employeeSidebarInitials').textContent = initials;
     document.getElementById('employeeTopbarInitials').textContent = initials;
     document.getElementById('employeeSidebarName').textContent = name;

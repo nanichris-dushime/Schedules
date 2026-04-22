@@ -80,9 +80,16 @@
     </div>
     <div class="topbar-right">
       <!-- Language switcher injected here by i18n.js -->
-      <div class="topbar-icon-btn" data-tip="Notifications">
-        <i class="fa-solid fa-bell"></i>
-        <span class="notif-dot"></span>
+      <div class="notif-dropdown-wrap" id="managerNotifWrap">
+        <div class="topbar-icon-btn" data-tip="Notifications" onclick="toggleNotifDropdown()">
+          <i class="fa-solid fa-bell"></i>
+          <span class="notif-dot" id="managerNotifDot" style="display:none"></span>
+        </div>
+        <div class="notif-dropdown" id="managerNotifDropdown">
+          <div class="notif-dd-header"><h4>Notifications</h4><a href="notifications.html">View all</a></div>
+          <div class="notif-dd-list" id="managerNotifDDList"></div>
+          <div class="notif-dd-footer"><a href="notifications.html">See all notifications</a></div>
+        </div>
       </div>
       <div class="topbar-icon-btn"><i class="fa-solid fa-gear"></i></div>
       <div class="topbar-profile">
@@ -331,7 +338,30 @@
   function openModal(id)   { document.getElementById(id).classList.add('open'); }
   function closeModal(id)  { document.getElementById(id).classList.remove('open'); }
 
-  function renderManagerPage() {
+  function toggleNotifDropdown() {
+    document.getElementById('managerNotifDropdown').classList.toggle('open');
+  }
+  document.addEventListener('click', function (e) {
+    var wrap = document.getElementById('managerNotifWrap');
+    if (wrap && !wrap.contains(e.target)) document.getElementById('managerNotifDropdown').classList.remove('open');
+  });
+
+  function renderNotifDropdown(notifications, helpers) {
+    var unread = notifications.filter(function (n) { return n.status === 'unread'; });
+    document.getElementById('managerNotifDot').style.display = unread.length > 0 ? '' : 'none';
+    var iconMap = { shift: { icon: 'fa-calendar-check', color: 'green' }, task: { icon: 'fa-list-check', color: 'blue' } };
+    var list = document.getElementById('managerNotifDDList');
+    var items = notifications.slice(0, 6);
+    if (!items.length) { list.innerHTML = '<div class="notif-dd-empty">No notifications yet</div>'; return; }
+    list.innerHTML = items.map(function (n) {
+      var m = iconMap[n.type] || { icon: 'fa-bell', color: 'yellow' };
+      return '<div class="notif-dd-item ' + (n.status === 'unread' ? 'unread' : '') + '" onclick="window.location.href=\'notifications.html\'">'
+        + '<div class="notif-dd-icon ' + m.color + '"><i class="fa-solid ' + m.icon + '"></i></div>'
+        + '<div class="notif-dd-body"><p>' + helpers.escapeHtml(n.message || 'Notification') + '</p>'
+        + '<span>' + helpers.escapeHtml(helpers.formatDate(n.createdAt)) + '</span></div>'
+        + (n.status === 'unread' ? '<div class="notif-dd-unread-dot"></div>' : '') + '</div>';
+    }).join('');
+  }
     const data = window.getData();
     const helpers = window.helpers;
     const currentUser = data.session.currentUser || {};
@@ -366,6 +396,8 @@
     document.getElementById('managerConfirmedTasks').textContent = confirmedCount;
     document.getElementById('managerPendingTasks').textContent = myTasks.length - confirmedCount;
     document.getElementById('managerTeamMembers').textContent = employees.length;
+
+    renderNotifDropdown(notifications, helpers);
 
     const empOptions = employees.length
       ? `<option value="">Select employee…</option>${employees.map((u) => `<option value="${helpers.escapeHtml(u.id)}">${helpers.escapeHtml(u.fullName || 'Unnamed')}</option>`).join('')}`
