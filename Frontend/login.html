@@ -52,11 +52,8 @@
         <h2 data-i18n="login_title">Welcome back</h2>
         <p data-i18n="login_sub">Sign in to your Schedule account</p>
 
-        <!-- Language switcher injected by i18n.js into .nav-actions;
-             on login page we add a standalone one manually -->
-        <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
-          <div class="lang-switcher" id="loginLangSwitcher"></div>
-        </div>
+        <!-- Language switcher injected by i18n.js -->
+        <div class="nav-actions" style="display:flex;justify-content:flex-end;margin-bottom:16px"></div>
 
         <!-- Role Selector -->
         <div style="margin-bottom:8px;font-size:.82rem;font-weight:600;color:var(--subtext)" data-i18n="login_role_label">Select your role</div>
@@ -116,21 +113,6 @@
   </div>
 
   <script>
-    // Build login-page language switcher — runs after DOM + i18n are ready
-    document.addEventListener('DOMContentLoaded', function () {
-      var container = document.getElementById('loginLangSwitcher');
-      if (!container || !window.i18n) return;
-      ['en','rw','fr'].forEach(function (code) {
-        var btn = document.createElement('button');
-        btn.className = 'lang-btn' + (window.i18n.getLang() === code ? ' active' : '');
-        btn.dataset.lang = code;
-        btn.textContent = code.toUpperCase();
-        btn.type = 'button';
-        btn.addEventListener('click', function () { window.i18n.setLang(code); });
-        container.appendChild(btn);
-      });
-    });
-
     function selectRole(el) {
       document.querySelectorAll('.role-btn').forEach(function (b) { b.classList.remove('active'); });
       el.classList.add('active');
