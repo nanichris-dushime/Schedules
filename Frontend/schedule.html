@@ -36,7 +36,7 @@
     </div>
     <div class="sidebar-section">
       <div class="sidebar-section-label" data-i18n="sidebar_main">Main</div>
-      <a href="admin.html" class="nav-item">
+      <a href="admin.html" id="scheduleSidebarDashboardLink" class="nav-item">
         <i class="fa-solid fa-gauge-high"></i>
         <span data-i18n="sidebar_dashboard">Dashboard</span>
       </a>
@@ -230,6 +230,9 @@
     const name = currentUser.fullName || 'No user loaded';
     const role = currentUser.role || 'Admin';
     const initials = helpers.initialsFromName(name);
+
+    const dashMap = { admin: 'admin.html', manager: 'manager.html', employee: 'employee.html' };
+    document.getElementById('scheduleSidebarDashboardLink').href = dashMap[role] || 'admin.html';
 
     document.getElementById('scheduleNotifCount').textContent = unreadCount;
     document.getElementById('scheduleSidebarInitials').textContent = initials;
