@@ -1,24 +1,28 @@
 (function () {
-  const LANG_KEY = 'shiftsmart_lang';
-  const LANGS = { en: 'EN', rw: 'RW', fr: 'FR' };
+  const LANG_KEY = 'schedule_lang';
+  const LANGS = {
+    en: { code: 'EN', label: 'English' },
+    rw: { code: 'RW', label: 'Kinyarwanda' },
+    fr: { code: 'FR', label: 'Français' }
+  };
 
   const dict = {
     en: {
-      nav_features:'Features', nav_about:'About', nav_schedule:'Schedule',
+      nav_features:'Features', nav_about:'About',
       nav_contact:'Contact', nav_login:'Log In', nav_getstarted:'Get Started',
-      hero_h1a:'Schedule Smarter,', hero_h1b:'Work Better',
-      hero_cta1:'Get Started Free', hero_cta2:'See How It Works',
+      hero_h1a:'Schedule', hero_h1b:'Better.',
+      hero_cta1:'Get Started Free', hero_learnmore:'Learn More',
       feat_label:'Features', feat_title:'Everything you need to run a smooth operation',
-      feat_sub:'From intelligent assignment to real-time notifications — ShiftSmart handles the complexity so you can focus on your people.',
+      feat_sub:'From intelligent assignment to real-time notifications — Schedule handles the complexity so you can focus on your people.',
       feat1_title:'Smart Assignment', feat2_title:'Conflict Detection',
       feat3_title:'Real-time Notifications', feat4_title:'Advanced Analytics',
       feat5_title:'Role-based Access', feat6_title:'Mobile-first Design',
-      about_label:'About ShiftSmart', about_title:'Built for modern workforce management',
+      about_label:'About Schedule', about_title:'Built for modern workforce management',
       cta_label:'Get Started Today', cta_title:'Ready to transform your scheduling?',
-      cta_sub:'Join over 10,000 companies using ShiftSmart. Free 14-day trial, no credit card required.',
+      cta_sub:'Join over 10,000 companies using Schedule. Free 14-day trial, no credit card required.',
       cta_btn1:'Start Free Trial', cta_btn2:'Book a Demo',
       footer_product:'Product', footer_company:'Company', footer_support:'Support',
-      login_title:'Welcome back', login_sub:'Sign in to your ShiftSmart account',
+      login_title:'Welcome back', login_sub:'Sign in to your Schedule account',
       login_role_label:'Select your role', login_role_admin:'Admin',
       login_role_manager:'Manager', login_role_employee:'Employee',
       login_email:'Email Address', login_password:'Password',
@@ -45,7 +49,7 @@
       manager_date:'Date', manager_priority:'Priority',
       manager_start:'Start Time', manager_end:'End Time',
       manager_create_assign:'Create & Assign Task',
-      manager_team_status:"Team Status", manager_today_avail:"Today's availability",
+      manager_team_status:'Team Status', manager_today_avail:"Today's availability",
       manager_task_list:'Task List', manager_tasks_week:'All assigned tasks this week',
       employee_title:'My Dashboard', employee_my_schedule:'My Schedule',
       employee_request_swap:'Request Swap', employee_shifts_month:'Shifts This Month',
@@ -63,21 +67,21 @@
       export:'Export', search:'Search', today:'Today',
     },
     rw: {
-      nav_features:'Ibiranga', nav_about:'Abo turi bo', nav_schedule:'Gahunda',
+      nav_features:'Ibiranga', nav_about:'Abo turi bo',
       nav_contact:'Twandikire', nav_login:'Injira', nav_getstarted:'Tangira',
-      hero_h1a:'Gahunda Nziza,', hero_h1b:'Akazi Keza',
-      hero_cta1:'Tangira Ubuntu', hero_cta2:'Reba Uburyo Bikora',
+      hero_h1a:'Gahunda', hero_h1b:'Nziza.',
+      hero_cta1:'Tangira Ubuntu', hero_learnmore:'Menya Byinshi',
       feat_label:'Ibiranga', feat_title:'Ibyo ukeneye byose kugira ngo ibikorwa bigende neza',
-      feat_sub:'Kuva gushyiraho akazi kugeza kumenyesha — ShiftSmart ikemura ingorane kugira ngo wemerere abantu bawe.',
+      feat_sub:'Kuva gushyiraho akazi kugeza kumenyesha — Schedule ikemura ingorane kugira ngo wemerere abantu bawe.',
       feat1_title:'Gushyiraho Akazi Nziza', feat2_title:'Kumenya Ingorane',
       feat3_title:'Kumenyesha Igihe Cyose', feat4_title:'Isesengura Ryimbitse',
       feat5_title:'Uburenganzira Bwigenga', feat6_title:"Igishushanyo cy'Telefoni",
       about_label:'Abo turi bo', about_title:"Yakozwe kubicuruzwa by'igihe",
       cta_label:'Tangira Uyu Munsi', cta_title:'Witeguye guhindura gahunda yawe?',
-      cta_sub:'Jya mu masosiyete 10,000 akoresha ShiftSmart. Iminsi 14 ubuntu, nta karita ya banki ikenewe.',
+      cta_sub:'Jya mu masosiyete 10,000 akoresha Schedule. Iminsi 14 ubuntu, nta karita ya banki ikenewe.',
       cta_btn1:'Tangira Ubuntu', cta_btn2:'Saba Ibiganiro',
       footer_product:'Igicuruzwa', footer_company:'Sosiyete', footer_support:'Inkunga',
-      login_title:'Murakaza neza', login_sub:'Injira muri konti yawe ya ShiftSmart',
+      login_title:'Murakaza neza', login_sub:'Injira muri konti yawe ya Schedule',
       login_role_label:'Hitamo uruhare rwawe', login_role_admin:'Umuyobozi',
       login_role_manager:"Umukozi w'Ubuyobozi", login_role_employee:'Umukozi',
       login_email:'Imeyili', login_password:"Ijambo ry'ibanga",
@@ -123,21 +127,21 @@
       export:'Kohereza', search:'Shakisha', today:'Uyu Munsi',
     },
     fr: {
-      nav_features:'Fonctionnalités', nav_about:'À propos', nav_schedule:'Planning',
+      nav_features:'Fonctionnalités', nav_about:'À propos',
       nav_contact:'Contact', nav_login:'Connexion', nav_getstarted:'Commencer',
-      hero_h1a:'Planifiez Mieux,', hero_h1b:'Travaillez Mieux',
-      hero_cta1:'Commencer Gratuitement', hero_cta2:'Voir Comment Ça Marche',
+      hero_h1a:'Planifiez', hero_h1b:'Mieux.',
+      hero_cta1:'Commencer Gratuitement', hero_learnmore:'En savoir plus',
       feat_label:'Fonctionnalités', feat_title:'Tout ce dont vous avez besoin pour une opération fluide',
-      feat_sub:"De l'affectation intelligente aux notifications en temps réel — ShiftSmart gère la complexité pour que vous puissiez vous concentrer sur vos équipes.",
+      feat_sub:"De l'affectation intelligente aux notifications en temps réel — Schedule gère la complexité pour que vous puissiez vous concentrer sur vos équipes.",
       feat1_title:'Affectation Intelligente', feat2_title:'Détection des Conflits',
       feat3_title:'Notifications en Temps Réel', feat4_title:'Analyses Avancées',
       feat5_title:'Accès par Rôle', feat6_title:'Conception Mobile',
-      about_label:'À propos de ShiftSmart', about_title:'Conçu pour la gestion moderne des effectifs',
+      about_label:'À propos de Schedule', about_title:'Conçu pour la gestion moderne des effectifs',
       cta_label:"Commencez Aujourd'hui", cta_title:'Prêt à transformer votre planification?',
-      cta_sub:"Rejoignez plus de 10 000 entreprises utilisant ShiftSmart. Essai gratuit de 14 jours, sans carte de crédit.",
+      cta_sub:"Rejoignez plus de 10 000 entreprises utilisant Schedule. Essai gratuit de 14 jours, sans carte de crédit.",
       cta_btn1:'Essai Gratuit', cta_btn2:'Réserver une Démo',
       footer_product:'Produit', footer_company:'Entreprise', footer_support:'Support',
-      login_title:'Bon retour', login_sub:'Connectez-vous à votre compte ShiftSmart',
+      login_title:'Bon retour', login_sub:'Connectez-vous à votre compte Schedule',
       login_role_label:'Sélectionnez votre rôle', login_role_admin:'Administrateur',
       login_role_manager:'Responsable', login_role_employee:'Employé',
       login_email:'Adresse e-mail', login_password:'Mot de passe',
@@ -211,6 +215,14 @@
 
   function updateSwitcherUI() {
     const lang = getLang();
+    // Dropdown switcher
+    document.querySelectorAll('.lang-option').forEach(function (opt) {
+      opt.classList.toggle('active', opt.dataset.lang === lang);
+    });
+    document.querySelectorAll('.lang-trigger-label').forEach(function (el) {
+      el.textContent = LANGS[lang] ? LANGS[lang].code : lang.toUpperCase();
+    });
+    // Legacy pill (login page manual switcher)
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
       btn.classList.toggle('active', btn.dataset.lang === lang);
     });
@@ -220,15 +232,42 @@
     const wrap = document.createElement('div');
     wrap.className = 'lang-switcher';
     wrap.setAttribute('aria-label', 'Language switcher');
-    Object.entries(LANGS).forEach(function ([code, label]) {
-      const btn = document.createElement('button');
-      btn.className = 'lang-btn';
-      btn.dataset.lang = code;
-      btn.textContent = label;
-      btn.setAttribute('type', 'button');
-      btn.addEventListener('click', function () { setLang(code); });
-      wrap.appendChild(btn);
+
+    const trigger = document.createElement('button');
+    trigger.className = 'lang-trigger';
+    trigger.type = 'button';
+    trigger.innerHTML =
+      '<i class="fa-solid fa-globe" style="color:var(--green);font-size:.8rem"></i>' +
+      '<span class="lang-trigger-label">' + (LANGS[getLang()] ? LANGS[getLang()].code : 'EN') + '</span>' +
+      '<i class="fa-solid fa-chevron-down"></i>';
+
+    const dropdown = document.createElement('div');
+    dropdown.className = 'lang-dropdown';
+
+    Object.entries(LANGS).forEach(function (entry) {
+      var code = entry[0];
+      var info = entry[1];
+      var opt = document.createElement('div');
+      opt.className = 'lang-option' + (getLang() === code ? ' active' : '');
+      opt.dataset.lang = code;
+      opt.innerHTML =
+        '<span>' + info.label + '</span>' +
+        '<span class="lang-code">' + info.code + '</span>';
+      opt.addEventListener('click', function () {
+        setLang(code);
+        wrap.classList.remove('open');
+      });
+      dropdown.appendChild(opt);
     });
+
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      wrap.classList.toggle('open');
+    });
+    document.addEventListener('click', function () { wrap.classList.remove('open'); });
+
+    wrap.appendChild(trigger);
+    wrap.appendChild(dropdown);
     return wrap;
   }
 
