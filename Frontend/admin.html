@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="js/api.js"></script>
+  <script src="js/i18n.js"></script>
 </head>
 <body>
 <div class="app">
@@ -23,37 +24,44 @@
     </div>
 
     <div class="sidebar-section">
-      <div class="sidebar-section-label">Main</div>
+      <div class="sidebar-section-label" data-i18n="sidebar_main">Main</div>
       <a href="admin.html" class="nav-item active">
-        <i class="fa-solid fa-gauge-high"></i> Dashboard
+        <i class="fa-solid fa-gauge-high"></i>
+        <span data-i18n="sidebar_dashboard">Dashboard</span>
       </a>
       <a href="schedule.html" class="nav-item">
-        <i class="fa-solid fa-calendar-days"></i> Schedule
+        <i class="fa-solid fa-calendar-days"></i>
+        <span data-i18n="sidebar_schedule">Schedule</span>
       </a>
       <a href="notifications.html" class="nav-item">
-        <i class="fa-solid fa-bell"></i> Notifications
+        <i class="fa-solid fa-bell"></i>
+        <span data-i18n="sidebar_notifications">Notifications</span>
         <span class="badge-pill" id="adminSidebarNotifCount">0</span>
       </a>
     </div>
 
     <div class="sidebar-section">
-      <div class="sidebar-section-label">Management</div>
+      <div class="sidebar-section-label" data-i18n="sidebar_management">Management</div>
       <a href="#" class="nav-item">
-        <i class="fa-solid fa-users"></i> All Users
+        <i class="fa-solid fa-users"></i>
+        <span data-i18n="sidebar_users">All Users</span>
       </a>
       <a href="manager.html" class="nav-item">
-        <i class="fa-solid fa-briefcase"></i> Managers
+        <i class="fa-solid fa-briefcase"></i>
+        <span data-i18n="sidebar_managers">Managers</span>
       </a>
       <a href="employee.html" class="nav-item">
-        <i class="fa-solid fa-id-badge"></i> Employees
+        <i class="fa-solid fa-id-badge"></i>
+        <span data-i18n="sidebar_employees">Employees</span>
       </a>
       <a href="#" class="nav-item">
-        <i class="fa-solid fa-gear"></i> Settings
+        <i class="fa-solid fa-gear"></i>
+        <span data-i18n="sidebar_settings">Settings</span>
       </a>
     </div>
 
     <div class="sidebar-footer">
-        <div class="sidebar-user">
+      <div class="sidebar-user">
         <div class="avatar avatar-green" id="adminSidebarInitials">--</div>
         <div class="user-info">
           <div class="user-name" id="adminSidebarName">No user loaded</div>
@@ -74,14 +82,15 @@
         <i class="fa-solid fa-bars"></i>
       </button>
       <div>
-        <h1>Admin Dashboard</h1>
-        <div class="breadcrumb">Home / <span>Dashboard</span></div>
+        <h1 data-i18n="admin_title">Admin Dashboard</h1>
+        <div class="breadcrumb">Home / <span data-i18n="sidebar_dashboard">Dashboard</span></div>
       </div>
     </div>
     <div class="topbar-right">
+      <!-- Language switcher injected here by i18n.js -->
       <div class="search-bar">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" placeholder="Search users…"/>
+        <input type="text" data-i18n="topbar_search" data-i18n-attr="placeholder" placeholder="Search users…"/>
       </div>
       <div class="topbar-icon-btn" data-tip="Notifications">
         <i class="fa-solid fa-bell"></i>
@@ -108,13 +117,17 @@
       <!-- Page Header -->
       <div class="page-header">
         <div class="page-header-left">
-          <h2>Overview</h2>
+          <h2 data-i18n="admin_overview">Overview</h2>
           <p id="adminSummaryLabel">Live summary will appear here when dashboard data is connected.</p>
         </div>
         <div class="page-header-right">
-          <button class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i> Export</button>
+          <button class="btn btn-outline btn-sm">
+            <i class="fa-solid fa-download"></i>
+            <span data-i18n="admin_export">Export</span>
+          </button>
           <button class="btn btn-primary btn-sm" onclick="openModal('addUserModal')">
-            <i class="fa-solid fa-plus"></i> Add User
+            <i class="fa-solid fa-plus"></i>
+            <span data-i18n="admin_add_user">Add User</span>
           </button>
         </div>
       </div>
@@ -127,7 +140,7 @@
             <span class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i> 12%</span>
           </div>
           <div class="kpi-value" id="adminEmployeesValue">0</div>
-          <div class="kpi-label">Total Employees</div>
+          <div class="kpi-label" data-i18n="admin_total_employees">Total Employees</div>
         </div>
         <div class="kpi-card blue fade-in fade-in-d1">
           <div class="kpi-top">
@@ -135,7 +148,7 @@
             <span class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i> 3%</span>
           </div>
           <div class="kpi-value" id="adminManagersValue">0</div>
-          <div class="kpi-label">Managers</div>
+          <div class="kpi-label" data-i18n="admin_managers">Managers</div>
         </div>
         <div class="kpi-card purple fade-in fade-in-d2">
           <div class="kpi-top">
@@ -143,7 +156,7 @@
             <span class="kpi-trend neutral">— 0%</span>
           </div>
           <div class="kpi-value" id="adminShiftsValue">0</div>
-          <div class="kpi-label">Active Shifts Today</div>
+          <div class="kpi-label" data-i18n="admin_active_shifts">Active Shifts Today</div>
         </div>
         <div class="kpi-card orange fade-in fade-in-d3">
           <div class="kpi-top">
@@ -151,18 +164,17 @@
             <span class="kpi-trend down"><i class="fa-solid fa-arrow-down"></i> 5%</span>
           </div>
           <div class="kpi-value" id="adminPendingValue">0</div>
-          <div class="kpi-label">Pending Requests</div>
+          <div class="kpi-label" data-i18n="admin_pending">Pending Requests</div>
         </div>
       </div>
 
       <!-- Two-column row -->
       <div class="grid-2" style="margin-bottom:24px">
 
-        <!-- Shift Coverage Chart (visual) -->
         <div class="card fade-in">
           <div class="card-header">
             <div>
-              <h3>User Roles</h3>
+              <h3 data-i18n="admin_user_roles">User Roles</h3>
               <p>Distribution of current accounts by role</p>
             </div>
             <select class="select-control" style="font-size:.82rem">
@@ -175,10 +187,12 @@
           </div>
         </div>
 
-        <!-- Recent Records -->
         <div class="card fade-in fade-in-d1">
           <div class="card-header">
-            <div><h3>Recent Records</h3><p>Latest users, tasks, and notifications</p></div>
+            <div>
+              <h3 data-i18n="admin_recent">Recent Records</h3>
+              <p>Latest users, tasks, and notifications</p>
+            </div>
             <a href="#" class="text-sm" style="color:var(--green);font-weight:600">View all</a>
           </div>
           <div class="card-body" style="padding-top:8px" id="adminRecentActivity"></div>
@@ -189,10 +203,10 @@
       <div class="card fade-in">
         <div class="card-header">
           <div>
-            <h3>User Management</h3>
-            <p>All registered system users</p>
+            <h3 data-i18n="admin_user_mgmt">User Management</h3>
+            <p data-i18n="admin_all_users">All registered system users</p>
           </div>
-          <div style="display:flex;gap:10px;align-items:center">
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
             <div class="search-bar">
               <i class="fa-solid fa-magnifying-glass"></i>
               <input type="text" placeholder="Search…"/>
@@ -204,7 +218,8 @@
               <option>Employee</option>
             </select>
             <button class="btn btn-primary btn-sm" onclick="openModal('addUserModal')">
-              <i class="fa-solid fa-plus"></i> Add User
+              <i class="fa-solid fa-plus"></i>
+              <span data-i18n="admin_add_user">Add User</span>
             </button>
           </div>
         </div>
@@ -223,8 +238,7 @@
             <tbody id="adminUsersTableBody"></tbody>
           </table>
         </div>
-        <!-- Pagination -->
-        <div style="padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border)">
+        <div style="padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px">
           <span class="text-sm text-muted" id="adminUsersSummary">Showing 0 of 0 users</span>
           <div style="display:flex;gap:6px">
             <button class="btn btn-outline btn-sm"><i class="fa-solid fa-chevron-left"></i></button>
@@ -279,7 +293,7 @@
     </div>
     <div id="userFormError" style="display:none;background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-top:8px"></div>
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
-      <button class="btn btn-outline" onclick="closeModal('addUserModal')">Cancel</button>
+      <button class="btn btn-outline" onclick="closeModal('addUserModal')" data-i18n="cancel">Cancel</button>
       <button class="btn btn-primary" onclick="createUser()">
         <i class="fa-solid fa-plus"></i> Create User
       </button>

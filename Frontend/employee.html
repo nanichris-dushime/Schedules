@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="js/api.js"></script>
+  <script src="js/i18n.js"></script>
 </head>
 <body>
 <div class="app">
@@ -22,22 +23,27 @@
       </a>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-section-label">My Space</div>
+      <div class="sidebar-section-label" data-i18n="sidebar_myspace">My Space</div>
       <a href="employee.html" class="nav-item active">
-        <i class="fa-solid fa-gauge-high"></i> Dashboard
+        <i class="fa-solid fa-gauge-high"></i>
+        <span data-i18n="sidebar_dashboard">Dashboard</span>
       </a>
       <a href="schedule.html" class="nav-item">
-        <i class="fa-solid fa-calendar-days"></i> Schedule
+        <i class="fa-solid fa-calendar-days"></i>
+        <span data-i18n="sidebar_schedule">Schedule</span>
       </a>
       <a href="notifications.html" class="nav-item">
-        <i class="fa-solid fa-bell"></i> Notifications
+        <i class="fa-solid fa-bell"></i>
+        <span data-i18n="sidebar_notifications">Notifications</span>
         <span class="badge-pill" id="employeeNotifCount">0</span>
       </a>
       <a href="#" class="nav-item">
-        <i class="fa-solid fa-clock-rotate-left"></i> History
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span data-i18n="sidebar_history">History</span>
       </a>
       <a href="#" class="nav-item" onclick="logout(); return false;">
-        <i class="fa-solid fa-right-from-bracket"></i> Logout
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span data-i18n="sidebar_logout">Logout</span>
       </a>
     </div>
     <div class="sidebar-footer">
@@ -60,11 +66,12 @@
     <div class="topbar-left">
       <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
       <div>
-        <h1>My Dashboard</h1>
-        <div class="breadcrumb">Home / <span>Dashboard</span></div>
+        <h1 data-i18n="employee_title">My Dashboard</h1>
+        <div class="breadcrumb">Home / <span data-i18n="sidebar_dashboard">Dashboard</span></div>
       </div>
     </div>
     <div class="topbar-right">
+      <!-- Language switcher injected here by i18n.js -->
       <div class="topbar-icon-btn">
         <i class="fa-solid fa-bell"></i>
         <span class="notif-dot"></span>
@@ -84,18 +91,20 @@
     <div class="page-content">
 
       <!-- Welcome Banner -->
-      <div style="background:linear-gradient(135deg,var(--accent) 0%,#1e3a5f 100%);border-radius:var(--radius-lg);padding:28px 32px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px">
+      <div class="welcome-banner">
         <div>
           <div style="font-size:.8rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px" id="employeeGreeting">Welcome</div>
           <h2 style="font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:6px" id="employeeWelcomeName">Employee dashboard</h2>
           <p style="color:#94a3b8;font-size:.9rem" id="employeeWelcomeSummary">Your shifts and requests will appear here after live data is connected.</p>
         </div>
-        <div style="display:flex;gap:12px">
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
           <a href="schedule.html" class="btn btn-outline" style="border-color:rgba(255,255,255,.2);color:#fff">
-            <i class="fa-solid fa-calendar-days"></i> My Schedule
+            <i class="fa-solid fa-calendar-days"></i>
+            <span data-i18n="employee_my_schedule">My Schedule</span>
           </a>
           <button class="btn btn-primary" onclick="openModal('swapModal')">
-            <i class="fa-solid fa-arrows-rotate"></i> Request Swap
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span data-i18n="employee_request_swap">Request Swap</span>
           </button>
         </div>
       </div>
@@ -105,22 +114,22 @@
         <div class="kpi-card green fade-in">
           <div class="kpi-top"><div class="kpi-icon green"><i class="fa-solid fa-calendar-check"></i></div></div>
           <div class="kpi-value" id="employeeShiftsMonth">0</div>
-          <div class="kpi-label">Shifts This Month</div>
+          <div class="kpi-label" data-i18n="employee_shifts_month">Shifts This Month</div>
         </div>
         <div class="kpi-card blue fade-in fade-in-d1">
           <div class="kpi-top"><div class="kpi-icon blue"><i class="fa-solid fa-circle-check"></i></div></div>
           <div class="kpi-value" id="employeeCompletedCount">0</div>
-          <div class="kpi-label">Completed</div>
+          <div class="kpi-label" data-i18n="employee_completed">Completed</div>
         </div>
         <div class="kpi-card orange fade-in fade-in-d2">
           <div class="kpi-top"><div class="kpi-icon orange"><i class="fa-solid fa-clock"></i></div></div>
           <div class="kpi-value" id="employeePendingCount">0</div>
-          <div class="kpi-label">Pending</div>
+          <div class="kpi-label" data-i18n="employee_pending">Pending</div>
         </div>
         <div class="kpi-card purple fade-in fade-in-d3">
           <div class="kpi-top"><div class="kpi-icon purple"><i class="fa-solid fa-hourglass-half"></i></div></div>
           <div class="kpi-value" id="employeeHoursWeek">0h</div>
-          <div class="kpi-label">Hours This Week</div>
+          <div class="kpi-label" data-i18n="employee_hours_week">Hours This Week</div>
         </div>
       </div>
 
@@ -130,7 +139,10 @@
         <!-- Assigned Tasks -->
         <div class="card fade-in">
           <div class="card-header">
-            <div><h3>My Assigned Tasks</h3><p>Current week</p></div>
+            <div>
+              <h3 data-i18n="employee_assigned_tasks">My Assigned Tasks</h3>
+              <p data-i18n="employee_current_week">Current week</p>
+            </div>
             <select class="select-control" style="font-size:.82rem">
               <option>All</option><option>Confirmed</option><option>Pending</option>
             </select>
@@ -138,13 +150,13 @@
           <div class="card-body" style="display:flex;flex-direction:column;gap:12px" id="employeeTaskCards"></div>
         </div>
 
-        <!-- Right col: upcoming + profile -->
+        <!-- Right col: upcoming + availability -->
         <div style="display:flex;flex-direction:column;gap:20px">
 
           <!-- Next Shift Countdown -->
           <div class="card fade-in fade-in-d1" style="background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);border:none">
             <div class="card-body" style="text-align:center">
-              <div style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.7);font-weight:700;margin-bottom:8px">
+              <div style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.7);font-weight:700;margin-bottom:8px" data-i18n="employee_next_shift">
                 Next Shift In
               </div>
               <div style="font-size:3rem;font-weight:800;color:#fff;line-height:1;margin-bottom:6px" id="countdown">--</div>
@@ -159,8 +171,8 @@
           <!-- Availability -->
           <div class="card fade-in fade-in-d2">
             <div class="card-header">
-              <h3>My Availability</h3>
-              <button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i> Edit</button>
+              <h3 data-i18n="employee_availability">My Availability</h3>
+              <button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i> <span data-i18n="edit">Edit</span></button>
             </div>
             <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="employeeAvailabilityGrid"></div>
           </div>
@@ -171,8 +183,14 @@
       <!-- History Table -->
       <div class="card fade-in">
         <div class="card-header">
-          <div><h3>Shift History</h3><p>Past 30 days</p></div>
-          <button class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i> Export</button>
+          <div>
+            <h3 data-i18n="employee_shift_history">Shift History</h3>
+            <p data-i18n="employee_past30">Past 30 days</p>
+          </div>
+          <button class="btn btn-outline btn-sm">
+            <i class="fa-solid fa-download"></i>
+            <span data-i18n="export">Export</span>
+          </button>
         </div>
         <div class="table-wrap">
           <table class="table">
@@ -213,7 +231,7 @@
       <textarea class="form-control" rows="2" placeholder="Brief reason for the swap request…" style="resize:vertical"></textarea>
     </div>
     <div style="display:flex;gap:10px;justify-content:flex-end">
-      <button class="btn btn-outline" onclick="closeModal('swapModal')">Cancel</button>
+      <button class="btn btn-outline" onclick="closeModal('swapModal')" data-i18n="cancel">Cancel</button>
       <button class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit Request</button>
     </div>
   </div>
@@ -234,7 +252,6 @@
     const notifications = data.notifications || [];
     const unreadCount = notifications.filter((n) => n.status === 'unread').length;
 
-    // Assignments for this employee (API already filtered server-side for employees)
     const myAssignments = currentUser.id
       ? helpers.getAssignmentsForEmployee(currentUser.id)
       : [];
@@ -243,7 +260,6 @@
     const confirmedRows = enriched.filter((a) => a.status === 'confirmed');
     const rejectedRows  = enriched.filter((a) => a.status === 'rejected');
 
-    // Next upcoming confirmed assignment by date
     const today = new Date().toISOString().slice(0, 10);
     const next = enriched
       .filter((a) => a.status === 'confirmed' && a.task && a.task.date >= today)
@@ -271,7 +287,6 @@
     document.getElementById('employeePendingCount').textContent = rejectedRows.length;
     document.getElementById('employeeHoursWeek').textContent = '—';
 
-    // Task cards
     document.getElementById('employeeTaskCards').innerHTML = enriched.length
       ? enriched.map((a) => `
           <div class="task-card ${helpers.escapeHtml(a.status)}">
@@ -290,18 +305,15 @@
         `).join('')
       : helpers.emptyState('No assigned tasks yet', 'Your upcoming shifts will appear here once a manager assigns you to a task.', 'calendar-check');
 
-    // Next shift countdown
     document.getElementById('countdown').textContent = next ? helpers.formatTime(next.task.startTime) : '--';
     document.getElementById('employeeNextShiftTitle').textContent = next ? next.taskTitle : 'No upcoming shift';
     document.getElementById('employeeNextShiftTime').textContent = next
       ? `${next.dateLabel} · ${next.timeLabel}`
       : 'Connect schedule data to show the next assignment.';
 
-    // Availability — backend doesn't have this model yet
     document.getElementById('employeeAvailabilityGrid').innerHTML =
       helpers.emptyState('No availability set', 'Weekly availability will appear here once the feature is added.', 'clock');
 
-    // Shift history table
     document.getElementById('employeeHistoryTable').innerHTML = enriched.length
       ? enriched.map((a) => `
           <tr>
@@ -315,7 +327,6 @@
         `).join('')
       : `<tr><td colspan="6">${helpers.emptyState('No shift history yet', 'Completed assignments will appear here once you have been assigned.', 'clock-rotate-left')}</td></tr>`;
 
-    // Swap modal options
     document.getElementById('employeeSwapSelect').innerHTML = enriched.length
       ? enriched.map((a) => `<option value="${helpers.escapeHtml(a.id)}">${helpers.escapeHtml(`${a.taskTitle} — ${a.dateLabel}`)}</option>`).join('')
       : '<option>No shifts available to swap…</option>';

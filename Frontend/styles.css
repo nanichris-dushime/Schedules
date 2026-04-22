@@ -480,7 +480,7 @@ input, textarea, select, button { font-family: inherit; }
    DASHBOARD SHELL (shared sidebar + topbar)
    ============================================================ */
 .app {
-  display: flex; min-height: 100vh;
+  display: flex; min-height: 100vh; overflow-x: hidden;
 }
 
 /* ── Sidebar ─────────────────────────────────────────────── */
@@ -554,7 +554,7 @@ input, textarea, select, button { font-family: inherit; }
 .topbar-left h1 { font-size: 1.15rem; font-weight: 800; color: var(--accent); }
 .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: .82rem; color: var(--subtext); }
 .breadcrumb span { color: var(--green); font-weight: 600; }
-.topbar-right { display: flex; align-items: center; gap: 8px; }
+.topbar-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; overflow: hidden; }
 .topbar-icon-btn {
   width: 38px; height: 38px; border-radius: 8px;
   background: var(--muted); border: 1px solid var(--border);
@@ -586,8 +586,10 @@ input, textarea, select, button { font-family: inherit; }
   flex: 1; margin-left: var(--sidebar-w);
   padding-top: var(--topbar-h);
   min-height: 100vh;
+  min-width: 0;
+  overflow-x: hidden;
 }
-.page-content { padding: 28px; max-width: 1280px; }
+.page-content { padding: 28px; max-width: 1280px; width: 100%; }
 
 /* ── Avatar ──────────────────────────────────────────────── */
 .avatar {
@@ -835,6 +837,7 @@ input, textarea, select, button { font-family: inherit; }
 .modal {
   background: var(--white); border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg); padding: 32px; width: 100%; max-width: 480px;
+  max-height: 90vh; overflow-y: auto;
   transform: scale(.96); transition: transform .2s;
   border: 1px solid var(--border);
 }
@@ -843,12 +846,7 @@ input, textarea, select, button { font-family: inherit; }
 .modal-header h3 { font-size: 1.1rem; font-weight: 800; }
 .modal-close { background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--subtext); padding: 4px; }
 
-/* ── Empty State ─────────────────────────────────────────── */
-.empty-state {
-  text-align: center; padding: 60px 20px; color: var(--subtext);
-}
-.empty-state i { font-size: 2.5rem; color: var(--border); margin-bottom: 16px; }
-.empty-state p { font-size: .95rem; }
+/* ── Empty State (duplicate removed — canonical definition is at top of file) ── */
 
 /* ── Tooltip ─────────────────────────────────────────────── */
 [data-tip] { position: relative; }
@@ -911,61 +909,7 @@ input, textarea, select, button { font-family: inherit; }
 }
 .select-control:focus { border-color: var(--green); }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (max-width: 1100px) {
-  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-  .features-grid { grid-template-columns: 1fr 1fr; }
-}
-
-@media (max-width: 900px) {
-  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
-  .hero-visual { display: none; }
-  .about-inner { grid-template-columns: 1fr; gap: 40px; }
-  .footer-inner { grid-template-columns: 1fr 1fr; }
-
-  /* Sidebar hide */
-  .sidebar {
-    transform: translateX(-100%);
-  }
-  .sidebar.open {
-    transform: translateX(0);
-  }
-  .main { margin-left: 0; }
-  .topbar { left: 0; }
-  .menu-toggle { display: block; }
-  .grid-2 { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 680px) {
-  .land-nav .nav-links { display: none; }
-  .hamburger { display: flex; }
-  .features-grid { grid-template-columns: 1fr; }
-  .kpi-grid { grid-template-columns: 1fr 1fr; }
-  .auth-page { grid-template-columns: 1fr; }
-  .auth-left { display: none; }
-  .footer-inner { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
-  .page-content { padding: 18px; }
-  .grid-3 { grid-template-columns: 1fr 1fr; }
-}
-
-@media (max-width: 480px) {
-  .kpi-grid { grid-template-columns: 1fr; }
-  .grid-3 { grid-template-columns: 1fr; }
-  .hero { padding: 100px 5% 60px; }
-  .section { padding: 60px 5%; }
-}
-
-/* ── Sidebar overlay (mobile) ────────────────────────────── */
-.sidebar-overlay {
-  display: none; position: fixed; inset: 0; z-index: 199;
-  background: rgba(15,23,42,.4);
-}
-.sidebar-overlay.open { display: block; }
-
-/* ── Animations ──────────────────────────────────────────── */
+/* ── Animations ─────────────────────────────────────────── */
 @keyframes fadeIn {
   from { opacity:0; transform: translateY(12px); }
   to   { opacity:1; transform: translateY(0); }
@@ -976,9 +920,7 @@ input, textarea, select, button { font-family: inherit; }
 .fade-in-d3 { animation-delay: .3s; }
 .fade-in-d4 { animation-delay: .4s; }
 
-/* ============================================================
-   LANGUAGE SWITCHER
-   ============================================================ */
+/* ── Language Switcher ───────────────────────────────────── */
 .lang-switcher {
   display: flex; align-items: center; gap: 2px;
   background: var(--muted); border: 1.5px solid var(--border);
@@ -997,92 +939,145 @@ input, textarea, select, button { font-family: inherit; }
   box-shadow: 0 1px 4px rgba(22,163,74,.3);
 }
 
-/* ============================================================
-   MOBILE NAV — class-based toggle (replaces inline JS)
-   ============================================================ */
+/* ── Mobile nav open state ───────────────────────────────── */
 .nav-links.open {
-  display: flex !important;
-  flex-direction: column;
+  display: flex !important; flex-direction: column;
   position: absolute; top: 72px; left: 0; right: 0;
-  background: var(--white);
-  padding: 16px 6%;
+  background: var(--white); padding: 16px 6%;
   border-bottom: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  z-index: 99;
-  gap: 4px;
+  box-shadow: var(--shadow); z-index: 99; gap: 4px;
 }
 .nav-links.open a {
-  padding: 10px 0;
-  font-size: .95rem;
+  padding: 10px 0; font-size: .95rem;
   border-bottom: 1px solid var(--border);
 }
 .nav-links.open a:last-child { border-bottom: none; }
 
-/* ============================================================
-   ADDITIONAL RESPONSIVE FIXES
-   ============================================================ */
-@media (max-width: 900px) {
-  .search-bar { display: none; }
-  .topbar-left h1 { font-size: 1rem; }
-  .lang-switcher { margin-right: 0; }
-  .topbar { padding: 0 16px; }
-  .page-content { padding: 20px 16px; }
+/* ── Welcome banner (employee) ───────────────────────────── */
+.welcome-banner {
+  background: linear-gradient(135deg, var(--accent) 0%, #1e3a5f 100%);
+  border-radius: var(--radius-lg); padding: 28px 32px;
+  margin-bottom: 28px; display: flex;
+  align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 20px;
 }
 
-@media (max-width: 680px) {
-  .land-nav { padding: 0 4%; }
-  .land-nav .nav-actions .btn-outline { display: none; }
+/* ── Focus ring ──────────────────────────────────────────── */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--green); outline-offset: 2px;
 }
 
-@media (max-width: 480px) {
-  /* Hide profile text on very small screens, keep avatar */
-  .topbar-profile > div:not(.avatar) { display: none; }
-  /* Modal padding */
-  .modal { padding: 22px 16px; margin: 12px; max-width: calc(100vw - 24px); }
-  /* Auth card */
-  .auth-card { padding: 28px 18px; }
-  /* Page header stacks */
-  .page-header { flex-direction: column; align-items: flex-start; }
-  .page-header-right { width: 100%; flex-wrap: wrap; }
-  /* Card header wraps */
-  .card-header { flex-wrap: wrap; gap: 10px; }
-  /* Notification filters */
-  .notif-filters { gap: 5px; }
-  .filter-pill { padding: 5px 10px; font-size: .76rem; }
-  /* KPI value size */
-  .kpi-value { font-size: 1.7rem; }
-  /* Hero padding */
-  .hero { padding: 90px 4% 50px; }
-  /* Section padding */
-  .section { padding: 50px 4%; }
-  /* About section */
-  .about { padding: 50px 4%; }
-  /* Welcome banner on employee page */
-  .welcome-banner { padding: 20px 18px !important; }
-  /* Table actions wrap */
-  .table-actions { flex-wrap: wrap; }
-  /* Topbar height */
-  :root { --topbar-h: 60px; }
-}
-
-/* ============================================================
-   MISC POLISH
-   ============================================================ */
-/* Ensure sidebar scrollbar is styled */
+/* ── Sidebar scrollbar ───────────────────────────────────── */
 .sidebar::-webkit-scrollbar { width: 4px; }
 .sidebar::-webkit-scrollbar-track { background: transparent; }
 .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 4px; }
 
-/* Smooth focus ring on all interactive elements */
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
-  outline: 2px solid var(--green);
-  outline-offset: 2px;
-}
-
-/* Table horizontal scroll indicator on mobile */
-.table-wrap {
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Prevent layout shift when modal opens */
+/* ── Modal backdrop blur ─────────────────────────────────── */
 .modal-backdrop { backdrop-filter: blur(2px); }
+
+/* ── Table touch scroll ──────────────────────────────────── */
+.table-wrap { -webkit-overflow-scrolling: touch; }
+
+/* ── Overflow guards ─────────────────────────────────────── */
+.app { overflow-x: hidden; }
+.main { min-width: 0; overflow-x: hidden; }
+.kpi-card, .card, .grid-2 > *, .grid-3 > * { min-width: 0; }
+.form-control, .select-control { max-width: 100%; }
+.topbar-left { min-width: 0; flex: 1; }
+.topbar-left h1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.auth-right { overflow-y: auto; }
+.page-content { box-sizing: border-box; width: 100%; }
+
+/* ============================================================
+   RESPONSIVE — consolidated, mobile-first
+   ============================================================ */
+
+/* Tablet (≤ 1024px) */
+@media (max-width: 1024px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+  .hero-inner { gap: 48px; }
+  .about-inner { gap: 48px; }
+}
+
+/* Mobile (≤ 768px) */
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .topbar { left: 0; padding: 0 16px; }
+  .menu-toggle { display: block; }
+
+  .grid-2 { grid-template-columns: 1fr; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+  .hero-visual { display: none; }
+  .about-inner { grid-template-columns: 1fr; gap: 32px; }
+
+  .topbar .search-bar { display: none; }
+  .topbar-left h1 { font-size: 1rem; }
+  .topbar-profile .profile-name,
+  .topbar-profile .profile-role { display: none; }
+  :root { --topbar-h: 60px; }
+
+  .page-content { padding: 16px; }
+  .page-header { flex-direction: column; align-items: flex-start; }
+  .page-header-right { width: 100%; flex-wrap: wrap; }
+  .card-header { flex-wrap: wrap; gap: 10px; }
+
+  .form-row { grid-template-columns: 1fr; }
+  .auth-page { grid-template-columns: 1fr; }
+  .auth-left { display: none; }
+  .auth-right { padding: 32px 20px; }
+  .auth-card { padding: 28px 18px; }
+
+  .land-nav .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .land-nav .nav-actions .btn-outline { display: none; }
+  .land-nav { padding: 0 4%; }
+  .hero { padding: 100px 5% 60px; }
+  .section { padding: 60px 5%; }
+  .about { padding: 60px 5%; }
+
+  .welcome-banner { flex-direction: column; align-items: flex-start; padding: 20px !important; }
+  .welcome-banner > div:last-child { width: 100%; }
+
+  .notif-filters { gap: 5px; }
+  .filter-pill { padding: 5px 10px; font-size: .76rem; }
+
+  .modal { padding: 22px 16px; margin: 12px; max-width: calc(100vw - 24px); }
+  .kpi-value { font-size: 1.7rem; }
+  .table-actions { flex-wrap: wrap; }
+  .lang-switcher { margin-right: 0; }
+}
+
+/* Small mobile (≤ 480px) */
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .role-select { grid-template-columns: 1fr; }
+  .hero { padding: 90px 4% 50px; }
+  .section { padding: 50px 4%; }
+  .about { padding: 50px 4%; }
+  .topbar { padding: 0 12px; }
+  .page-content { padding: 12px; }
+  .kpi-card { padding: 16px 18px; }
+  .card-body { padding: 16px; }
+  .card-header { padding: 14px 16px; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+  .land-nav .nav-actions { gap: 8px; }
+}
+
+/* Sidebar overlay */
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0; z-index: 199;
+  background: rgba(15,23,42,.4);
+}
+.sidebar-overlay.open { display: block; }
+
+

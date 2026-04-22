@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="js/api.js"></script>
+  <script src="js/i18n.js"></script>
 </head>
 <body>
 
@@ -19,7 +20,7 @@
           <div class="logo-icon" style="background:var(--green);color:#fff;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center">
             <i class="fa-solid fa-calendar-check"></i>
           </div>
-          Scheduling
+          ShiftSmart
         </a>
         <h2>Manage shifts with confidence</h2>
         <p>A unified platform for admins, managers, and employees to coordinate schedules seamlessly.</p>
@@ -38,7 +39,7 @@
           </div>
           <div class="auth-feature">
             <i class="fa-solid fa-chart-pie"></i>
-            <span>Analytics & workforce insights</span>
+            <span>Analytics &amp; workforce insights</span>
           </div>
         </div>
       </div>
@@ -47,29 +48,35 @@
     <!-- ── Right Panel (Login Form) ─────────────────────── -->
     <div class="auth-right">
       <div class="auth-card fade-in">
-        <h2>Welcome back</h2>
-        <p>Sign in to your ShiftSmart account</p>
+        <h2 data-i18n="login_title">Welcome back</h2>
+        <p data-i18n="login_sub">Sign in to your ShiftSmart account</p>
+
+        <!-- Language switcher injected by i18n.js into .nav-actions;
+             on login page we add a standalone one manually -->
+        <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+          <div class="lang-switcher" id="loginLangSwitcher"></div>
+        </div>
 
         <!-- Role Selector -->
-        <div style="margin-bottom:8px;font-size:.82rem;font-weight:600;color:var(--subtext)">Select your role</div>
+        <div style="margin-bottom:8px;font-size:.82rem;font-weight:600;color:var(--subtext)" data-i18n="login_role_label">Select your role</div>
         <div class="role-select">
           <div class="role-btn active" onclick="selectRole(this)">
             <i class="fa-solid fa-crown"></i>
-            <span>Admin</span>
+            <span data-i18n="login_role_admin">Admin</span>
           </div>
           <div class="role-btn" onclick="selectRole(this)">
             <i class="fa-solid fa-briefcase"></i>
-            <span>Manager</span>
+            <span data-i18n="login_role_manager">Manager</span>
           </div>
           <div class="role-btn" onclick="selectRole(this)">
             <i class="fa-solid fa-user"></i>
-            <span>Employee</span>
+            <span data-i18n="login_role_employee">Employee</span>
           </div>
         </div>
 
         <!-- Email -->
         <div class="form-group">
-          <label for="email">Email Address</label>
+          <label for="email" data-i18n="login_email">Email Address</label>
           <div class="input-icon-wrap">
             <i class="fa-regular fa-envelope"></i>
             <input type="email" id="email" class="form-control" placeholder="you@company.com"/>
@@ -78,7 +85,7 @@
 
         <!-- Password -->
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password" data-i18n="login_password">Password</label>
           <div class="input-icon-wrap">
             <i class="fa-solid fa-lock"></i>
             <input type="password" id="password" class="form-control" placeholder="Enter your password"/>
@@ -89,9 +96,9 @@
         <div class="form-footer">
           <label class="form-check">
             <input type="checkbox" checked/>
-            Remember me
+            <span data-i18n="login_remember">Remember me</span>
           </label>
-          <a href="#" class="form-link">Forgot password?</a>
+          <a href="#" class="form-link" data-i18n="login_forgot">Forgot password?</a>
         </div>
 
         <!-- Error message -->
@@ -99,28 +106,40 @@
 
         <!-- Login Button -->
         <button id="loginBtn" class="btn btn-primary w-full" style="justify-content:center;padding:13px" onclick="handleLogin()">
-          <i class="fa-solid fa-right-to-bracket"></i> Sign In
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span data-i18n="login_btn">Sign In</span>
         </button>
-
-    
-
-        
-      
+      </div>
     </div>
 
   </div>
 
   <script>
+    // Build login-page language switcher — runs after DOM + i18n are ready
+    document.addEventListener('DOMContentLoaded', function () {
+      var container = document.getElementById('loginLangSwitcher');
+      if (!container || !window.i18n) return;
+      ['en','rw','fr'].forEach(function (code) {
+        var btn = document.createElement('button');
+        btn.className = 'lang-btn' + (window.i18n.getLang() === code ? ' active' : '');
+        btn.dataset.lang = code;
+        btn.textContent = code.toUpperCase();
+        btn.type = 'button';
+        btn.addEventListener('click', function () { window.i18n.setLang(code); });
+        container.appendChild(btn);
+      });
+    });
+
     function selectRole(el) {
-      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.role-btn').forEach(function (b) { b.classList.remove('active'); });
       el.classList.add('active');
     }
 
     async function handleLogin() {
-      const email    = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const errEl    = document.getElementById('loginError');
-      const btn      = document.getElementById('loginBtn');
+      var email    = document.getElementById('email').value.trim();
+      var password = document.getElementById('password').value;
+      var errEl    = document.getElementById('loginError');
+      var btn      = document.getElementById('loginBtn');
 
       errEl.style.display = 'none';
 
@@ -134,20 +153,18 @@
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing in…';
 
       try {
-        const data = await window.api.post('/api/users/login', { email, password });
-        // Persist session so dashboard pages can read it
+        var data = await window.api.post('/api/users/login', { email: email, password: password });
         localStorage.setItem('shiftsmart_session', JSON.stringify({ token: data.token, user: data.user }));
-        const map = { admin: 'admin.html', manager: 'manager.html', employee: 'employee.html' };
+        var map = { admin: 'admin.html', manager: 'manager.html', employee: 'employee.html' };
         window.location.href = map[data.user.role] || 'login.html';
       } catch (err) {
         errEl.textContent = err.message || 'Invalid email or password.';
         errEl.style.display = 'block';
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign In';
+        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> <span data-i18n="login_btn">Sign In</span>';
       }
     }
 
-    // Allow Enter key to submit
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') handleLogin();
     });

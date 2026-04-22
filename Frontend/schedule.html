@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="js/api.js"></script>
+  <script src="js/i18n.js"></script>
   <style>
     .sched-legend { display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
     .legend-item  { display:flex; align-items:center; gap:6px; font-size:.8rem; font-weight:600; color:var(--subtext); }
@@ -34,22 +35,46 @@
       </a>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-section-label">Main</div>
-      <a href="admin.html" class="nav-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
-      <a href="schedule.html" class="nav-item active"><i class="fa-solid fa-calendar-days"></i> Schedule</a>
-      <a href="notifications.html" class="nav-item"><i class="fa-solid fa-bell"></i> Notifications<span class="badge-pill" id="scheduleNotifCount">0</span></a>
+      <div class="sidebar-section-label" data-i18n="sidebar_main">Main</div>
+      <a href="admin.html" class="nav-item">
+        <i class="fa-solid fa-gauge-high"></i>
+        <span data-i18n="sidebar_dashboard">Dashboard</span>
+      </a>
+      <a href="schedule.html" class="nav-item active">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span data-i18n="sidebar_schedule">Schedule</span>
+      </a>
+      <a href="notifications.html" class="nav-item">
+        <i class="fa-solid fa-bell"></i>
+        <span data-i18n="sidebar_notifications">Notifications</span>
+        <span class="badge-pill" id="scheduleNotifCount">0</span>
+      </a>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-section-label">Management</div>
-      <a href="admin.html" class="nav-item"><i class="fa-solid fa-users"></i> All Users</a>
-      <a href="manager.html" class="nav-item"><i class="fa-solid fa-briefcase"></i> Tasks</a>
-      <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a>
+      <div class="sidebar-section-label" data-i18n="sidebar_management">Management</div>
+      <a href="admin.html" class="nav-item">
+        <i class="fa-solid fa-users"></i>
+        <span data-i18n="sidebar_users">All Users</span>
+      </a>
+      <a href="manager.html" class="nav-item">
+        <i class="fa-solid fa-briefcase"></i>
+        <span data-i18n="sidebar_tasks">Tasks</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fa-solid fa-gear"></i>
+        <span data-i18n="sidebar_settings">Settings</span>
+      </a>
     </div>
     <div class="sidebar-footer">
       <div class="sidebar-user">
         <div class="avatar avatar-green" id="scheduleSidebarInitials">--</div>
-        <div class="user-info"><div class="user-name" id="scheduleSidebarName">No user loaded</div><div class="user-role" id="scheduleSidebarRole">Admin</div></div>
-        <a href="#" onclick="logout(); return false;" style="color:#475569;font-size:.85rem;margin-left:auto"><i class="fa-solid fa-right-from-bracket"></i></a>
+        <div class="user-info">
+          <div class="user-name" id="scheduleSidebarName">No user loaded</div>
+          <div class="user-role" id="scheduleSidebarRole">Admin</div>
+        </div>
+        <a href="#" onclick="logout(); return false;" style="color:#475569;font-size:.85rem;margin-left:auto">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
       </div>
     </div>
   </aside>
@@ -60,15 +85,19 @@
     <div class="topbar-left">
       <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
       <div>
-        <h1>Weekly Schedule</h1>
-        <div class="breadcrumb">Home / <span>Schedule</span></div>
+        <h1 data-i18n="schedule_title">Weekly Schedule</h1>
+        <div class="breadcrumb">Home / <span data-i18n="sidebar_schedule">Schedule</span></div>
       </div>
     </div>
     <div class="topbar-right">
+      <!-- Language switcher injected here by i18n.js -->
       <div class="topbar-icon-btn"><i class="fa-solid fa-bell"></i><span class="notif-dot"></span></div>
       <div class="topbar-profile">
         <div class="avatar avatar-green" id="scheduleTopbarInitials">--</div>
-        <div><div class="profile-name" id="scheduleTopbarName">No user loaded</div><div class="profile-role" id="scheduleTopbarRole">Admin</div></div>
+        <div>
+          <div class="profile-name" id="scheduleTopbarName">No user loaded</div>
+          <div class="profile-role" id="scheduleTopbarRole">Admin</div>
+        </div>
       </div>
     </div>
   </header>
@@ -79,12 +108,12 @@
 
       <div class="page-header">
         <div class="page-header-left">
-          <h2>Weekly Schedule</h2>
+          <h2 data-i18n="schedule_title">Weekly Schedule</h2>
           <p id="scheduleHeaderLabel">Schedule will appear here when connected.</p>
         </div>
         <div class="page-header-right">
           <button class="btn btn-outline btn-sm"><i class="fa-solid fa-chevron-left"></i></button>
-          <button class="btn btn-outline btn-sm" style="padding:7px 14px;font-size:.82rem">Today</button>
+          <button class="btn btn-outline btn-sm" style="padding:7px 14px;font-size:.82rem" data-i18n="today">Today</button>
           <button class="btn btn-outline btn-sm"><i class="fa-solid fa-chevron-right"></i></button>
           <div class="view-toggle">
             <button class="active">Week</button>
@@ -92,7 +121,8 @@
             <button>Month</button>
           </div>
           <button class="btn btn-primary btn-sm" onclick="openModal('addShiftModal')">
-            <i class="fa-solid fa-plus"></i> Add Shift
+            <i class="fa-solid fa-plus"></i>
+            <span data-i18n="schedule_add_shift">Add Shift</span>
           </button>
         </div>
       </div>
@@ -114,17 +144,17 @@
 
       <div class="grid-3">
         <div class="card fade-in">
-          <div class="card-header"><h3>Shift Summary</h3></div>
+          <div class="card-header"><h3 data-i18n="schedule_shift_summary">Shift Summary</h3></div>
           <div class="card-body">
             <div style="display:flex;flex-direction:column;gap:10px" id="scheduleSummaryPanel"></div>
           </div>
         </div>
         <div class="card fade-in fade-in-d1">
-          <div class="card-header"><h3>Conflicts</h3></div>
+          <div class="card-header"><h3 data-i18n="schedule_conflicts">Conflicts</h3></div>
           <div class="card-body"><div id="scheduleConflictsPanel"></div></div>
         </div>
         <div class="card fade-in fade-in-d2">
-          <div class="card-header"><h3>Staff on Shift</h3></div>
+          <div class="card-header"><h3 data-i18n="schedule_staff">Staff on Shift</h3></div>
           <div class="card-body" style="display:flex;flex-direction:column;gap:8px" id="scheduleStaffPanel"></div>
         </div>
       </div>
@@ -166,7 +196,7 @@
     </div>
     <div id="scheduleModalError" style="display:none;background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-top:8px"></div>
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
-      <button class="btn btn-outline" onclick="closeModal('addShiftModal')">Cancel</button>
+      <button class="btn btn-outline" onclick="closeModal('addShiftModal')" data-i18n="cancel">Cancel</button>
       <button class="btn btn-primary" onclick="addShift()"><i class="fa-solid fa-check"></i> Add Shift</button>
     </div>
   </div>
@@ -175,9 +205,9 @@
 <script src="data.js"></script>
 <script src="js/app.js"></script>
 <script>
-  document.querySelectorAll('.view-toggle button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.view-toggle button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.view-toggle button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.view-toggle button').forEach(function (b) { b.classList.remove('active'); });
       btn.classList.add('active');
     });
   });
@@ -212,19 +242,15 @@
       ? `${tasks.length} tasks · ${assignments.length} assignments`
       : 'Schedule will appear here when connected.';
 
-    // Employee filter dropdown
     document.getElementById('scheduleEmployeeSelect').innerHTML =
       '<option value="">All Employees</option>' +
       employees.map(u => `<option value="${helpers.escapeHtml(u.id)}">${helpers.escapeHtml(u.fullName)}</option>`).join('');
 
-    // Modal employee select
     document.getElementById('scheduleModalEmployeeSelect').innerHTML =
       '<option value="">Select employee…</option>' +
       employees.map(u => `<option value="${helpers.escapeHtml(u.id)}">${helpers.escapeHtml(u.fullName)}</option>`).join('');
 
-    // Build schedule grid from tasks
     const schedView = helpers.getScheduleView(tasks);
-    const dayHeaders = schedView.days.length ? schedView.days : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
     const timeSlots  = schedView.timeSlots;
 
     if (!tasks.length) {
@@ -234,7 +260,6 @@
         'calendar-days'
       );
     } else {
-      // Map: date -> list of task records
       const dateMap = {};
       schedView.records.forEach(t => {
         if (!dateMap[t.date]) dateMap[t.date] = [];
@@ -258,7 +283,6 @@
       document.getElementById('scheduleGrid').innerHTML = headerHtml + bodyHtml;
     }
 
-    // Summary panel
     const confirmed = assignments.filter(a => a.status === 'confirmed').length;
     document.getElementById('scheduleSummaryPanel').innerHTML = `
       <div style="display:flex;justify-content:space-between;font-size:.88rem"><span class="text-muted">Total Tasks</span><strong>${tasks.length}</strong></div>
@@ -270,7 +294,6 @@
     document.getElementById('scheduleConflictsPanel').innerHTML =
       helpers.emptyState('No conflicts reported', 'Overlap warnings will appear here after live validation runs.', 'shield');
 
-    // Staff on shift
     const assignedEmployeeIds = [...new Set(assignments.map(a => a.employeeId))];
     const staffOnShift = assignedEmployeeIds.map(id => users.find(u => u.id === id)).filter(Boolean);
     document.getElementById('scheduleStaffPanel').innerHTML = staffOnShift.length

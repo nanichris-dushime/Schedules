@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="js/api.js"></script>
+  <script src="js/i18n.js"></script>
 </head>
 <body>
 <div class="app">
@@ -22,11 +23,18 @@
       </a>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-section-label">Main</div>
-      <a href="#" id="sidebarDashboardLink" class="nav-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
-      <a href="schedule.html" class="nav-item"><i class="fa-solid fa-calendar-days"></i> Schedule</a>
+      <div class="sidebar-section-label" data-i18n="sidebar_main">Main</div>
+      <a href="#" id="sidebarDashboardLink" class="nav-item">
+        <i class="fa-solid fa-gauge-high"></i>
+        <span data-i18n="sidebar_dashboard">Dashboard</span>
+      </a>
+      <a href="schedule.html" class="nav-item">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span data-i18n="sidebar_schedule">Schedule</span>
+      </a>
       <a href="notifications.html" class="nav-item active">
-        <i class="fa-solid fa-bell"></i> Notifications
+        <i class="fa-solid fa-bell"></i>
+        <span data-i18n="sidebar_notifications">Notifications</span>
         <span class="badge-pill" id="notificationsSidebarCount">0</span>
       </a>
     </div>
@@ -50,11 +58,12 @@
     <div class="topbar-left">
       <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
       <div>
-        <h1>Notifications</h1>
-        <div class="breadcrumb">Home / <span>Notifications</span></div>
+        <h1 data-i18n="notif_title">Notifications</h1>
+        <div class="breadcrumb">Home / <span data-i18n="notif_title">Notifications</span></div>
       </div>
     </div>
     <div class="topbar-right">
+      <!-- Language switcher injected here by i18n.js -->
       <div class="topbar-icon-btn">
         <i class="fa-solid fa-bell"></i>
         <span class="notif-dot" id="topbarNotifDot" style="display:none"></span>
@@ -75,25 +84,26 @@
 
       <div class="page-header">
         <div class="page-header-left">
-          <h2>Notifications</h2>
+          <h2 data-i18n="notif_title">Notifications</h2>
           <p id="notificationsSummary">You have <strong style="color:var(--green)">0 unread</strong> notifications</p>
         </div>
         <div class="page-header-right">
           <button class="btn btn-outline btn-sm" onclick="markAllRead()">
-            <i class="fa-solid fa-check-double"></i> Mark All Read
+            <i class="fa-solid fa-check-double"></i>
+            <span data-i18n="notif_mark_all">Mark All Read</span>
           </button>
         </div>
       </div>
 
       <div class="card fade-in">
         <div class="card-header">
-          <div><h3>All Notifications</h3></div>
+          <div><h3 data-i18n="notif_title">All Notifications</h3></div>
           <div class="notif-filters">
-            <button class="filter-pill active" onclick="filterNotif(this,'all')">All</button>
+            <button class="filter-pill active" onclick="filterNotif(this,'all')" data-i18n="notif_all">All</button>
             <button class="filter-pill" id="unreadFilterBtn" onclick="filterNotif(this,'unread')">Unread (0)</button>
-            <button class="filter-pill" onclick="filterNotif(this,'shift')">Shifts</button>
-            <button class="filter-pill" onclick="filterNotif(this,'task')">Tasks</button>
-            <button class="filter-pill" onclick="filterNotif(this,'system')">System</button>
+            <button class="filter-pill" onclick="filterNotif(this,'shift')" data-i18n="notif_shifts">Shifts</button>
+            <button class="filter-pill" onclick="filterNotif(this,'task')" data-i18n="notif_tasks">Tasks</button>
+            <button class="filter-pill" onclick="filterNotif(this,'system')" data-i18n="notif_system">System</button>
           </div>
         </div>
         <div class="notif-list" id="notifList"></div>
@@ -109,7 +119,6 @@
   function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
   function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
 
-  // Icon and colour per notification type
   function notifMeta(type) {
     if (type === 'shift') return { icon: 'fa-calendar-check', color: 'green' };
     if (type === 'task')  return { icon: 'fa-list-check',     color: 'blue'  };
@@ -159,7 +168,6 @@
     const role     = currentUser.role     || '--';
     const initials = helpers.initialsFromName(name);
 
-    // Role-aware dashboard link
     const dashMap = { admin: 'admin.html', manager: 'manager.html', employee: 'employee.html' };
     document.getElementById('sidebarDashboardLink').href = dashMap[role] || 'admin.html';
 
