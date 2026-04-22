@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Scheduling—</title>
+  <title>ShiftSmart — Smart Employee Scheduling</title>
   <link rel="stylesheet" href="styles.css"/>
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="js/i18n.js"></script>
 </head>
 <body>
 
@@ -14,23 +14,27 @@
   <nav class="land-nav">
     <a href="index.html" class="logo">
       <div class="logo-icon"><i class="fa-solid fa-calendar-check"></i></div>
-      Scheduling
+      ShiftSmart
     </a>
 
-    <ul class="nav-links">
-      <li><a href="#features">Features</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="schedule.html">Schedule</a></li>
-      <li><a href="#contact">Contact</a></li>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#features" data-i18n="nav_features">Features</a></li>
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="schedule.html" data-i18n="nav_schedule">Schedule</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
 
     <div class="nav-actions">
-      <a href="login.html" class="btn btn-outline">Log In</a>
-      <a href="login.html" class="btn btn-primary">Get Started <i class="fa-solid fa-arrow-right"></i></a>
+      <!-- Language switcher injected here by i18n.js -->
+      <a href="login.html" class="btn btn-outline" data-i18n="nav_login">Log In</a>
+      <a href="login.html" class="btn btn-primary">
+        <span data-i18n="nav_getstarted">Get Started</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
     </div>
 
     <!-- Mobile hamburger -->
-    <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <button class="hamburger" id="hamburger" aria-label="Open menu" type="button">
       <span></span><span></span><span></span>
     </button>
   </nav>
@@ -45,38 +49,37 @@
           <span class="dot"></span>
           <span id="heroBadgeText">Frontend ready for live scheduling data</span>
         </div>
-        <h1>Schedule Smarter,<br/><span>Work Better</span></h1>
+        <h1>
+          <span data-i18n="hero_h1a">Schedule Smarter,</span><br/>
+          <span data-i18n="hero_h1b">Work Better</span>
+        </h1>
         <p>
           ShiftSmart automates employee scheduling, eliminates shift conflicts,
           and keeps your whole team in sync — all from one intelligent dashboard.
         </p>
         <div class="hero-actions">
           <a href="login.html" class="btn btn-primary btn-lg">
-            <i class="fa-solid fa-rocket"></i> Get Started Free
+            <i class="fa-solid fa-rocket"></i>
+            <span data-i18n="hero_cta1">Get Started Free</span>
           </a>
           <a href="#features" class="btn btn-outline btn-lg">
-            <i class="fa-solid fa-play-circle"></i> See How It Works
+            <i class="fa-solid fa-play-circle"></i>
+            <span data-i18n="hero_cta2">See How It Works</span>
           </a>
         </div>
-        <div class="hero-stats" id="heroStats">
-          <!-- Dynamic stats will be rendered here -->
-        </div>
+        <div class="hero-stats" id="heroStats"></div>
       </div>
 
       <!-- Right: visual card -->
       <div class="hero-visual fade-in fade-in-d2">
-        <!-- Schedule preview card -->
         <div class="hero-card">
           <div class="hero-card-header">
             <h4><i class="fa-regular fa-calendar" style="color:var(--green);margin-right:6px"></i>Today's Shifts</h4>
             <span class="badge badge-confirmed">Live</span>
           </div>
-          <div class="hero-mini-schedule" id="heroMiniSchedule">
-            <!-- Dynamic mini schedule will be rendered here -->
-          </div>
+          <div class="hero-mini-schedule" id="heroMiniSchedule"></div>
         </div>
 
-        <!-- Conflict alert card -->
         <div class="hero-card">
           <div style="display:flex;align-items:center;gap:10px">
             <div style="width:36px;height:36px;border-radius:10px;background:var(--green-light);display:flex;align-items:center;justify-content:center;color:var(--green)">
@@ -92,10 +95,7 @@
           </div>
         </div>
 
-        <!-- Mini stat row -->
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px" id="heroMiniStats">
-          <!-- Dynamic mini stats rendered here -->
-        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px" id="heroMiniStats"></div>
       </div>
 
     </div>
@@ -105,45 +105,45 @@
   <section class="section" id="features" style="background:var(--white)">
     <div style="max-width:1200px;margin:0 auto">
       <div class="section-head center">
-        <div class="section-label">Features</div>
-        <h2 class="section-title">Everything you need to<br/>run a smooth operation</h2>
-        <p class="section-sub">From intelligent assignment to real-time notifications — ShiftSmart handles the complexity so you can focus on your people.</p>
+        <div class="section-label" data-i18n="feat_label">Features</div>
+        <h2 class="section-title" data-i18n="feat_title">Everything you need to run a smooth operation</h2>
+        <p class="section-sub" data-i18n="feat_sub">From intelligent assignment to real-time notifications — ShiftSmart handles the complexity so you can focus on your people.</p>
       </div>
       <div class="features-grid">
 
         <div class="feature-card fade-in">
           <div class="feature-icon"><i class="fa-solid fa-brain"></i></div>
-          <h3>Smart Assignment</h3>
+          <h3 data-i18n="feat1_title">Smart Assignment</h3>
           <p>Automatically match employees to shifts based on availability, skills, and role requirements — cutting scheduling time by up to 80%.</p>
         </div>
 
         <div class="feature-card fade-in fade-in-d1">
           <div class="feature-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-          <h3>Conflict Detection</h3>
+          <h3 data-i18n="feat2_title">Conflict Detection</h3>
           <p>Instantly flag double bookings, overtime violations, and unavailability conflicts before they become problems on the floor.</p>
         </div>
 
         <div class="feature-card fade-in fade-in-d2">
           <div class="feature-icon"><i class="fa-solid fa-bell"></i></div>
-          <h3>Real-time Notifications</h3>
+          <h3 data-i18n="feat3_title">Real-time Notifications</h3>
           <p>Employees receive instant push and email alerts for new assignments, shift changes, and approvals — no more missed messages.</p>
         </div>
 
         <div class="feature-card fade-in">
           <div class="feature-icon"><i class="fa-solid fa-chart-bar"></i></div>
-          <h3>Advanced Analytics</h3>
+          <h3 data-i18n="feat4_title">Advanced Analytics</h3>
           <p>Track labor costs, shift coverage rates, and employee performance metrics through clear, actionable dashboard reports.</p>
         </div>
 
         <div class="feature-card fade-in fade-in-d1">
           <div class="feature-icon"><i class="fa-solid fa-users-gear"></i></div>
-          <h3>Role-based Access</h3>
+          <h3 data-i18n="feat5_title">Role-based Access</h3>
           <p>Granular permissions for Admins, Managers, and Employees — everyone sees exactly what they need, nothing more.</p>
         </div>
 
         <div class="feature-card fade-in fade-in-d2">
           <div class="feature-icon"><i class="fa-solid fa-mobile-screen"></i></div>
-          <h3>Mobile-first Design</h3>
+          <h3 data-i18n="feat6_title">Mobile-first Design</h3>
           <p>Fully responsive across all devices. Managers can update schedules and employees can check shifts from anywhere, any time.</p>
         </div>
 
@@ -156,8 +156,8 @@
     <div class="about-inner">
 
       <div>
-        <div class="section-label">About ShiftSmart</div>
-        <h2 class="section-title">Built for modern workforce management</h2>
+        <div class="section-label" data-i18n="about_label">About ShiftSmart</div>
+        <h2 class="section-title" data-i18n="about_title">Built for modern workforce management</h2>
         <p>ShiftSmart was born from the frustration of managing complex employee schedules across multiple shifts, departments, and locations. We built the tool we always wished we had.</p>
         <p>Today, thousands of teams across healthcare, retail, hospitality, and logistics trust ShiftSmart to keep their operations running smoothly.</p>
         <div class="about-list">
@@ -193,15 +193,17 @@
   <!-- ── CTA Banner ───────────────────────────────────────── -->
   <section class="section" style="background:var(--green-light)" id="contact">
     <div style="max-width:700px;margin:0 auto;text-align:center">
-      <div class="section-label" style="color:var(--green-dark)">Get Started Today</div>
-      <h2 class="section-title" style="color:var(--accent)">Ready to transform your scheduling?</h2>
-      <p style="color:var(--subtext);margin:0 auto 32px">Join over 10,000 companies using ShiftSmart. Free 14-day trial, no credit card required.</p>
+      <div class="section-label" style="color:var(--green-dark)" data-i18n="cta_label">Get Started Today</div>
+      <h2 class="section-title" style="color:var(--accent)" data-i18n="cta_title">Ready to transform your scheduling?</h2>
+      <p style="color:var(--subtext);margin:0 auto 32px" data-i18n="cta_sub">Join over 10,000 companies using ShiftSmart. Free 14-day trial, no credit card required.</p>
       <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
         <a href="login.html" class="btn btn-primary btn-lg">
-          <i class="fa-solid fa-rocket"></i> Start Free Trial
+          <i class="fa-solid fa-rocket"></i>
+          <span data-i18n="cta_btn1">Start Free Trial</span>
         </a>
         <a href="login.html" class="btn btn-outline btn-lg">
-          <i class="fa-solid fa-calendar-days"></i> Book a Demo
+          <i class="fa-solid fa-calendar-days"></i>
+          <span data-i18n="cta_btn2">Book a Demo</span>
         </a>
       </div>
     </div>
@@ -220,21 +222,21 @@
         <p>The intelligent scheduling platform for modern teams. Save time, eliminate conflicts, keep everyone informed.</p>
       </div>
       <div class="footer-col">
-        <h4>Product</h4>
+        <h4 data-i18n="footer_product">Product</h4>
         <a href="#">Features</a>
         <a href="#">Pricing</a>
         <a href="#">Changelog</a>
         <a href="#">Roadmap</a>
       </div>
       <div class="footer-col">
-        <h4>Company</h4>
+        <h4 data-i18n="footer_company">Company</h4>
         <a href="#">About Us</a>
         <a href="#">Blog</a>
         <a href="#">Careers</a>
         <a href="#">Press</a>
       </div>
       <div class="footer-col">
-        <h4>Support</h4>
+        <h4 data-i18n="footer_support">Support</h4>
         <a href="#">Documentation</a>
         <a href="#">Help Center</a>
         <a href="#">Contact</a>
@@ -251,91 +253,68 @@
     </div>
   </footer>
 
-  <!-- Data.js & Dynamic Rendering -->
   <script src="data.js"></script>
-  
-  <!-- ── App JS (mobile + dynamic) ────────────────────────── -->
   <script>
-    // Existing mobile menu
-    document.getElementById('hamburger')?.addEventListener('click', function() {
-      const links = document.querySelector('.nav-links');
-      if (links) {
-        links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
-        links.style.flexDirection = 'column';
-        links.style.position = 'absolute';
-        links.style.top = '72px';
-        links.style.left = '0'; links.style.right = '0';
-        links.style.background = '#fff';
-        links.style.padding = '16px 6%';
-        links.style.borderBottom = '1px solid var(--border)';
-        links.style.boxShadow = '0 4px 16px rgba(0,0,0,.08)';
-      }
+    // Mobile hamburger — class-based toggle
+    document.getElementById('hamburger').addEventListener('click', function () {
+      document.getElementById('navLinks').classList.toggle('open');
     });
 
-    // Render dynamic hero content
+    // Close nav when a link is clicked on mobile
+    document.querySelectorAll('#navLinks a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        document.getElementById('navLinks').classList.remove('open');
+      });
+    });
+
     function renderHeroData() {
-      const data = window.getData();
-      const helpers = window.helpers;
-      const heroStats = data.landing.heroStats || [];
-      const miniStats = data.landing.miniStats || [];
-      const tasks = data.tasks || [];
-      const status = data.landing.highlights || {};
+      var data = window.getData();
+      var helpers = window.helpers;
+      var heroStats = data.landing.heroStats || [];
+      var miniStats = data.landing.miniStats || [];
+      var tasks = data.tasks || [];
+      var status = data.landing.highlights || {};
 
       document.getElementById('heroBadgeText').textContent = data.landing.badge || 'Frontend ready for live scheduling data';
       document.getElementById('heroStatusTitle').textContent = status.statusTitle || 'No live data connected';
       document.getElementById('heroStatusBody').textContent = status.statusBody || 'Connect your API to show real shift coverage, alerts, and team activity.';
-      
-      // Hero stats
+
       document.getElementById('heroStats').innerHTML = heroStats.length
-        ? heroStats.map((stat) => `
-            <div class="hero-stat">
-              <strong>${helpers.escapeHtml(stat.value)}</strong>
-              <span>${helpers.escapeHtml(stat.label)}</span>
-            </div>
-          `).join('')
+        ? heroStats.map(function (stat) {
+            return '<div class="hero-stat"><strong>' + helpers.escapeHtml(stat.value) + '</strong><span>' + helpers.escapeHtml(stat.label) + '</span></div>';
+          }).join('')
         : helpers.emptyState('No landing metrics yet', 'Hero metrics will appear here after your frontend receives live dashboard data.', 'chart-column').replace('empty-state"', 'empty-state compact"');
-      
-      const miniTasks = tasks.slice(0, 4).map((task) => `
-        <div class="mini-slot">
-          <span class="slot-time">${helpers.escapeHtml(task.time || '--:--')}</span>
-          <div class="slot-bar" style="--w:${Math.floor(Math.random()*20+70)}%"></div>
-          <span class="slot-name">${helpers.escapeHtml((task.assignee || 'Unassigned').split(' ')[0])}</span>
-        </div>
-      `).join('');
-      document.getElementById('heroMiniSchedule').innerHTML = miniTasks || helpers.emptyState('No shifts scheduled yet', 'Today\'s schedule preview will appear here once shift data is loaded.', 'calendar-days').replace('empty-state"', 'empty-state compact"');
-      
+
+      var miniTasks = tasks.slice(0, 4).map(function (task) {
+        return '<div class="mini-slot"><span class="slot-time">' + helpers.escapeHtml(task.time || '--:--') + '</span><div class="slot-bar" style="--w:' + (Math.floor(Math.random() * 20) + 70) + '%"></div><span class="slot-name">' + helpers.escapeHtml((task.assignee || 'Unassigned').split(' ')[0]) + '</span></div>';
+      }).join('');
+      document.getElementById('heroMiniSchedule').innerHTML = miniTasks || helpers.emptyState('No shifts scheduled yet', "Today's schedule preview will appear here once shift data is loaded.", 'calendar-days').replace('empty-state"', 'empty-state compact"');
+
       document.getElementById('heroMiniStats').innerHTML = miniStats.length
-        ? miniStats.map((stat) => `
-            <div class="hero-card" style="padding:16px;text-align:center">
-              <div style="font-size:1.4rem;font-weight:800;color:var(--accent)">${helpers.escapeHtml(stat.value)}</div>
-              <div style="font-size:.75rem;color:var(--subtext)">${helpers.escapeHtml(stat.label)}</div>
-            </div>
-          `).join('')
+        ? miniStats.map(function (stat) {
+            return '<div class="hero-card" style="padding:16px;text-align:center"><div style="font-size:1.4rem;font-weight:800;color:var(--accent)">' + helpers.escapeHtml(stat.value) + '</div><div style="font-size:.75rem;color:var(--subtext)">' + helpers.escapeHtml(stat.label) + '</div></div>';
+          }).join('')
         : helpers.emptyState('Waiting for live totals', 'Mini dashboard numbers will render here after connection.', 'signal').replace('empty-state"', 'empty-state compact"');
 
       document.getElementById('aboutStatsGrid').innerHTML = helpers.emptyState(
         'No public metrics embedded',
-        'This marketing panel is now free of sample numbers so you can populate it with verified live product data later.',
+        'This marketing panel is free of sample numbers so you can populate it with verified live product data later.',
         'link'
       );
 
-      document.getElementById('aboutConnectionCard').innerHTML = `
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-          <div class="avatar avatar-green"><i class="fa-solid fa-plug" style="font-size:.8rem"></i></div>
-          <div>
-            <div style="font-size:.88rem;font-weight:700;color:#fff">Backend Integration Ready</div>
-            <div style="font-size:.75rem;color:#64748b">Swap the empty frontend state with your API responses when the backend is available.</div>
-          </div>
-        </div>
-        <p style="font-size:.88rem;color:#94a3b8;line-height:1.7;margin:0">
-          This landing page now avoids demo business metrics and sample testimonials so it can safely display verified production data later.
-        </p>
-      `;
+      document.getElementById('aboutConnectionCard').innerHTML =
+        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">' +
+          '<div class="avatar avatar-green"><i class="fa-solid fa-plug" style="font-size:.8rem"></i></div>' +
+          '<div>' +
+            '<div style="font-size:.88rem;font-weight:700;color:#fff">Backend Integration Ready</div>' +
+            '<div style="font-size:.75rem;color:#64748b">Swap the empty frontend state with your API responses when the backend is available.</div>' +
+          '</div>' +
+        '</div>' +
+        '<p style="font-size:.88rem;color:#94a3b8;line-height:1.7;margin:0">This landing page avoids demo business metrics so it can safely display verified production data later.</p>';
 
-      document.getElementById('footerYearText').textContent = `© ${new Date().getFullYear()} ShiftSmart Inc. All rights reserved.`;
+      document.getElementById('footerYearText').textContent = '© ' + new Date().getFullYear() + ' ShiftSmart Inc. All rights reserved.';
     }
 
-    // Init on load
     window.addEventListener('load', renderHeroData);
   </script>
 </body>
