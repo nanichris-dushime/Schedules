@@ -18,6 +18,8 @@ router.put('/admin/users/:id',    authenticate, requireRole(['admin']), userCont
 router.delete('/admin/users/:id', authenticate, requireRole(['admin']), userController.deleteUser);
 
 // Any authenticated user
-router.get('/me', authenticate, userController.getCurrentUser);
+router.get('/me',              authenticate, userController.getCurrentUser);
+router.put('/me',              authenticate, userController.updateProfile);
+router.patch('/me/password',   authenticate, userController.changePassword);
 
 export default router;

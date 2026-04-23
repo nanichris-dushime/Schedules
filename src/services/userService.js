@@ -49,3 +49,12 @@ export const updateUser = async (id, data) => {
   if (data.role)     allowed.role     = data.role;
   return await user.update(allowed);
 };
+
+export const changePassword = async (id, currentPassword, newPassword) => {
+  const user = await User.findByPk(id);
+  if (!user) throw new Error('User not found');
+  const valid = await bcrypt.compare(currentPassword, user.password);
+  if (!valid) throw new Error('Current password is incorrect');
+  const hashed = await bcrypt.hash(newPassword, 10);
+  await user.update({ password: hashed });
+};

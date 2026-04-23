@@ -70,6 +70,35 @@ export const updateUser = async (req, res) => {
   }
 };
 
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, error: 'currentPassword and newPassword are required' });
+    }
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, error: 'New password must be at least 6 characters' });
+    }
+    await userService.changePassword(req.user.id, currentPassword, newPassword);
+    res.json({ success: true, message: 'Password changed successfully' });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { fullName, email } = req.body;
+    if (!fullName || !email) {
+      return res.status(400).json({ success: false, error: 'fullName and email are required' });
+    }
+    const user = await userService.updateUser(req.user.id, { fullName, email });
+    res.json({ success: true, message: 'Profile updated', user });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+};
+
 export const deleteUser = async (req, res) => {
   try {
     await userService.deleteUser(req.params.id);
