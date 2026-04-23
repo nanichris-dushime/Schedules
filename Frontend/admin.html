@@ -74,6 +74,15 @@
     </div>
   </aside>
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+  <!-- Mobile Bottom Nav -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-inner">
+      <a href="admin.html" class="mobile-nav-item active"><i class="fa-solid fa-gauge-high"></i><span>Dashboard</span></a>
+      <a href="schedule.html" class="mobile-nav-item"><i class="fa-solid fa-calendar-days"></i><span>Schedule</span></a>
+      <a href="notifications.html" class="mobile-nav-item"><i class="fa-solid fa-bell"></i><span>Alerts</span><span class="mob-badge" id="adminMobNotifBadge" style="display:none">0</span></a>
+      <a href="settings.html" class="mobile-nav-item"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+    </div>
+  </nav>
 
   <!-- ════════ TOPBAR ════════ -->
   <header class="topbar">
@@ -419,6 +428,9 @@
     document.getElementById('adminSidebarRole').textContent     = role;
     document.getElementById('adminTopbarRole').textContent      = role;
     document.getElementById('adminSidebarNotifCount').textContent = unreadCount;
+    // Mobile nav badge
+    var mobBadge = document.getElementById('adminMobNotifBadge');
+    if (mobBadge) { mobBadge.textContent = unreadCount; mobBadge.style.display = unreadCount > 0 ? 'flex' : 'none'; }
     document.getElementById('adminSummaryLabel').textContent = users.length
       ? users.length + ' users, ' + tasks.length + ' tasks, ' + assignments.length + ' assignments.'
       : 'User, task, and assignment summaries will appear here when data is connected.';

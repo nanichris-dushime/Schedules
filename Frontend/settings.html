@@ -65,6 +65,15 @@
     </div>
   </aside>
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+  <!-- Mobile Bottom Nav -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-inner">
+      <a href="#" id="settingsMobDash" class="mobile-nav-item"><i class="fa-solid fa-gauge-high"></i><span>Dashboard</span></a>
+      <a href="schedule.html" class="mobile-nav-item"><i class="fa-solid fa-calendar-days"></i><span>Schedule</span></a>
+      <a href="notifications.html" class="mobile-nav-item"><i class="fa-solid fa-bell"></i><span>Alerts</span></a>
+      <a href="settings.html" class="mobile-nav-item active"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+    </div>
+  </nav>
 
   <!-- ════════ TOPBAR ════════ -->
   <header class="topbar">
@@ -497,6 +506,8 @@
 
     var dashMap = { admin: 'admin.html', manager: 'manager.html', employee: 'employee.html' };
     document.getElementById('settingsDashLink').href = dashMap[role] || 'admin.html';
+    var mobDash = document.getElementById('settingsMobDash');
+    if (mobDash) mobDash.href = dashMap[role] || 'admin.html';
 
     // Restore saved UI state
     var s = window.appSettings.getAll();
