@@ -38,32 +38,30 @@ app.use((req, res, next) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-const startServer = async (retries = 5) => {
+// ── Start: bind port FIRST, then connect DB ───────────────
+// Render requires the port to be open within 60s of startup.
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  connectDB();
+});
+
+async function connectDB(retries = 5) {
   try {
     await sequelize.authenticate();
     console.log('✅ Database connected');
-
     await sequelize.sync({ force: false });
     console.log('✅ Tables synced');
-
-    // Auto-seed admin user on first run (skips if users already exist)
     await seedUsers();
-
-    app.listen(PORT, '0.0.0.0', () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-    });
-  } catch (error) {
-    console.error(`❌ Startup error: ${error.message}`);
+    console.log('✅ Ready');
+  } catch (err) {
+    console.error(`❌ DB error: ${err.message}`);
     if (retries > 0) {
-      console.log(`Retrying in 5s... (${retries} attempts left)`);
-      setTimeout(() => startServer(retries - 1), 5000);
+      console.log(`Retrying DB in 5s... (${retries} left)`);
+      setTimeout(() => connectDB(retries - 1), 5000);
     } else {
-      console.error('Could not connect to database. Exiting.');
-      process.exit(1);
+      console.error('❌ Could not connect to database after retries.');
     }
   }
-};
-
-startServer();
+}
 
 export default app;
