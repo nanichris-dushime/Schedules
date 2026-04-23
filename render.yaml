@@ -3,14 +3,12 @@ databases:
     databaseName: schedules
     user: schedules_user
     plan: free
-    region: oregon
 
 services:
   - type: web
     name: schedules-app
     env: node
     plan: free
-    region: oregon
     buildCommand: npm install
     startCommand: npm start
     envVars:
@@ -19,6 +17,6 @@ services:
       - key: DATABASE_URL
         fromDatabase:
           name: schedules-db
-          property: internalConnectionString
+          property: connectionString
       - key: JWT_SECRET
         generateValue: true
