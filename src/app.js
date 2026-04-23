@@ -22,6 +22,22 @@ app.use('/api/notifications', notificationRoutes);
 
 app.get('/health', (req, res) => res.json({ status: 'OK' }));
 
+// Serve frontend static files from the Frontend directory
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendPath = path.join(__dirname, '..', 'Frontend');
+
+app.use(express.static(frontendPath));
+
+// SPA fallback: return index.html for unmatched GET routes (so frontend routing works)
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api') || req.method !== 'GET') return next();
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
 const startServer = async () => {
   try {
     await sequelize.authenticate();
