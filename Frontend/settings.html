@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings — Schedule</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="libs/fontawesome/css/all.min.css" media="print" onload="this.media='all'"/>
+  <noscript><link rel="stylesheet" href="libs/fontawesome/css/all.min.css"/></noscript>
+  <script src="js/api.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/i18n.js"></script>
+</head>
+<body>
+<div class="app">
+
+  <!-- ════════ SIDEBAR ════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="index.html" class="logo">
+        <div class="logo-icon" style="background:var(--green);color:#fff;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.85rem">
+          <i class="fa-solid fa-calendar-check"></i>
+        </div>
+        Schedule
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label" data-i18n="sidebar_main">Main</div>
+      <a href="#" id="settingsDashLink" class="nav-item">
+        <i class="fa-solid fa-gauge-high"></i>
+        <span data-i18n="sidebar_dashboard">Dashboard</span>
+      </a>
+      <a href="schedule.html" class="nav-item">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span data-i18n="sidebar_schedule">Schedule</span>
+      </a>
+      <a href="notifications.html" class="nav-item">
+        <i class="fa-solid fa-bell"></i>
+        <span data-i18n="sidebar_notifications">Notifications</span>
+      </a>
+      <a href="settings.html" class="nav-item active">
+        <i class="fa-solid fa-gear"></i>
+        <span data-i18n="sidebar_settings">Settings</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar avatar-green" id="settingsSidebarInitials">--</div>
+        <div class="user-info">
+          <div class="user-name" id="settingsSidebarName">No user loaded</div>
+          <div class="user-role" id="settingsSidebarRole">--</div>
+        </div>
+        <a href="#" onclick="logout(); return false;" data-tip="Logout" style="color:#475569;font-size:.85rem;margin-left:auto">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- ════════ TOPBAR ════════ -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+      <div>
+        <h1>Settings</h1>
+        <div class="breadcrumb">Home / <span>Settings</span></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <!-- Language switcher injected by i18n.js -->
+      <div class="topbar-icon-btn" data-tip="Notifications" onclick="window.location.href='notifications.html'">
+        <i class="fa-solid fa-bell"></i>
+      </div>
+      <div class="topbar-profile">
+        <div class="avatar avatar-green" id="settingsTopbarInitials">--</div>
+        <div>
+          <div class="profile-name" id="settingsTopbarName">No user loaded</div>
+          <div class="profile-role" id="settingsTopbarRole">--</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════ MAIN ════════ -->
+  <main class="main">
+    <div class="page-content">
+
+      <div class="page-header">
+        <div class="page-header-left">
+          <h2>Settings</h2>
+          <p>Manage your preferences and account settings</p>
+        </div>
+        <div class="page-header-right">
+          <button class="btn btn-primary btn-sm" onclick="saveAllSettings()">
+            <i class="fa-solid fa-floppy-disk"></i> Save Changes
+          </button>
+        </div>
+      </div>
+
+      <div class="settings-grid">
+
+        <!-- Left nav -->
+        <div class="card" style="padding:12px">
+          <div class="settings-nav">
+            <div class="settings-nav-item active" onclick="showPanel('appearance', this)">
+              <i class="fa-solid fa-palette"></i> Appearance
+            </div>
+            <div class="settings-nav-item" onclick="showPanel('notifications', this)">
+              <i class="fa-solid fa-bell"></i> Notifications
+            </div>
+            <div class="settings-nav-item" onclick="showPanel('account', this)">
+              <i class="fa-solid fa-user-circle"></i> Account
+            </div>
+            <div class="settings-nav-item" onclick="showPanel('accessibility', this)">
+              <i class="fa-solid fa-universal-access"></i> Accessibility
+            </div>
+          </div>
+        </div>
+
+        <!-- Right panels -->
+        <div>
+
+          <!-- ── Appearance ── -->
+          <div class="settings-panel active" id="panel-appearance">
+
+            <div class="settings-section">
+              <h3>Theme</h3>
+              <p>Choose how Schedule looks on your device.</p>
+              <div class="theme-cards" id="themeCards">
+                <div class="theme-card active" data-theme="light" onclick="setTheme('light')">
+                  <i class="fa-solid fa-sun"></i> Light
+                </div>
+                <div class="theme-card" data-theme="dark" onclick="setTheme('dark')">
+                  <i class="fa-solid fa-moon"></i> Dark
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3>Font Size</h3>
+              <p>Adjust the text size across all dashboards.</p>
+              <div class="font-pills" id="fontPills">
+                <div class="font-pill" data-size="small" onclick="setFontSize('small')">Small</div>
+                <div class="font-pill active" data-size="medium" onclick="setFontSize('medium')">Medium</div>
+                <div class="font-pill" data-size="large" onclick="setFontSize('large')">Large</div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3>Sidebar</h3>
+              <p>Customize the sidebar layout.</p>
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Compact Sidebar</h4>
+                  <p>Collapse the sidebar to show only icons</p>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="toggleCompact" onchange="setSidebarCompact(this.checked)"/>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ── Notifications ── -->
+          <div class="settings-panel" id="panel-notifications">
+            <div class="settings-section">
+              <h3>Notification Preferences</h3>
+              <p>Control which notifications you receive.</p>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Shift Assignments</h4>
+                  <p>Get notified when you are assigned to a shift</p>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="notifShifts" checked onchange="saveNotifPref('shifts', this.checked)"/>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Task Updates</h4>
+                  <p>Get notified when a task is created or updated</p>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="notifTasks" checked onchange="saveNotifPref('tasks', this.checked)"/>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Swap Requests</h4>
+                  <p>Get notified when someone requests a shift swap</p>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="notifSwaps" checked onchange="saveNotifPref('swaps', this.checked)"/>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>System Alerts</h4>
+                  <p>Receive important system and security alerts</p>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="notifSystem" checked onchange="saveNotifPref('system', this.checked)"/>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Notification Sound</h4>
+                  <p>Play a sound when a new notification arrives</p>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="notifSound" onchange="saveNotifPref('sound', this.checked)"/>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Account ── -->
+          <div class="settings-panel" id="panel-account">
+            <div class="settings-section">
+              <h3>Profile Information</h3>
+              <p>Update your display name and email address.</p>
+
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="settingsFullName" class="form-control" placeholder="Your full name"/>
+              </div>
+              <div class="form-group">
+                <label>Email Address</label>
+                <div class="input-icon-wrap">
+                  <i class="fa-regular fa-envelope"></i>
+                  <input type="email" id="settingsEmail" class="form-control" placeholder="your@email.com"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Role</label>
+                <input type="text" id="settingsRole" class="form-control" readonly style="opacity:.6;cursor:not-allowed"/>
+              </div>
+              <div id="profileMsg" style="display:none;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-top:4px"></div>
+              <button class="btn btn-primary btn-sm" onclick="saveAllSettings()" style="margin-top:4px">
+                <i class="fa-solid fa-floppy-disk"></i> Save Profile
+              </button>
+            </div>
+
+            <div class="settings-section">
+              <h3>Change Password</h3>
+              <p>Use a strong password to keep your account secure.</p>
+              <div class="form-group">
+                <label>Current Password</label>
+                <div class="input-icon-wrap">
+                  <i class="fa-solid fa-lock"></i>
+                  <input type="password" id="settingsCurrentPw" class="form-control" placeholder="Current password"/>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>New Password</label>
+                  <input type="password" id="settingsNewPw" class="form-control" placeholder="New password"/>
+                </div>
+                <div class="form-group">
+                  <label>Confirm Password</label>
+                  <input type="password" id="settingsConfirmPw" class="form-control" placeholder="Confirm password"/>
+                </div>
+              </div>
+              <div id="pwMsg" style="display:none;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-top:4px"></div>
+              <button class="btn btn-outline btn-sm" onclick="changePassword()">
+                <i class="fa-solid fa-key"></i> Update Password
+              </button>
+            </div>
+
+            <div class="settings-section">
+              <h3 style="color:var(--red)">Danger Zone</h3>
+              <p>These actions are irreversible. Please be careful.</p>
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Sign Out</h4>
+                  <p>Log out of your current session</p>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="logout()">
+                  <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Accessibility ── -->
+          <div class="settings-panel" id="panel-accessibility">
+            <div class="settings-section">
+              <h3>Accessibility</h3>
+              <p>Make Schedule easier to use for your needs.</p>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>Reduce Motion</h4>
+                  <p>Disable animations and transitions</p>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="reduceMotion" onchange="setReduceMotion(this.checked)"/>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <h4>High Contrast</h4>
+                  <p>Increase contrast for better readability</p>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="highContrast" onchange="setHighContrast(this.checked)"/>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Save toast -->
+      <div id="saveToast" style="
+        position:fixed;bottom:28px;right:28px;
+        background:var(--green);color:#fff;
+        padding:12px 20px;border-radius:10px;
+        font-size:.88rem;font-weight:600;
+        box-shadow:var(--shadow-lg);
+        display:none;align-items:center;gap:8px;
+        z-index:999;
+      ">
+        <i class="fa-solid fa-circle-check"></i> Settings saved
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script src="js/app.js"></script>
+<script>
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
+  function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
+
+  // ── Panel navigation ────────────────────────────────────────
+  function showPanel(name, el) {
+    document.querySelectorAll('.settings-panel').forEach(function (p) { p.classList.remove('active'); });
+    document.querySelectorAll('.settings-nav-item').forEach(function (n) { n.classList.remove('active'); });
+    document.getElementById('panel-' + name).classList.add('active');
+    el.classList.add('active');
+  }
+
+  // ── Appearance ─────────────────────────────────────────────
+  function setTheme(theme) {
+    window.appSettings.set('theme', theme);
+    document.querySelectorAll('.theme-card').forEach(function (c) {
+      c.classList.toggle('active', c.dataset.theme === theme);
+    });
+    showToast();
+  }
+
+  function setFontSize(size) {
+    window.appSettings.set('fontSize', size);
+    document.querySelectorAll('.font-pill').forEach(function (p) {
+      p.classList.toggle('active', p.dataset.size === size);
+    });
+    showToast();
+  }
+
+  function setSidebarCompact(val) {
+    window.appSettings.set('sidebarCompact', val);
+    showToast();
+  }
+
+  // ── Notification prefs ─────────────────────────────────────
+  function saveNotifPref(key, val) {
+    var s = window.appSettings.getAll();
+    if (!s.notifPrefs) s.notifPrefs = {};
+    s.notifPrefs[key] = val;
+    localStorage.setItem('schedule_settings', JSON.stringify(s));
+    showToast();
+  }
+
+  // ── Accessibility ──────────────────────────────────────────
+  function setReduceMotion(val) {
+    window.appSettings.set('reduceMotion', val);
+    showToast();
+  }
+
+  function setHighContrast(val) {
+    window.appSettings.set('highContrast', val);
+    showToast();
+  }
+
+  // ── Profile save ───────────────────────────────────────────
+  async function saveAllSettings() {
+    var fullName = document.getElementById('settingsFullName').value.trim();
+    var email    = document.getElementById('settingsEmail').value.trim();
+    var msgEl    = document.getElementById('profileMsg');
+    if (!fullName || !email) {
+      showMsg(msgEl, 'Full name and email are required.', 'error');
+      showPanel('account', document.querySelector('.settings-nav-item:nth-child(3)'));
+      return;
+    }
+    try {
+      var res = await window.api.put('/api/users/me', { fullName, email });
+      // Update session with new name/email
+      var session = window.getSession();
+      if (session && session.user) {
+        session.user.fullName = res.user.fullName || fullName;
+        session.user.email    = res.user.email    || email;
+        localStorage.setItem('shiftsmart_session', JSON.stringify(session));
+        document.getElementById('settingsSidebarName').textContent    = session.user.fullName;
+        document.getElementById('settingsTopbarName').textContent     = session.user.fullName;
+        document.getElementById('settingsSidebarInitials').textContent = session.user.fullName.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+        document.getElementById('settingsTopbarInitials').textContent  = document.getElementById('settingsSidebarInitials').textContent;
+      }
+      showMsg(msgEl, 'Profile updated successfully.', 'success');
+      showToast();
+    } catch (err) {
+      showMsg(msgEl, err.message, 'error');
+    }
+  }
+
+  // ── Password change ────────────────────────────────────────
+  async function changePassword() {
+    var current = document.getElementById('settingsCurrentPw').value;
+    var np      = document.getElementById('settingsNewPw').value;
+    var cp      = document.getElementById('settingsConfirmPw').value;
+    var msg     = document.getElementById('pwMsg');
+    if (!current)      { showMsg(msg, 'Enter your current password.', 'error'); return; }
+    if (!np || !cp)    { showMsg(msg, 'Enter and confirm your new password.', 'error'); return; }
+    if (np !== cp)     { showMsg(msg, 'Passwords do not match.', 'error'); return; }
+    if (np.length < 6) { showMsg(msg, 'Password must be at least 6 characters.', 'error'); return; }
+    try {
+      await window.api.patch('/api/users/me/password', { currentPassword: current, newPassword: np });
+      showMsg(msg, 'Password changed successfully.', 'success');
+      document.getElementById('settingsCurrentPw').value = '';
+      document.getElementById('settingsNewPw').value     = '';
+      document.getElementById('settingsConfirmPw').value = '';
+    } catch (err) {
+      showMsg(msg, err.message, 'error');
+    }
+  }
+
+  function showMsg(el, text, type) {
+    el.textContent    = text;
+    el.style.display  = 'block';
+    el.style.background = type === 'success' ? 'var(--green-light)' : '#fef2f2';
+    el.style.color      = type === 'success' ? 'var(--green-dark)'  : '#dc2626';
+    el.style.border     = '1px solid ' + (type === 'success' ? 'var(--green-muted)' : '#fca5a5');
+  }
+
+  // ── Toast ─────────────────────────────────────────────────
+  function showToast() {
+    var t = document.getElementById('saveToast');
+    t.style.display = 'flex';
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(function () { t.style.display = 'none'; }, 2200);
+  }
+
+  // ── Init ───────────────────────────────────────────────────
+  function initSettingsPage() {
+    var session = window.getSession ? window.getSession() : null;
+    var user    = session && session.user ? session.user : {};
+    var name    = user.fullName || '';
+    var role    = user.role    || '--';
+    var initials = name ? name.split(' ').map(function(w){return w[0]||'';}).join('').slice(0,2).toUpperCase() : '--';
+
+    document.getElementById('settingsSidebarInitials').textContent = initials;
+    document.getElementById('settingsTopbarInitials').textContent  = initials;
+    document.getElementById('settingsSidebarName').textContent     = name || 'No user loaded';
+    document.getElementById('settingsTopbarName').textContent      = name || 'No user loaded';
+    document.getElementById('settingsSidebarRole').textContent     = role;
+    document.getElementById('settingsTopbarRole').textContent      = role;
+
+    document.getElementById('settingsFullName').value = name;
+    document.getElementById('settingsEmail').value    = user.email || '';
+    document.getElementById('settingsRole').value     = role;
+
+    var dashMap = { admin: 'admin.html', manager: 'manager.html', employee: 'employee.html' };
+    document.getElementById('settingsDashLink').href = dashMap[role] || 'admin.html';
+
+    // Restore saved UI state
+    var s = window.appSettings.getAll();
+    document.querySelectorAll('.theme-card').forEach(function (c) {
+      c.classList.toggle('active', c.dataset.theme === (s.theme || 'light'));
+    });
+    document.querySelectorAll('.font-pill').forEach(function (p) {
+      p.classList.toggle('active', p.dataset.size === (s.fontSize || 'medium'));
+    });
+    document.getElementById('toggleCompact').checked  = !!s.sidebarCompact;
+    document.getElementById('reduceMotion').checked   = !!s.reduceMotion;
+    document.getElementById('highContrast').checked   = !!s.highContrast;
+
+    var np = s.notifPrefs || {};
+    document.getElementById('notifShifts').checked = np.shifts !== false;
+    document.getElementById('notifTasks').checked  = np.tasks  !== false;
+    document.getElementById('notifSwaps').checked  = np.swaps  !== false;
+    document.getElementById('notifSystem').checked = np.system !== false;
+    document.getElementById('notifSound').checked  = !!np.sound;
+  }
+
+  (async function init() {
+    if (!requireAuth()) return;
+    await loadAllData();
+    initSettingsPage();
+  })();
+</script>
+</body>
+</html>
