@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="libs/fontawesome/css/all.min.css" media="print" onload="this.media='all'"/>
   <noscript><link rel="stylesheet" href="libs/fontawesome/css/all.min.css"/></noscript>
   <script src="js/api.js"></script>
+  <script src="js/settings.js"></script>
   <script src="js/i18n.js"></script>
 </head>
 <body>
@@ -49,7 +50,7 @@
         <i class="fa-solid fa-users"></i>
         <span data-i18n="sidebar_myteam">My Team</span>
       </a>
-      <a href="#" class="nav-item">
+      <a href="settings.html" class="nav-item">
         <i class="fa-solid fa-chart-line"></i>
         <span data-i18n="sidebar_reports">Reports</span>
       </a>
@@ -91,7 +92,7 @@
           <div class="notif-dd-footer"><a href="notifications.html">See all notifications</a></div>
         </div>
       </div>
-      <div class="topbar-icon-btn"><i class="fa-solid fa-gear"></i></div>
+      <div class="topbar-icon-btn" data-tip="Settings" onclick="window.location.href='settings.html'"><i class="fa-solid fa-gear"></i></div>
       <div class="topbar-profile">
         <div class="avatar avatar-purple" id="managerTopbarInitials">--</div>
         <div>
@@ -127,22 +128,22 @@
       <!-- KPI Cards -->
       <div class="kpi-grid">
         <div class="kpi-card green fade-in">
-          <div class="kpi-top"><div class="kpi-icon green"><i class="fa-solid fa-list-check"></i></div><span class="kpi-trend up">+4</span></div>
+          <div class="kpi-top"><div class="kpi-icon green"><i class="fa-solid fa-list-check"></i></div></div>
           <div class="kpi-value" id="managerTotalTasks">0</div>
           <div class="kpi-label" data-i18n="manager_total_tasks">Total Tasks</div>
         </div>
         <div class="kpi-card blue fade-in fade-in-d1">
-          <div class="kpi-top"><div class="kpi-icon blue"><i class="fa-solid fa-circle-check"></i></div><span class="kpi-trend up">↑</span></div>
+          <div class="kpi-top"><div class="kpi-icon blue"><i class="fa-solid fa-circle-check"></i></div></div>
           <div class="kpi-value" id="managerConfirmedTasks">0</div>
           <div class="kpi-label" data-i18n="manager_confirmed">Confirmed</div>
         </div>
         <div class="kpi-card orange fade-in fade-in-d2">
-          <div class="kpi-top"><div class="kpi-icon orange"><i class="fa-solid fa-clock"></i></div><span class="kpi-trend neutral">—</span></div>
+          <div class="kpi-top"><div class="kpi-icon orange"><i class="fa-solid fa-clock"></i></div></div>
           <div class="kpi-value" id="managerPendingTasks">0</div>
           <div class="kpi-label" data-i18n="manager_pending">Pending</div>
         </div>
         <div class="kpi-card purple fade-in fade-in-d3">
-          <div class="kpi-top"><div class="kpi-icon purple"><i class="fa-solid fa-users"></i></div><span class="kpi-trend up">+2</span></div>
+          <div class="kpi-top"><div class="kpi-icon purple"><i class="fa-solid fa-users"></i></div></div>
           <div class="kpi-value" id="managerTeamMembers">0</div>
           <div class="kpi-label" data-i18n="manager_team_members">Team Members</div>
         </div>

@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="libs/fontawesome/css/all.min.css" media="print" onload="this.media='all'"/>
   <noscript><link rel="stylesheet" href="libs/fontawesome/css/all.min.css"/></noscript>
   <script src="js/api.js"></script>
+  <script src="js/settings.js"></script>
   <script src="js/i18n.js"></script>
 </head>
 <body>
@@ -47,15 +48,7 @@
         <i class="fa-solid fa-users"></i>
         <span data-i18n="sidebar_users">All Users</span>
       </a>
-      <a href="admin.html?view=managers" class="nav-item">
-        <i class="fa-solid fa-briefcase"></i>
-        <span data-i18n="sidebar_managers">Managers</span>
-      </a>
-      <a href="admin.html?view=employees" class="nav-item">
-        <i class="fa-solid fa-id-badge"></i>
-        <span data-i18n="sidebar_employees">Employees</span>
-      </a>
-      <a href="#" class="nav-item">
+      <a href="settings.html" class="nav-item">
         <i class="fa-solid fa-gear"></i>
         <span data-i18n="sidebar_settings">Settings</span>
       </a>
@@ -107,7 +100,7 @@
           <div class="notif-dd-footer"><a href="notifications.html">See all notifications</a></div>
         </div>
       </div>
-      <div class="topbar-icon-btn" data-tip="Settings">
+      <div class="topbar-icon-btn" data-tip="Settings" onclick="window.location.href='settings.html'">
         <i class="fa-solid fa-gear"></i>
       </div>
       <div class="topbar-profile">
@@ -148,7 +141,6 @@
         <div class="kpi-card green fade-in">
           <div class="kpi-top">
             <div class="kpi-icon green"><i class="fa-solid fa-users"></i></div>
-            <span class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i> 12%</span>
           </div>
           <div class="kpi-value" id="adminEmployeesValue">0</div>
           <div class="kpi-label" data-i18n="admin_total_employees">Total Employees</div>
@@ -156,7 +148,6 @@
         <div class="kpi-card blue fade-in fade-in-d1">
           <div class="kpi-top">
             <div class="kpi-icon blue"><i class="fa-solid fa-briefcase"></i></div>
-            <span class="kpi-trend up"><i class="fa-solid fa-arrow-up"></i> 3%</span>
           </div>
           <div class="kpi-value" id="adminManagersValue">0</div>
           <div class="kpi-label" data-i18n="admin_managers">Managers</div>
@@ -164,7 +155,6 @@
         <div class="kpi-card purple fade-in fade-in-d2">
           <div class="kpi-top">
             <div class="kpi-icon purple"><i class="fa-solid fa-calendar-check"></i></div>
-            <span class="kpi-trend neutral">— 0%</span>
           </div>
           <div class="kpi-value" id="adminShiftsValue">0</div>
           <div class="kpi-label" data-i18n="admin_active_shifts">Active Shifts Today</div>
@@ -172,7 +162,6 @@
         <div class="kpi-card orange fade-in fade-in-d3">
           <div class="kpi-top">
             <div class="kpi-icon orange"><i class="fa-solid fa-clock-rotate-left"></i></div>
-            <span class="kpi-trend down"><i class="fa-solid fa-arrow-down"></i> 5%</span>
           </div>
           <div class="kpi-value" id="adminPendingValue">0</div>
           <div class="kpi-label" data-i18n="admin_pending">Pending Requests</div>
