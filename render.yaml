@@ -1,22 +1,24 @@
+databases:
+  - name: schedules-db
+    databaseName: schedules
+    user: schedules_user
+    plan: free
+    region: oregon
+
 services:
   - type: web
-    name: schedules-web
+    name: schedules-app
     env: node
     plan: free
     region: oregon
-    buildCommand: "npm install"
-    startCommand: "npm start"
+    buildCommand: npm install
+    startCommand: npm start
     envVars:
-      # Note: replace these placeholder values in the Render dashboard with your real secrets.
-      - key: DB_HOST
-        value: "sql.freedb.tech"
-      - key: DB_PORT
-        value: "3306"
-      - key: DB_USER
-        value: "freedb_nanichris-dushime"
-      - key: DB_PASSWORD
-        value: "5ftUHXKTxhvvBD#"
-      - key: DB_NAME
-        value: "freedb_Schedulesdb"
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: schedules-db
+          property: internalConnectionString
       - key: JWT_SECRET
-        value: "shiftsmart-super-secret-jwt-key-change-in-production"
+        generateValue: true

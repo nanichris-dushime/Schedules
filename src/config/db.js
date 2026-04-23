@@ -1,29 +1,33 @@
-import { Sequelize } from "sequelize";
-import dotenv from "dotenv";
+import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
 dotenv.config();
 
-const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
-    {
-        host:process.env.DB_HOST,
-        dialect:'mysql'
-    }
-)
+let sequelize;
 
-export const connectToDatabase = async () => {
-    try{
-        await sequelize.authenticate();
-        console.log('connection has been established successfully');
-        return { success:true , message: 'connection to database has been successfull'}
+if (process.env.DATABASE_URL) {
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'mysql',
+    dialectOptions: {
+      ssl: process.env.NODE_ENV === 'production'
+        ? { require: true, rejectUnauthorized: false }
+        : false,
+    },
+    logging: false,
+    pool: { max: 5, min: 0, acquire: 30000, idle: 10000 },
+  });
+} else {
+  sequelize = new Sequelize(
+    process.env.DB_NAME    || 'schedules',
+    process.env.DB_USER    || 'root',
+    process.env.DB_PASSWORD || '',
+    {
+      host:    process.env.DB_HOST || 'localhost',
+      port:    parseInt(process.env.DB_PORT || '3306'),
+      dialect: 'mysql',
+      logging: false,
+      pool: { max: 5, min: 0, acquire: 30000, idle: 10000 },
     }
-    catch(error) {
-        console.error('Unable to connect to the database:', error);
-        return { success:false , message: 'connection failed' }
-    };
-    
+  );
 }
 
-
-export default sequelize
+export default sequelize;
