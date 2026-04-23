@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="libs/fontawesome/css/all.min.css" media="print" onload="this.media='all'"/>
   <noscript><link rel="stylesheet" href="libs/fontawesome/css/all.min.css"/></noscript>
   <script src="js/api.js"></script>
+  <script src="js/settings.js"></script>
   <script src="js/i18n.js"></script>
   <style>
     .sched-legend { display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
@@ -50,18 +51,7 @@
         <span data-i18n="sidebar_notifications">Notifications</span>
         <span class="badge-pill" id="scheduleNotifCount">0</span>
       </a>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-section-label" data-i18n="sidebar_management">Management</div>
-      <a href="admin.html" class="nav-item">
-        <i class="fa-solid fa-users"></i>
-        <span data-i18n="sidebar_users">All Users</span>
-      </a>
-      <a href="manager.html" class="nav-item">
-        <i class="fa-solid fa-briefcase"></i>
-        <span data-i18n="sidebar_tasks">Tasks</span>
-      </a>
-      <a href="#" class="nav-item">
+      <a href="settings.html" class="nav-item">
         <i class="fa-solid fa-gear"></i>
         <span data-i18n="sidebar_settings">Settings</span>
       </a>
@@ -258,12 +248,22 @@
     const timeSlots  = schedView.timeSlots;
 
     if (!tasks.length) {
-      document.getElementById('scheduleGrid').innerHTML = helpers.emptyState(
+      const grid = document.getElementById('scheduleGrid');
+      grid.style.display = 'flex';
+      grid.style.alignItems = 'center';
+      grid.style.justifyContent = 'center';
+      grid.style.minHeight = '340px';
+      grid.innerHTML = helpers.emptyState(
         'No schedule events loaded',
         'Tasks and assignments will populate this grid once data is connected.',
         'calendar-days'
       );
     } else {
+      const grid = document.getElementById('scheduleGrid');
+      grid.style.display = '';
+      grid.style.alignItems = '';
+      grid.style.justifyContent = '';
+      grid.style.minHeight = '';
       const dateMap = {};
       schedView.records.forEach(t => {
         if (!dateMap[t.date]) dateMap[t.date] = [];

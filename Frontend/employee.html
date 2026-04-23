@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="libs/fontawesome/css/all.min.css" media="print" onload="this.media='all'"/>
   <noscript><link rel="stylesheet" href="libs/fontawesome/css/all.min.css"/></noscript>
   <script src="js/api.js"></script>
+  <script src="js/settings.js"></script>
   <script src="js/i18n.js"></script>
 </head>
 <body>
@@ -38,13 +39,9 @@
         <span data-i18n="sidebar_notifications">Notifications</span>
         <span class="badge-pill" id="employeeNotifCount">0</span>
       </a>
-      <a href="#" class="nav-item">
-        <i class="fa-solid fa-clock-rotate-left"></i>
-        <span data-i18n="sidebar_history">History</span>
-      </a>
-      <a href="#" class="nav-item" onclick="logout(); return false;">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        <span data-i18n="sidebar_logout">Logout</span>
+      <a href="settings.html" class="nav-item">
+        <i class="fa-solid fa-gear"></i>
+        <span data-i18n="sidebar_settings">Settings</span>
       </a>
     </div>
     <div class="sidebar-footer">
@@ -84,6 +81,7 @@
           <div class="notif-dd-footer"><a href="notifications.html">See all notifications</a></div>
         </div>
       </div>
+      <div class="topbar-icon-btn" data-tip="Settings" onclick="window.location.href='settings.html'"><i class="fa-solid fa-gear"></i></div>
       <div class="topbar-profile">
         <div class="avatar avatar-orange" id="employeeTopbarInitials">--</div>
         <div>
