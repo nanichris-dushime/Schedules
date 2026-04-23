@@ -8,6 +8,6 @@ const Assignment = sequelize.define('Assignment', {
     defaultValue: 'pending',
     validate: { isIn: [['pending', 'confirmed', 'rejected']] },
   },
-}, { timestamps: true });
+}, { timestamps: true, tableName: 'assignments', freezeTableName: true });
 
 export default Assignment;
