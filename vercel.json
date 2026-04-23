@@ -1,0 +1,10 @@
+{
+  "builds": [
+    { "src": "Frontend/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/favicon.ico", "dest": "/Frontend/favicon.ico" },
+    { "src": "/(.*)", "dest": "/Frontend/$1" },
+    { "src": "/", "dest": "/Frontend/index.html" }
+  ]
+}
