@@ -25,7 +25,7 @@ app.get('/health', (req, res) => res.json({ status: 'OK' }));
 const startServer = async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: { drop: false } });
     console.log('✅ Database synced');
     app.listen(PORT, () => {
       console.log(`🚀 Server running on http://localhost:${PORT}`);

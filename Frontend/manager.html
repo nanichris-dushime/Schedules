@@ -355,6 +355,8 @@
         + (n.status === 'unread' ? '<div class="notif-dd-unread-dot"></div>' : '') + '</div>';
     }).join('');
   }
+
+  function renderManagerPage() {
     const data = window.getData();
     const helpers = window.helpers;
     const currentUser = data.session.currentUser || {};

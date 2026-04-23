@@ -13,7 +13,7 @@ const User = sequelize.define("User", {
   },
   email: {
     type: DataTypes.STRING,
-    unique: true,
+    unique: false,
   },
   password: {
     type: DataTypes.STRING(255),
