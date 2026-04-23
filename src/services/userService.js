@@ -39,3 +39,13 @@ export const deleteUser = async (id) => {
   if (!user) throw new Error('User not found');
   await user.destroy();
 };
+
+export const updateUser = async (id, data) => {
+  const user = await User.findByPk(id);
+  if (!user) throw new Error('User not found');
+  const allowed = {};
+  if (data.fullName) allowed.fullName = data.fullName;
+  if (data.email)    allowed.email    = data.email;
+  if (data.role)     allowed.role     = data.role;
+  return await user.update(allowed);
+};

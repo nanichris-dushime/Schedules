@@ -8,8 +8,8 @@ const Assignment = sequelize.define("Assignment", {
     primaryKey: true,
   },
   status: {
-    type: DataTypes.ENUM("confirmed", "rejected"),
-    defaultValue: "confirmed",
+    type: DataTypes.ENUM("pending", "confirmed", "rejected"),
+    defaultValue: "pending",
   },
 }, {
   timestamps: true,

@@ -23,6 +23,10 @@ const Task = sequelize.define("Task", {
     type: DataTypes.TIME,
     allowNull: false,
   },
+  managerId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+  },
 }, {
   timestamps: true,
 });

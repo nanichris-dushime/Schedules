@@ -254,7 +254,42 @@
   </main>
 </div>
 
-<!-- ── Add User Modal ──────────────────────────────────── -->
+<!-- ── Edit User Modal ───────────────────────────────────── -->
+<div class="modal-backdrop" id="editUserModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-user-pen" style="color:var(--green);margin-right:8px"></i>Edit User</h3>
+      <button class="modal-close" onclick="closeModal('editUserModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <input type="hidden" id="editUserId"/>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="editUserFullName" class="form-control" placeholder="Full name"/>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <div class="input-icon-wrap">
+        <i class="fa-regular fa-envelope"></i>
+        <input type="email" id="editUserEmail" class="form-control" placeholder="email@company.com"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Role</label>
+      <select id="editUserRole" class="form-control">
+        <option value="employee">Employee</option>
+        <option value="manager">Manager</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div id="editUserError" style="display:none;background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-top:8px"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-outline" onclick="closeModal('editUserModal')" data-i18n="cancel">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEditUser()">
+        <i class="fa-solid fa-floppy-disk"></i> Save Changes
+      </button>
+    </div>
+  </div>
+</div>
 <div class="modal-backdrop" id="addUserModal">
   <div class="modal">
     <div class="modal-header">
@@ -349,22 +384,9 @@
     }).join('');
   }
 
-  // ── View filter (All / Managers / Employees) ───────────
+  // ── View filter ────────────────────────────────────────
   function getView() {
     return new URLSearchParams(window.location.search).get('view') || 'all';
-  }
-
-  function setActiveNavView(view) {
-    document.querySelectorAll('.sidebar .nav-item').forEach(function (el) {
-      el.classList.remove('active');
-    });
-    var map = { all: '[href="admin.html?view=all"]', managers: '[href="admin.html?view=managers"]', employees: '[href="admin.html?view=employees"]' };
-    var sel = map[view];
-    if (sel) { var el = document.querySelector('.sidebar ' + sel); if (el) el.classList.add('active'); }
-    if (view === 'all' || !map[view]) {
-      var dash = document.querySelector('.sidebar a[href="admin.html"]');
-      if (dash) dash.classList.add('active');
-    }
   }
 
   function renderAdminPage() {
@@ -392,34 +414,34 @@
     document.getElementById('adminTopbarRole').textContent      = role;
     document.getElementById('adminSidebarNotifCount').textContent = unreadCount;
     document.getElementById('adminSummaryLabel').textContent = users.length
-      ? users.length + ' users, ' + tasks.length + ' tasks, ' + assignments.length + ' assignments in the current backend dataset.'
-      : 'User, task, assignment, and notification summaries will appear here when data is connected.';
+      ? users.length + ' users, ' + tasks.length + ' tasks, ' + assignments.length + ' assignments.'
+      : 'User, task, and assignment summaries will appear here when data is connected.';
 
     document.getElementById('adminEmployeesValue').textContent = employees.length;
     document.getElementById('adminManagersValue').textContent  = managers.length;
     document.getElementById('adminShiftsValue').textContent    = tasks.length;
     document.getElementById('adminPendingValue').textContent   = notifications.filter(function (i) { return i.status === 'unread'; }).length;
 
-    // Notification dropdown
     renderNotifDropdown(notifications, helpers);
 
-    // Role distribution chart
+    // Role distribution
     var roleEntries = [['Admins', admins.length], ['Managers', managers.length], ['Employees', employees.length]];
     var maxRoleCount = Math.max.apply(null, roleEntries.map(function (e) { return e[1]; }).concat([1]));
     document.getElementById('adminCoveragePanel').innerHTML = users.length
       ? roleEntries.map(function (entry, index) {
           return '<div style="margin-bottom:16px">'
             + '<div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px">'
-            + '<span class="font-bold">' + helpers.escapeHtml(entry[0]) + '</span><span class="text-muted">' + helpers.escapeHtml(entry[1]) + '</span></div>'
+            + '<span class="font-bold">' + helpers.escapeHtml(entry[0]) + '</span>'
+            + '<span class="text-muted">' + entry[1] + '</span></div>'
             + '<div class="progress-bar"><div class="progress-fill" style="width:' + ((entry[1] / maxRoleCount) * 100) + '%;background:' + ['var(--green)', '#3b82f6', '#8b5cf6'][index % 3] + '"></div></div></div>';
         }).join('')
-      : helpers.emptyState('No users loaded', 'Role distribution will render here after the frontend receives user records from the backend.', 'users');
+      : helpers.emptyState('No users loaded', 'Role distribution will appear after users are added.', 'users');
 
     // Recent activity
     var recentRecords = [
-      ...users.map(function (u) { return { type: 'User', title: u.fullName || 'Unnamed user', meta: u.email || 'No email', createdAt: u.createdAt }; }),
-      ...tasks.map(function (t) { return { type: 'Task', title: t.title || 'Untitled task', meta: helpers.formatDate(t.date), createdAt: t.createdAt }; }),
-      ...notifications.map(function (n) { return { type: 'Notification', title: n.message || 'Notification', meta: n.status || 'unknown', createdAt: n.createdAt }; })
+      ...users.map(function (u) { return { type: 'User', title: u.fullName || 'Unnamed', meta: u.email || '', createdAt: u.createdAt }; }),
+      ...tasks.map(function (t) { return { type: 'Task', title: t.title || 'Untitled', meta: helpers.formatDate(t.date), createdAt: t.createdAt }; }),
+      ...notifications.map(function (n) { return { type: 'Notification', title: n.message || 'Notification', meta: n.status || '', createdAt: n.createdAt }; })
     ].filter(function (i) { return i.createdAt; })
      .sort(function (a, b) { return new Date(b.createdAt) - new Date(a.createdAt); })
      .slice(0, 5);
@@ -431,37 +453,96 @@
             + '<div><div class="activity-text"><strong>' + helpers.escapeHtml(item.type) + '</strong> — ' + helpers.escapeHtml(item.title) + '</div>'
             + '<div class="activity-time">' + helpers.escapeHtml(item.meta) + ' · ' + helpers.escapeHtml(helpers.formatDate(item.createdAt)) + '</div></div></div>';
         }).join('')
-      : helpers.emptyState('No records yet', 'Latest users, tasks, and notifications will appear here when the backend returns stored records.', 'clock-rotate-left');
+      : helpers.emptyState('No records yet', 'Activity will appear here once data is connected.', 'clock-rotate-left');
 
-    // ── Users table with view filter ──
+    // Users table
     var view = getView();
     var viewLabels = { all: 'All Users', managers: 'Managers', employees: 'Employees' };
     document.getElementById('adminViewTitle').textContent = viewLabels[view] || 'Overview';
-    setActiveNavView(view);
 
     var filteredUsers = view === 'managers'  ? managers
                       : view === 'employees' ? employees
                       : users;
 
-    document.getElementById('adminUsersTableBody').innerHTML = filteredUsers.length
-      ? filteredUsers.map(function (user, index) {
+    renderUsersTable(filteredUsers, helpers);
+    document.getElementById('adminUsersSummary').textContent =
+      'Showing ' + filteredUsers.length + ' of ' + filteredUsers.length + ' ' + (viewLabels[view] || 'users').toLowerCase();
+
+    // Wire live search
+    var searchInput = document.querySelector('.card .search-bar input');
+    if (searchInput) {
+      searchInput.oninput = function () {
+        var q = this.value.toLowerCase();
+        var filtered = filteredUsers.filter(function (u) {
+          return (u.fullName || '').toLowerCase().includes(q) || (u.email || '').toLowerCase().includes(q);
+        });
+        renderUsersTable(filtered, helpers);
+      };
+    }
+
+    // Wire role filter dropdown
+    var roleSelect = document.querySelector('.card .select-control');
+    if (roleSelect) {
+      roleSelect.onchange = function () {
+        var val = this.value.toLowerCase();
+        var filtered = val === 'all roles' || val === '' ? filteredUsers
+          : filteredUsers.filter(function (u) { return (u.role || '').toLowerCase() === val; });
+        renderUsersTable(filtered, helpers);
+      };
+    }
+  }
+
+  function renderUsersTable(list, helpers) {
+    document.getElementById('adminUsersTableBody').innerHTML = list.length
+      ? list.map(function (user, index) {
+          var uid = helpers.escapeHtml(user.id);
           return '<tr>'
             + '<td><input type="checkbox" style="accent-color:var(--green)"/></td>'
             + '<td><div class="user-cell">'
             + '<div class="avatar avatar-sm avatar-' + helpers.avatarTone(index) + '">' + helpers.escapeHtml(helpers.initialsFromName(user.fullName)) + '</div>'
-            + '<div><div class="name">' + helpers.escapeHtml(user.fullName || 'Unnamed user') + '</div>'
-            + '<div class="email">' + helpers.escapeHtml(user.email || 'No email') + '</div></div></div></td>'
-            + '<td><span class="badge ' + helpers.roleBadgeClass(user.role) + '">' + helpers.escapeHtml(user.role || 'Unassigned') + '</span></td>'
-            + '<td>' + helpers.escapeHtml(user.email || 'No email') + '</td>'
+            + '<div><div class="name">' + helpers.escapeHtml(user.fullName || 'Unnamed') + '</div>'
+            + '<div class="email">' + helpers.escapeHtml(user.email || '') + '</div></div></div></td>'
+            + '<td><span class="badge ' + helpers.roleBadgeClass(user.role) + '">' + helpers.escapeHtml(user.role || '') + '</span></td>'
+            + '<td>' + helpers.escapeHtml(user.email || '') + '</td>'
             + '<td>' + helpers.escapeHtml(helpers.formatDate(user.createdAt)) + '</td>'
             + '<td><div class="table-actions">'
-            + '<button class="btn btn-outline btn-sm"><i class="fa-solid fa-pen"></i></button>'
-            + '<button class="btn btn-danger btn-sm" onclick="deleteUser(\'' + helpers.escapeHtml(user.id) + '\')"><i class="fa-solid fa-trash"></i></button>'
+            + '<button class="btn btn-outline btn-sm" onclick="openEditUser(\'' + uid + '\',\'' + helpers.escapeHtml(user.fullName) + '\',\'' + helpers.escapeHtml(user.email) + '\',\'' + helpers.escapeHtml(user.role) + '\')"><i class="fa-solid fa-pen"></i></button>'
+            + '<button class="btn btn-danger btn-sm" onclick="deleteUser(\'' + uid + '\')"><i class="fa-solid fa-trash"></i></button>'
             + '</div></td></tr>';
         }).join('')
-      : '<tr><td colspan="6">' + helpers.emptyState('No ' + (viewLabels[view] || 'users') + ' found', 'Records will appear here once data is connected.', 'users') + '</td></tr>';
+      : '<tr><td colspan="6">' + helpers.emptyState('No users found', 'No records match your current filter.', 'users') + '</td></tr>';
+  }
 
-    document.getElementById('adminUsersSummary').textContent = 'Showing ' + filteredUsers.length + ' of ' + filteredUsers.length + ' ' + (viewLabels[view] || 'users').toLowerCase();
+  function openEditUser(id, fullName, email, role) {
+    document.getElementById('editUserId').value    = id;
+    document.getElementById('editUserFullName').value = fullName;
+    document.getElementById('editUserEmail').value    = email;
+    document.getElementById('editUserRole').value     = role;
+    document.getElementById('editUserError').style.display = 'none';
+    openModal('editUserModal');
+  }
+
+  async function saveEditUser() {
+    var id       = document.getElementById('editUserId').value;
+    var fullName = document.getElementById('editUserFullName').value.trim();
+    var email    = document.getElementById('editUserEmail').value.trim();
+    var role     = document.getElementById('editUserRole').value;
+    var errEl    = document.getElementById('editUserError');
+    errEl.style.display = 'none';
+    if (!fullName || !email) {
+      errEl.textContent = 'Full name and email are required.';
+      errEl.style.display = 'block';
+      return;
+    }
+    try {
+      await window.api.put('/api/users/admin/users/' + id, { fullName, email, role });
+      closeModal('editUserModal');
+      await window.loadAllData();
+      renderAdminPage();
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.style.display = 'block';
+    }
   }
 
   async function deleteUser(id) {

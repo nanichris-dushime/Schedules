@@ -60,6 +60,16 @@ export const getCurrentUser = async (req, res) => {
   }
 };
 
+export const updateUser = async (req, res) => {
+  try {
+    const { fullName, email, role } = req.body;
+    const user = await userService.updateUser(req.params.id, { fullName, email, role });
+    res.json({ success: true, message: 'User updated', user });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+};
+
 export const deleteUser = async (req, res) => {
   try {
     await userService.deleteUser(req.params.id);

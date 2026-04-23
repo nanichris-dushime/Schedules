@@ -5,7 +5,10 @@ import { requireRole } from '../middleware/role.js';
 
 const router = express.Router();
 
-router.get('/', authenticate, taskController.getAllTasks);
-router.post('/', authenticate, requireRole(['admin', 'manager']), taskController.createTask);
+router.get('/',     authenticate, taskController.getAllTasks);
+router.post('/',    authenticate, requireRole(['admin', 'manager']), taskController.createTask);
+router.get('/:id',  authenticate, taskController.getTaskById);
+router.put('/:id',  authenticate, requireRole(['admin', 'manager']), taskController.updateTask);
+router.delete('/:id', authenticate, requireRole(['admin', 'manager']), taskController.deleteTask);
 
 export default router;

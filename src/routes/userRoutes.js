@@ -12,8 +12,9 @@ router.post('/login', userController.login);
 router.get('/employees', authenticate, requireRole(['admin', 'manager']), userController.getEmployees);
 
 // Admin only
-router.post('/admin/users', authenticate, requireRole(['admin']), userController.register);
-router.get('/users', authenticate, requireRole(['admin']), userController.getAllUsers);
+router.post('/admin/users',       authenticate, requireRole(['admin']), userController.register);
+router.get('/users',              authenticate, requireRole(['admin']), userController.getAllUsers);
+router.put('/admin/users/:id',    authenticate, requireRole(['admin']), userController.updateUser);
 router.delete('/admin/users/:id', authenticate, requireRole(['admin']), userController.deleteUser);
 
 // Any authenticated user

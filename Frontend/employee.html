@@ -333,6 +333,15 @@
               <div class="task-meta-item"><i class="fa-regular fa-clock"></i>${helpers.escapeHtml(a.timeLabel)}</div>
               <div class="task-meta-item"><i class="fa-solid fa-user-tie"></i>${helpers.escapeHtml(a.managerName)}</div>
             </div>
+            ${a.status === 'pending' ? `
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="btn btn-primary btn-sm" style="flex:1;justify-content:center" onclick="respondAssignment('${helpers.escapeHtml(a.id)}','confirmed')">
+                <i class="fa-solid fa-check"></i> Confirm
+              </button>
+              <button class="btn btn-danger btn-sm" style="flex:1;justify-content:center" onclick="respondAssignment('${helpers.escapeHtml(a.id)}','rejected')">
+                <i class="fa-solid fa-xmark"></i> Reject
+              </button>
+            </div>` : ''}
           </div>
         `).join('')
       : helpers.emptyState('No assigned tasks yet', 'Your upcoming shifts will appear here once a manager assigns you to a task.', 'calendar-check');
@@ -369,6 +378,16 @@
     await loadAllData();
     renderEmployeePage();
   })();
+
+  async function respondAssignment(id, status) {
+    try {
+      await window.api.patch('/api/assignments/' + id + '/status', { status });
+      await window.loadAllData();
+      renderEmployeePage();
+    } catch (err) {
+      alert('Could not update assignment: ' + err.message);
+    }
+  }
 </script>
 </body>
 </html>

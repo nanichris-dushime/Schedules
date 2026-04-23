@@ -17,28 +17,23 @@ export const getAssignments = async (req, res) => {
 
 export const createAssignment = async (req, res) => {
   try {
-    const { employeeId, taskId, status } = req.body;
+    const { employeeId, taskId } = req.body;
     if (!employeeId || !taskId) {
       return res.status(400).json({ success: false, error: 'employeeId and taskId are required' });
     }
-    const assignment = await assignmentService.createAssignment({ employeeId, taskId, status });
+    const assignment = await assignmentService.createAssignment({ employeeId, taskId });
 
-    // Fetch task and employee details for notification messages
     const task     = await taskService.getTaskById(taskId);
     const employee = await User.findByPk(employeeId, { attributes: ['id', 'fullName'] });
 
     if (task && employee) {
-      const dateStr  = task.date;
-      const timeStr  = `${String(task.startTime).slice(0,5)} – ${String(task.endTime).slice(0,5)}`;
-
-      // Notify the employee
+      const dateStr = task.date;
+      const timeStr = `${String(task.startTime).slice(0,5)} – ${String(task.endTime).slice(0,5)}`;
       await notificationService.create(
         employeeId,
         `You have been assigned to "${task.title}" on ${dateStr} from ${timeStr}. Please confirm your availability.`,
         'shift'
       );
-
-      // Notify the manager who made the assignment
       await notificationService.create(
         req.user.id,
         `You assigned "${task.title}" (${dateStr}, ${timeStr}) to ${employee.fullName}.`,
@@ -47,6 +42,31 @@ export const createAssignment = async (req, res) => {
     }
 
     res.status(201).json({ success: true, message: 'Assignment created', assignment });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+export const updateAssignmentStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!['confirmed', 'rejected'].includes(status)) {
+      return res.status(400).json({ success: false, error: 'status must be confirmed or rejected' });
+    }
+    const assignment = await assignmentService.updateAssignmentStatus(req.params.id, status, req.user.id);
+
+    // Notify the manager about the employee's response
+    const task = await taskService.getTaskById(assignment.taskId);
+    if (task && task.managerId) {
+      const employee = await User.findByPk(req.user.id, { attributes: ['fullName'] });
+      await notificationService.create(
+        task.managerId,
+        `${employee?.fullName || 'An employee'} has ${status} the assignment for "${task.title}".`,
+        'shift'
+      );
+    }
+
+    res.json({ success: true, message: `Assignment ${status}`, assignment });
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
   }
