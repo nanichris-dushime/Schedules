@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import compression from 'compression';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import userRoutes         from './routes/userRoutes.js';
@@ -15,6 +16,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app  = express();
 const PORT = process.env.PORT || 5000;
 
+// ── Gzip all responses ────────────────────────────────────
+app.use(compression());
+
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
@@ -23,6 +27,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ── API Routes ────────────────────────────────────────────
 app.use('/api/users',         userRoutes);
 app.use('/api/tasks',         taskRoutes);
 app.use('/api/assignments',   assignmentRoutes);
@@ -30,16 +35,36 @@ app.use('/api/notifications', notificationRoutes);
 
 app.get('/health', (_req, res) => res.json({ status: 'OK' }));
 
+// ── Static files with aggressive caching ─────────────────
 const frontendPath = path.join(__dirname, '..', 'Frontend');
-app.use(express.static(frontendPath));
 
+// Cache fonts, icons, images for 1 year
+app.use('/libs', express.static(path.join(frontendPath, 'libs'), {
+  maxAge: '1y',
+  immutable: true,
+}));
+
+// Cache JS and CSS for 1 day
+app.use('/js', express.static(path.join(frontendPath, 'js'), {
+  maxAge: '1d',
+}));
+app.use('/styles.css', express.static(path.join(frontendPath, 'styles.css'), {
+  maxAge: '1d',
+}));
+app.use('/favicon.svg', express.static(path.join(frontendPath, 'favicon.svg'), {
+  maxAge: '7d',
+}));
+
+// HTML pages — no cache (always fresh)
+app.use(express.static(frontendPath, { maxAge: 0 }));
+
+// SPA fallback
 app.use((req, res, next) => {
   if (req.path.startsWith('/api')) return next();
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 // ── Start: bind port FIRST, then connect DB ───────────────
-// Render requires the port to be open within 60s of startup.
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
   connectDB();
